@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Nav, NavItem, NavLink, TabContent, TabPane, Container, Row, Col } from 'reactstrap';
+import OAuth2 from './OAuth2';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import ForgotPassword from './ForgotPassword';
@@ -32,25 +33,30 @@ const Authentication = () => {
     case 'password':
       return <ResetPassword />;
     default:
-      return (                
-        <div className='tab-container'>
-          <Nav tabs className='nav-tabs-custom'>
-            <NavItem>
-              <NavLink className={currentPage == 'sign-in' ? 'active' : ''} onClick={() => toggleTab('sign-in')}>
-              SIGN IN
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink className={currentPage == 'sign-up' ? 'active' : ''} onClick={() => toggleTab('sign-up')}>
-              SIGN UP
-              </NavLink>
-            </NavItem>
-          </Nav>
-          <TabContent activeTab={currentPage}>
-            <TabPane title='SIGN IN' tabId="sign-in"><SignIn /></TabPane>
-            <TabPane title='SIGN UP' tabId="sign-up"><SignUp /></TabPane>
-          </TabContent>
-        </div>
+      return (       
+        <>
+          <div className='tab-container'>
+            <Nav tabs className='nav-tabs-custom'>
+              <NavItem>
+                <NavLink className={currentPage == 'sign-in' ? 'active' : ''} onClick={() => toggleTab('sign-in')}>
+                SIGN IN
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink className={currentPage == 'sign-up' ? 'active' : ''} onClick={() => toggleTab('sign-up')}>
+                SIGN UP
+                </NavLink>
+              </NavItem>
+            </Nav>
+            <TabContent activeTab={currentPage}>
+              <TabPane title='SIGN IN' tabId="sign-in"><SignIn /></TabPane>
+              <TabPane title='SIGN UP' tabId="sign-up"><SignUp /></TabPane>
+            </TabContent>
+          </div>
+          <div >
+            <OAuth2/>
+          </div>
+        </>         
       );
     }
   }

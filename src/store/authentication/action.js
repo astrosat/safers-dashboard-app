@@ -4,6 +4,35 @@ import * as api from '../../api/base';
 import { setSession, deleteSession, getSession } from '../../helpers/authHelper';
 import _ from 'lodash';
 
+export const signInOauth2 = ({authCode}) => async (dispatch) => {
+
+  const API_BASE_URL = 'http://localhost:8000'
+  const response = await fetch(`${API_BASE_URL}/api/oauth2/login`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      code: authCode,
+    })
+  })
+  const content = await response.json()
+  if (response.status === 200) {
+    const sessionData = {
+      access_token: content.token, 
+      // refresh_token: response.data.refresh_token, 
+      userId: content.user.id
+    };
+    setSession(sessionData, false);
+    if (content.user?.default_aoi) {
+      dispatch(setAoiBySignInSuccess(content.user?.default_aoi));
+    }
+    return dispatch(signInSuccess(content.user));
+  }
+  return dispatch(signInFail(content.detail));
+}
+
 export const signIn = ({email, password, rememberMe}) => async (dispatch) => {
   const response = await api.post(endpoints.authentication.signIn, { email, password });//should be post with the backend
   if (response.status === 200) {
