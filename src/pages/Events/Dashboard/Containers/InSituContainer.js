@@ -4,11 +4,11 @@ import { Card, Row, Col } from 'reactstrap';
 import MediaComponent from '../../../../components/MediaComponent';
 
 const InSituContainer = () => {
-  const inSituMedia = useSelector(state => state.dashboard.inSituMedia);
+  const inSituMedia = useSelector(state => state.eventAlerts.inSituMedia);
   return (
     <>
       <Col md={12} className='d-flex'>
-        <Card className='card-weather' >
+        <Card className='card-weather'>
           <Row className='mb-2'>
             <span className='weather-text'>In-situ Photos & Videos</span>
           </Row>

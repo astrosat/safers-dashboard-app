@@ -4,7 +4,7 @@ import { Card, Row, Col } from 'reactstrap';
 import TweetComponent from '../../../../components/TweetComponent';
 
 const TwitterContainer = () => {
-  const tweets = useSelector(state => state.dashboard.tweets);
+  const tweets = useSelector(state => state.eventAlerts.tweets);
   
   return (
     <>

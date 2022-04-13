@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Card, Row, Col, CardText, CardSubtitle, Button } from 'reactstrap';
-import { getInSituMedia } from '../../../../store/dashboard/action';
+import { getInSituMedia } from '../../../../store/events/action';
 import { formatDate } from '../../../../store/utility';
 
 const InfoContainer = () => {

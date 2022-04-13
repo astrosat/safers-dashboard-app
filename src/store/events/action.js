@@ -159,3 +159,45 @@ export const setDateRange = (payload) => {
     payload,
   };
 };
+
+export const getInSituMedia = (params) => async (dispatch) => {
+  const response = await api.get(endpoints.dashboard.getInSitu, params);
+  if (response.status === 200) {
+    return dispatch(getInSituMediaSuccess(response.data));
+  }
+  else
+    return dispatch(getInSituMediaFail(response.error));
+};
+const getInSituMediaSuccess = (data) => {
+  return {
+    type: actionTypes.EVENTS_IN_SITU_MEDIA_GET_SUCCESS,
+    payload: data
+  };
+};
+const getInSituMediaFail = (error) => {
+  return {
+    type: actionTypes.EVENTS_IN_SITU_MEDIA_GET_FAIL,
+    payload: error
+  };
+};
+
+export const getTweets = (params) => async (dispatch) => {
+  const response = await api.get(endpoints.dashboard.getTweets, params);
+  if (response.status === 200) {
+    return dispatch(getTweetsSuccess(response.data));
+  }
+  else
+    return dispatch(getTweetsFail(response.error));
+};
+const getTweetsSuccess = (data) => {
+  return {
+    type: actionTypes.EVENTS_TWEETS_GET_SUCCESS,
+    payload: data
+  };
+};
+const getTweetsFail = (error) => {
+  return {
+    type: actionTypes.EVENTS_TWEETS_GET_FAIL,
+    payload: error
+  };
+};

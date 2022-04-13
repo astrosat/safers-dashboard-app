@@ -15,7 +15,9 @@ const initialState = {
   dateRange : getDefaultDateRange(),
   currentPage: 1,
   error: false,
-  success: null
+  success: null,
+  inSituMedia: [],
+  tweets: []
 };
 
 const eventAlertReducer = (state = initialState, action) => {
@@ -40,6 +42,10 @@ const eventAlertReducer = (state = initialState, action) => {
   case actionTypes.SET_SORT_BY_DATE: return setSortByDate(state, action);
   case actionTypes.SET_ALERT_SOURCE: return setAlertSource(state, action);
   case actionTypes.SET_DATE_RANGE: return setDateRange(state, action);
+  case actionTypes.EVENTS_IN_SITU_MEDIA_GET_SUCCESS: return getInSituMediaSuccess(state, action);
+  case actionTypes.EVENTS_IN_SITU_MEDIA_GET_FAIL: return getInSituMediaFail(state, action);
+  case actionTypes.EVENTS_TWEETS_GET_SUCCESS: return getTweetsSuccess(state, action);
+  case actionTypes.EVENTS_TWEETS_GET_FAIL: return getTweetsFail(state, action);
 
   default:
     return state;
@@ -176,6 +182,37 @@ const setDateRange = (state, action) => {
   }
   return updateObject(state, updatedState);
 }
+//IN SITU MEDIA
+const getInSituMediaSuccess = (state, action) => {
+  const updatedState = {
+    inSituMedia: action.payload,
+    error: false,
+  }
+  return updateObject(state, updatedState);
+}
 
+const getInSituMediaFail = (state) => {
+  const updatedState = {
+    error: true,
+  }
+  return updateObject(state, updatedState);
+}
+
+//TWEETS
+//IN SITU MEDIA
+const getTweetsSuccess = (state, action) => {
+  const updatedState = {
+    tweets: action.payload,
+    error: false,
+  }
+  return updateObject(state, updatedState);
+}
+
+const getTweetsFail = (state) => {
+  const updatedState = {
+    error: true,
+  }
+  return updateObject(state, updatedState);
+}
 
 export default eventAlertReducer;

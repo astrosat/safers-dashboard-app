@@ -5,12 +5,13 @@ import { Col, Button, Row,  } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllAreas } from '../../../../store/appAction';
 import { setPolygonLayer, setViewState } from '../../../../store/common/action';
-import { getInSituMedia, getStats, getTweets, getWeatherStats, getWeatherVariables } from '../../../../store/dashboard/action';
+import {  getStats, getWeatherStats, getWeatherVariables } from '../../../../store/dashboard/action';
 
 import { getPolygonLayer, getViewState } from '../../../../helpers/mapHelper';
 import moment from 'moment';
 import DateComponent from '../../../../components/DateRangePicker/DateRange';
 import { useNavigate } from 'react-router-dom';
+import { getInSituMedia, getTweets } from '../../../../store/events/action';
 
 const SearchContainer = () => {
   const dispatch = useDispatch()
