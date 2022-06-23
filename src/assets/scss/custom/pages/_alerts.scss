@@ -26,6 +26,10 @@
   border-radius: 5px;
   box-shadow: 12px 8px 24px -12px rgb(0 0 0 / 30%);
   background-color: #2c2d34;
+  border: solid 1px transparent;
+  &:hover {
+    cursor: pointer;
+  }
 
   .card-title {
     font-size: 0.9375rem;
