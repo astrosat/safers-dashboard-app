@@ -20,19 +20,6 @@ const Report = ({ card, alertId, setSelectedAlert }) => {
       <CardBody className='p-0 m-2'>
         
         <Row className='mt-2'>
-          {/* <Col md={1}>
-            <button
-              type="button"
-              className="btn float-start py-0 px-1"
-              aria-label='report-favorite-button'
-              onClick={(e) => {
-                e.stopPropagation();
-                setFavorite(card.id);
-              }}
-            >
-              <i className={`mdi mdi-star${!card.isFavorite ? '-outline' : ''} card-title`}></i>
-            </button> 
-          </Col> */}
           <Col>
             <Row>
               <Col>
