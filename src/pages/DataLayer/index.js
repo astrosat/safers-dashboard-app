@@ -38,6 +38,19 @@ const DataLayer = ({ t }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showLegend, setShowLegend] = useState(false);
 
+  const filterParentNodes = layers => 
+    layers?.filter(parent => {
+      //select first child until the 'layer' is reached
+      const { source, domain } = parent.children[0].children[0];
+
+      //if both filters are inactive, return all data
+      if(!layerSource && !dataDomain) {
+        return true
+      }
+
+      return source === layerSource || domain === dataDomain;
+    })
+
   const dispatch = useDispatch();
   const timer = useRef(null);
 
@@ -261,7 +274,7 @@ const DataLayer = ({ t }) => {
                       onChange={(e) => setLayerSource(e.target.value)}
                       value={layerSource}
                     >
-                      <option value={null}>Source : All</option>
+                      <option value=''>Source : All</option>
                       {sourceOptions?.map((option) => (
                         <option key={option} value={option}>
                           Data Domain: {option}
@@ -279,7 +292,7 @@ const DataLayer = ({ t }) => {
                       onChange={(e) => setDataDomain(e.target.value)}
                       value={dataDomain}
                     >
-                      <option value={null}>Domain : All</option>
+                      <option value=''>Domain : All</option>
                       {domainOptions?.map((option) => (
                         <option key={option} value={option}>
                           Data Domain: {option}
@@ -320,7 +333,7 @@ const DataLayer = ({ t }) => {
                   zIndex: '100' 
                 }}>
                   <TreeView
-                    data={dataLayers}
+                    data={filterParentNodes(dataLayers)}
                     setCurrentLayer={setCurrentLayer}
                   />
                 </SimpleBar>
