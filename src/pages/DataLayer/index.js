@@ -16,6 +16,7 @@ import Slider from 'react-rangeslider';
 import 'react-rangeslider/lib/index.css'
 import { getBoundingBox } from '../../helpers/mapHelper';
 import SimpleBar from 'simplebar-react';
+import { fetchEndpoint } from '../../helpers/apiHelper';
 
 const SLIDER_SPEED = 800;
 const DataLayer = ({ t }) => {
@@ -30,13 +31,28 @@ const DataLayer = ({ t }) => {
   const [sortByDate, setSortByDate] = useState(undefined);
   const [layerSource, setLayerSource] = useState(undefined);
   const [dataDomain, setDataDomain] = useState(undefined);
+  const [selectOptions, setSelectOptions] = useState({})
   const [sliderValue, setSliderValue] = useState(0);
   const [sliderRangeLimit, setSliderRangeLimit] = useState(0);
   const [sliderChangeComplete, setSliderChangeComplete] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showLegend, setShowLegend] = useState(false);
+
   const dispatch = useDispatch();
   const timer = useRef(null);
+
+  const { sourceOptions, domainOptions } = selectOptions;
+  
+  //fetch data to populate 'Source' and 'Domain' selects
+  useEffect(() => {
+    (async () => {
+      const [sourceOptions, domainOptions] = await Promise.all([
+        fetchEndpoint('/data/layers/sources'), 
+        fetchEndpoint('/data/layers/domains')
+      ])
+      setSelectOptions({ sourceOptions, domainOptions })
+    })()
+  }, [])
 
   useEffect(() => {
     setBoundingBox(
@@ -245,10 +261,12 @@ const DataLayer = ({ t }) => {
                       onChange={(e) => setLayerSource(e.target.value)}
                       value={layerSource}
                     >
-                      <option value={''} >Source : All</option>
-                      <option value={'web'} >Source : Web</option>
-                      <option value={'camera'} >Source : Camera</option>
-                      <option value={'satellite'} >Source : Satellite</option>
+                      <option value={null}>Source : All</option>
+                      {sourceOptions?.map((option) => (
+                        <option key={option} value={option}>
+                          Data Domain: {option}
+                        </option>
+                      )) ?? []}
                     </Input>
                   </Col>
                   <Col xl={4}>
@@ -261,10 +279,12 @@ const DataLayer = ({ t }) => {
                       onChange={(e) => setDataDomain(e.target.value)}
                       value={dataDomain}
                     >
-                      <option value={''} >Data Domain : All</option>
-                      <option value={'fire'} >Data Domain : Fire</option>
-                      <option value={'weather'} >Data Domain : Weather</option>
-                      <option value={'water'} >Data Domain : Water</option>
+                      <option value={null}>Domain : All</option>
+                      {domainOptions?.map((option) => (
+                        <option key={option} value={option}>
+                          Data Domain: {option}
+                        </option>
+                      )) ?? []}
                     </Input>
                   </Col>
                 </Row>
