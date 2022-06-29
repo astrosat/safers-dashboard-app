@@ -38,6 +38,8 @@ const DataLayer = ({ t }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showLegend, setShowLegend] = useState(false);
 
+  const { sourceOptions, domainOptions } = selectOptions;
+
   const filterParentNodes = layers => 
     layers?.filter(parent => {
       //select first child until the 'layer' is reached
@@ -53,8 +55,6 @@ const DataLayer = ({ t }) => {
 
   const dispatch = useDispatch();
   const timer = useRef(null);
-
-  const { sourceOptions, domainOptions } = selectOptions;
   
   //fetch data to populate 'Source' and 'Domain' selects
   useEffect(() => {
