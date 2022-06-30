@@ -25,3 +25,36 @@ export const formatDefaultDate = (date, format='L') => {
 export const formatDate = (date, format='ll') => {
   return moment(date).format(format)
 }
+
+export const getPropertyValue = (nodeObject, matchString) => {
+  const match = nodeObject[matchString];
+  const children = nodeObject?.children;
+  if (match) return match;
+  if (children) {
+    //traditional for-loop to end the loop if valid value returned
+    for (let i = 0; i < children.length; i++) {
+      const targetProperty = children[i][matchString];
+      if (targetProperty) return targetProperty;
+
+      const childrenTargetProperty = getPropertyValue(children[i], matchString);
+      if (childrenTargetProperty) return childrenTargetProperty;
+    }
+  }
+  return null;
+}
+
+export const filterNodesByProperty = (layers, params) => {
+  //params are key/value pairs of target properties and their
+  //values to be searched, such as: { domain: 'Weather' }
+  const paramsEntries = Object.entries(params);
+
+  //if all filters are inactive, return all layers
+  if (paramsEntries.every(([_, value]) => !value)) return layers;
+
+  return layers?.filter((parent) => 
+    paramsEntries.every(([targetProperty, matchValue]) => {
+      const targetValue = getPropertyValue(parent, targetProperty);
+      return Boolean(targetValue === matchValue);
+    })
+  )
+}

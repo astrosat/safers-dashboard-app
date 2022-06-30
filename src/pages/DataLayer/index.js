@@ -40,19 +40,6 @@ const DataLayer = ({ t }) => {
 
   const { sourceOptions, domainOptions } = selectOptions;
 
-  const filterParentNodes = layers => 
-    layers?.filter(parent => {
-      //select first child until the 'layer' is reached
-      const { source, domain } = parent.children[0].children[0];
-
-      //if both filters are inactive, return all data
-      if(!layerSource && !dataDomain) {
-        return true
-      }
-
-      return source === layerSource || domain === dataDomain;
-    })
-
   const dispatch = useDispatch();
   const timer = useRef(null);
   
@@ -277,7 +264,7 @@ const DataLayer = ({ t }) => {
                       <option value=''>Source : All</option>
                       {sourceOptions?.map((option) => (
                         <option key={option} value={option}>
-                          Data Domain: {option}
+                          Source: {option}
                         </option>
                       )) ?? []}
                     </Input>
@@ -333,7 +320,10 @@ const DataLayer = ({ t }) => {
                   zIndex: '100' 
                 }}>
                   <TreeView
-                    data={filterParentNodes(dataLayers)}
+                    data={filterNodes(dataLayers, {
+                      source: layerSource, 
+                      domain: dataDomain
+                    })}
                     setCurrentLayer={setCurrentLayer}
                   />
                 </SimpleBar>
