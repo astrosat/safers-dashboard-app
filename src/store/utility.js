@@ -49,7 +49,7 @@ export const filterNodesByProperty = (layers, params) => {
   const paramsEntries = Object.entries(params);
 
   //if all filters are inactive, return all layers
-  if (paramsEntries.every(([_, value]) => !value)) return layers;
+  if (paramsEntries.every(([key]) => !params[key])) return layers;
 
   return layers?.filter((parent) => 
     paramsEntries.every(([targetProperty, matchValue]) => {

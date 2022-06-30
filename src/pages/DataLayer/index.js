@@ -9,6 +9,7 @@ import BaseMap from '../../components/BaseMap/BaseMap';
 import { getAllDataLayers } from '../../store/appAction';
 
 import TreeView from './TreeView';
+import { filterNodesByProperty } from '../../store/utility';
 
 //i18n
 import { withTranslation } from 'react-i18next'
@@ -320,7 +321,7 @@ const DataLayer = ({ t }) => {
                   zIndex: '100' 
                 }}>
                   <TreeView
-                    data={filterNodes(dataLayers, {
+                    data={filterNodesByProperty(dataLayers, {
                       source: layerSource, 
                       domain: dataDomain
                     })}
