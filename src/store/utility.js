@@ -26,24 +26,27 @@ export const formatDate = (date, format='ll') => {
   return moment(date).format(format)
 }
 
-export const getPropertyValue = (nodeObject, matchString) => {
-  const match = nodeObject[matchString];
-  const children = nodeObject?.children;
+export const getPropertyValue = (searchObject = {}, targetProperty) => {
+  const match = searchObject[targetProperty];
+  const children = searchObject?.children;
   if (match) return match;
   if (children) {
     //traditional for-loop to end the loop if valid value returned
     for (let i = 0; i < children.length; i++) {
-      const targetProperty = children[i][matchString];
-      if (targetProperty) return targetProperty;
+      const nestedTargetProperty = children[i][targetProperty];
+      if (nestedTargetProperty) return nestedTargetProperty;
 
-      const childrenTargetProperty = getPropertyValue(children[i], matchString);
+      const childrenTargetProperty = getPropertyValue(
+        children[i], 
+        targetProperty
+      );
       if (childrenTargetProperty) return childrenTargetProperty;
     }
   }
   return null;
 }
 
-export const filterNodesByProperty = (layers, params) => {
+export const filterNodesByProperty = (layers, params = {}) => {
   //params are key/value pairs of target properties and their
   //values to be searched, such as: { domain: 'Weather' }
   const paramsEntries = Object.entries(params);
@@ -53,8 +56,11 @@ export const filterNodesByProperty = (layers, params) => {
 
   return layers?.filter((parent) => 
     paramsEntries.every(([targetProperty, matchValue]) => {
-      const targetValue = getPropertyValue(parent, targetProperty);
-      return Boolean(targetValue === matchValue);
+      //if some filters are inactive, ignore, as that means they're not applied
+      if (!matchValue) return true;
+
+      const targetPropertyValue = getPropertyValue(parent, targetProperty);
+      return targetPropertyValue === matchValue;
     })
   )
 }

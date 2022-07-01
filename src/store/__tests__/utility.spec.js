@@ -26,6 +26,7 @@ describe('Utilities', () => {
       const result2 = getPropertyValue(testParentNode, 'domain');
       expect(result2).toEqual('test-domain-1');
     })
+
     test('returns null if no target property is found', () => {
       const result = getPropertyValue(
         { children: [{ key1: 'test-child' }] }, 
@@ -33,8 +34,14 @@ describe('Utilities', () => {
       )
       expect(result).toBeNull();
     })
+
     test('returns null if no target property or children are found', () => {
       const result = getPropertyValue({})
+      expect(result).toBeNull();
+    })
+
+    test('returns null if no nodeObject found', () => {
+      const result = getPropertyValue(undefined, 'source')
       expect(result).toBeNull();
     })
   })
@@ -71,14 +78,17 @@ describe('Utilities', () => {
     })
 
     test('matches on single active filter', () => {
-      const result1 = filterNodesByProperty(testLayers, {source: 'test-source-1'});
-      expect(result1).toHaveLength(1);
+      const result1 = filterNodesByProperty(
+        testLayers, 
+        {source: undefined, domain: 'test-domain-1'}
+      );
+      expect(result1).toHaveLength(2);
 
       const result2 = filterNodesByProperty(
         testLayers, 
-        {source: 'test-source-2'},
+        {domain: '', source: 'test-source-1'},
       );
-      expect(result2).toHaveLength(2);
+      expect(result2).toHaveLength(1);
     })
 
     test('matches on all active filters', () => {
@@ -87,6 +97,22 @@ describe('Utilities', () => {
         {source:'test-source-2', domain: 'test-domain-1'},
       );
       expect(result).toHaveLength(1);
+    })
+
+    test('returns undefined if no layers found', () => {
+      const result = filterNodesByProperty(
+        undefined, 
+        {source:'test-source-2', domain: 'test-domain-1'},
+      );
+      expect(result).toBeUndefined();
+    })
+
+    test('returns all data if no params found', () => {
+      const result = filterNodesByProperty(
+        testLayers, 
+        undefined,
+      );
+      expect(result).toHaveLength(3);
     })
   })
 })
