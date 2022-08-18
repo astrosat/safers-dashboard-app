@@ -1,13 +1,15 @@
 import { FlyToInterpolator, IconLayer } from 'deck.gl';
 import { PolygonLayer } from '@deck.gl/layers';
-import firePin from '../assets/images/atoms-general-icon-fire-drop.png'
-import locationPin from '../assets/images/map/map.png';
+//import firePin from '../assets/images/atoms-general-icon-fire-drop.png'
+import firePin from '../assets/images/mappins/flame3.png'
+//import locationPin from '../assets/images/map/map.png';
+import locationPin from '../assets/images/mappins/flag3.png';
 import { MAP_TYPES } from '../constants/common';
 
 const EARTH_CIR_METERS = 40075016.686;
 const DEGREES_PER_METER = 360 / EARTH_CIR_METERS;
 const ICON_MAPPING = {
-  marker: { x: 0, y: 0, width: 100, height: 100, mask: true }
+  marker: { x: 0, y: 0, xoffset:72, yoffset:0, width: 72, height: 72, mask: true }
 };
 
 const ORANGE = [226, 123, 29];
