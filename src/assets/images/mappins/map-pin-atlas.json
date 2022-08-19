@@ -1,0 +1,149 @@
+{
+  "flame-red": {
+    "x": 0,
+    "y": 0,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "people-red": {
+    "x": 132,
+    "y": 0,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "twitter-red": {
+    "x": 198,
+    "y": 0,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "report-red": {
+    "x": 168,
+    "y": 0,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "notification-red": {
+    "x": 264,
+    "y": 0,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "target-red": {
+    "x": 330,
+    "y": 0,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "flag-red": {
+    "x": 396,
+    "y": 0,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "flame-gray": {
+    "x": 0,
+    "y": 66,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "people-gray": {
+    "x": 132,
+    "y": 66,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "twitter-gray": {
+    "x": 198,
+    "y": 66,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "report-gray": {
+    "x": 168,
+    "y": 66,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "notification-gray": {
+    "x": 264,
+    "y": 66,
+    "width": 65,
+    "height": 65,
+    "mask": false
+  },
+  "target-gray": {
+    "x": 330,
+    "y": 66,
+    "width": 65,
+    "height": 65,
+    "mask": false
+  },
+  "flag-gray": {
+    "x": 396,
+    "y": 66,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "flame-orange": {
+    "x": 0,
+    "y": 132,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "people-orange": {
+    "x": 132,
+    "y": 132,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "twitter-orange": {
+    "x": 198,
+    "y": 132,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "report-orange": {
+    "x": 168,
+    "y": 132,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "notification-orange": {
+    "x": 264,
+    "y": 132,
+    "width": 65,
+    "height": 65,
+    "mask": false
+  },
+  "target-orange": {
+    "x": 330,
+    "y": 132,
+    "width": 65,
+    "height": 65,
+    "mask": false
+  },
+  "flag-orange": {
+    "x": 396,
+    "y": 132,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  }
+}
