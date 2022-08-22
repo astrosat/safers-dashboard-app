@@ -30,8 +30,8 @@ const SortSection = ({ t, status, activity, sortOrder, setStatus, setActivity, s
             onChange={(e) => setSortOrder(e.target.value)}
             value={sortOrder}
           >
-            <option value={'-date'} >{t('Sort By')} : {t('Date')} {t('desc')}</option>
-            <option value={'date'} >{t('Sort By')} : {t('Date')} {t('asc')}</option>
+            <option value={'desc'} >{t('Sort By')} : {t('Date')} {t('desc')}</option>
+            <option value={'asc'} >{t('Sort By')} : {t('Date')} {t('asc')}</option>
           </Input>
         </Col>
         <Col xl={4} className='my-1'>
@@ -47,7 +47,9 @@ const SortSection = ({ t, status, activity, sortOrder, setStatus, setActivity, s
           >
             <option value={''} >--Status--</option>
             <option value="Active" >{t('Active').toUpperCase()}</option>
-            <option value="Inactive" >{t('Inactive').toUpperCase()}</option>
+            <option value="Off" >{t('Off').toUpperCase()}</option>
+            <option value="Ready" >{t('Ready').toUpperCase()}</option>
+            <option value="Moving" >{t('Moving').toUpperCase()}</option>
           </Input>
         </Col>
         <Col xl={4} className='my-1'>
@@ -62,8 +64,9 @@ const SortSection = ({ t, status, activity, sortOrder, setStatus, setActivity, s
             data-testid='activity'
           >
             <option value={''} >--Activity--</option>
-            <option value="Online" >{t('Online').toUpperCase()}</option>
-            <option value="Offline" >{t('Offline').toUpperCase()}</option>
+            {'<!-- To be decided when Activity API has a data structure -->'}
+            <option value="Surveillance" >{t('Surveillance').toUpperCase()}</option>
+            <option value="Search and rescue" >{t('Search and rescue').toUpperCase()}</option>
           </Input>
         </Col>
       </Row>

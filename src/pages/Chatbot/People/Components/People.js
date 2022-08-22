@@ -8,7 +8,7 @@ const People = ({ card, peopleId, setSelectedPeople/*, setFavorite*/ }) => {
 
   const { t } = useTranslation();
 
-  const isSelected = card.people_id === peopleId
+  const isSelected = card.id === peopleId
 
   const getBadge = () => {    
     return (
@@ -22,7 +22,7 @@ const People = ({ card, peopleId, setSelectedPeople/*, setFavorite*/ }) => {
 
   return (
     <Card
-      onClick={() => setSelectedPeople(!isSelected ? card.people_id : null)}
+      onClick={() => setSelectedPeople(!isSelected ? card.id : null)}
       className={'alerts-card mb-2 ' + (isSelected ? 'alert-card-active' : '')}>
       <CardBody className='p-0 m-2'>
         <Row className='mt-2'>

@@ -18,26 +18,27 @@ const App = () => {
   }, []);
 
   return (
-    <React.Fragment>
-      <PreLoader isLoading={isLoading} loadingMsg={loadingMsg} />
-      <Routes>
-        {publicRoutes.map((route, idx) => (
-          <Route key={idx} path={route.path} element={<route.component />} />
-        ))}
-        {privateRoutes.map((route, idx) => (
-          <Route key={idx} path={route.path} element=
-            {
-              <Authmiddleware
-                path={route.path}
-                component={route.component}
-                isAuthProtected={true}
-                exact
-              />
-            }
-          />
-        ))}
-      </Routes>
-    </React.Fragment>)
+    config ? 
+      <React.Fragment>
+        <PreLoader isLoading={isLoading} loadingMsg={loadingMsg} />
+        <Routes>
+          {publicRoutes.map((route, idx) => (
+            <Route key={idx} path={route.path} element={<route.component />} />
+          ))}
+          {privateRoutes.map((route, idx) => (
+            <Route key={idx} path={route.path} element=
+              {
+                <Authmiddleware
+                  path={route.path}
+                  component={route.component}
+                  isAuthProtected={true}
+                  exact
+                />
+              }
+            />
+          ))}
+        </Routes>
+      </React.Fragment> : null);
 };
 
 

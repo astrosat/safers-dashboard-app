@@ -10,7 +10,7 @@ import People from './People';
 const MAP_TYPE = 'people';
 
 const PeopleList = ({ peopleId, currentZoomLevel, setViewState, setPeopleId, setIconLayer }) => {
-  const { allPeople: OrgPeopleList, filteredPeople } = useSelector(state => {console.log(state); return state.people});
+  const { allPeople: OrgPeopleList, filteredPeople } = useSelector(state => { return state.people });
   const [pageData, setPageData] = useState([]);
 
   const allPeople = filteredPeople || OrgPeopleList;
@@ -19,7 +19,7 @@ const PeopleList = ({ peopleId, currentZoomLevel, setViewState, setPeopleId, set
     if (people_id) {
       setPeopleId(people_id);
       let peopleList = _.cloneDeep(allPeople);
-      let selectedPeople = _.find(peopleList, { people_id });
+      let selectedPeople = _.find(peopleList, { id:people_id });
       selectedPeople.isSelected = true;
       setIconLayer(getIconLayer(peopleList, MAP_TYPE));
       setViewState(getViewState(selectedPeople.location, currentZoomLevel))
@@ -40,7 +40,7 @@ const PeopleList = ({ peopleId, currentZoomLevel, setViewState, setPeopleId, set
         {
           pageData.map((people) =>
             <People
-              key={people.people_id}
+              key={people.id}
               card={people}
               peopleId={peopleId}
               setSelectedPeople={setSelectedPeople}
