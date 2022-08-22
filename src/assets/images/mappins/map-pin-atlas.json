@@ -1,146 +1,167 @@
 {
-  "flame-red": {
+  "flame-primary": {
     "x": 0,
     "y": 0,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "people-red": {
+  "people-primary": {
+    "x": 66,
+    "y": 0,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "twitter-primary": {
     "x": 132,
     "y": 0,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "twitter-red": {
+  "report-primary": {
     "x": 198,
     "y": 0,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "report-red": {
-    "x": 168,
-    "y": 0,
-    "width": 65,
-    "height": 66,
-    "mask": false
-  },
-  "notification-red": {
+  "notification-primary": {
     "x": 264,
     "y": 0,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "target-red": {
+  "target-primary": {
     "x": 330,
     "y": 0,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "flag-red": {
+  "flag-primary": {
     "x": 396,
     "y": 0,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "flame-gray": {
+  "camera-primary": {
+    "x": 462,
+    "y": 0,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "flame-secondary": {
     "x": 0,
     "y": 66,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "people-gray": {
+  "people-secondary": {
+    "x": 66,
+    "y": 66,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "twitter-secondary": {
     "x": 132,
     "y": 66,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "twitter-gray": {
+  "report-secondary": {
     "x": 198,
     "y": 66,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "report-gray": {
-    "x": 168,
+  "notification-secondary": {
+    "x": 264,
     "y": 66,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "notification-gray": {
-    "x": 264,
-    "y": 66,
-    "width": 65,
-    "height": 65,
-    "mask": false
-  },
-  "target-gray": {
+  "target-secondary": {
     "x": 330,
     "y": 66,
     "width": 65,
-    "height": 65,
+    "height": 66,
     "mask": false
   },
-  "flag-gray": {
+  "flag-secondary": {
     "x": 396,
     "y": 66,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "flame-orange": {
+  "camera-secondary": {
+    "x": 462,
+    "y": 66,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "flame-active": {
     "x": 0,
     "y": 132,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "people-orange": {
+  "people-active": {
+    "x": 66,
+    "y": 132,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "twitter-active": {
     "x": 132,
     "y": 132,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "twitter-orange": {
+  "report-active": {
     "x": 198,
     "y": 132,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "report-orange": {
-    "x": 168,
+  "notification-active": {
+    "x": 264,
     "y": 132,
     "width": 65,
     "height": 66,
     "mask": false
   },
-  "notification-orange": {
-    "x": 264,
-    "y": 132,
-    "width": 65,
-    "height": 65,
-    "mask": false
-  },
-  "target-orange": {
+  "target-active": {
     "x": 330,
     "y": 132,
     "width": 65,
-    "height": 65,
+    "height": 66,
     "mask": false
   },
-  "flag-orange": {
+  "flag-active": {
     "x": 396,
+    "y": 132,
+    "width": 65,
+    "height": 66,
+    "mask": false
+  },
+  "camera-active": {
+    "x": 462,
     "y": 132,
     "width": 65,
     "height": 66,

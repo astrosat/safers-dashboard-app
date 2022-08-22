@@ -1,9 +1,5 @@
 import { FlyToInterpolator, IconLayer } from 'deck.gl';
 import { PolygonLayer } from '@deck.gl/layers';
-//import firePin from '../assets/images/atoms-general-icon-fire-drop.png'
-//import firePin from '../assets/images/mappins/flame3.png'
-//import locationPin from '../assets/images/map/map.png';
-//import locationPin from '../assets/images/mappins/flag3.png';
 import { MAP_TYPES } from '../constants/common';
 
 import spritesheet from '../assets/images/mappins/icons-safers-pins-simple.svg'
@@ -11,14 +7,6 @@ import iconMapping from '../assets/images/mappins/map-pin-atlas.json';
 
 const EARTH_CIR_METERS = 40075016.686;
 const DEGREES_PER_METER = 360 / EARTH_CIR_METERS;
-// const ICON_MAPPING = {
-//   marker: { x: 0, y: 0, xoffset:72, yoffset:0, width: 72, height: 72, mask: true }
-// }; 
-
-// const ORANGE = [226, 123, 29];
-// const GRAY = [128, 128, 128];
-// const RED = [230, 51, 79];
-// const DARK_GRAY = [57, 58, 58];
 
 export const getViewState = (midPoint, zoomLevel = 4, selectedAlert, setHoverInfoRef = () => { }, setViewStateChangeRef = () => { }) => {
   return {
@@ -55,11 +43,50 @@ export const getPolygonLayer = (aoi) => {
     lineWidthMinPixels: 1,
     opacity: .25,
     getPolygon: d => d,
-    // getElevation: () => 10,
     getFillColor: [192, 105, 25],
     getLineColor: [0, 0, 0],
     getLineWidth: 100
   }))
+}
+
+const getIconFromContext = (mapType, feature) => {
+  // return spritesheet icon name from type of map and feature
+  // this maps into the name of a marker in the spritesheet json file
+  let prefix = '';
+  switch (mapType) {
+  case MAP_TYPES.ALERTS:
+    prefix = 'flame';
+    break;
+  case MAP_TYPES.CHATBOT_PEOPLE:
+    prefix = 'people';
+    break;
+  case MAP_TYPES.CHATBOT_COMMS:
+    prefix = 'notification';
+    break;
+  case MAP_TYPES.CHATBOT_REPORTS:
+  case MAP_TYPES.REPORTS:
+    prefix = 'report';
+    break;
+  case MAP_TYPES.IN_SITU:
+    prefix = 'camera';
+    break;
+  default:
+    prefix = 'flame';
+    break;
+  }
+  let suffix = 'primary';
+  switch (mapType) {
+  case MAP_TYPES.IN_SITU:
+  case MAP_TYPES.REPORTS:
+  case MAP_TYPES.CHATBOT_REPORTS:
+    suffix = feature.isSelected ? 'active' : 'primary';
+    break;
+  default:
+    suffix = feature.isSelected ? 'active' : feature.status == 'CLOSED' ? 'secondary' : 'primary';
+    break;
+  }
+  console.log(`Icon is ${prefix}-${suffix}`)
+  return `${prefix}-${suffix}`;
 }
 
 export const getIconLayer = (alerts, mapType = MAP_TYPES.alerts) => {
@@ -84,7 +111,7 @@ export const getIconLayer = (alerts, mapType = MAP_TYPES.alerts) => {
     id: 'icon',
     getIcon: (feature) => {
       console.log('feature', feature);
-      return 'target-orange';
+      return getIconFromContext(mapType, feature);
     },
     // getColor: d => {
     //   switch (mapType) {
