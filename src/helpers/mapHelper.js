@@ -57,6 +57,9 @@ const getIconFromContext = (mapType, feature) => {
   case MAP_TYPES.ALERTS:
     prefix = 'flame';
     break;
+  case MAP_TYPES.CHATBOT_MISSIONS:
+    prefix = 'target';
+    break;
   case MAP_TYPES.CHATBOT_PEOPLE:
     prefix = 'people';
     break;

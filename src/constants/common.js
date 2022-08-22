@@ -5,6 +5,6 @@ export const MAP_TYPES = {
   IN_SITU: 'in-situ',
   CHATBOT_PEOPLE: 'people',
   CHATBOT_COMMS: 'comms',
-  CHATBOT_MISSIONS: 'mission',
+  CHATBOT_MISSIONS: 'missions',
   CHATBOT_REPORTS: 'reports'
 }

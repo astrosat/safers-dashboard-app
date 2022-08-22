@@ -21,6 +21,7 @@ import 'rc-pagination/assets/index.css';
 import { getBoundingBox, getViewState } from '../../helpers/mapHelper';
 import SearchButton from '../../components/SearchButton';
 import { getIconLayer } from '../../helpers/mapHelper';
+import { MAP_TYPES } from '../../constants/common';
 
 
 const PAGE_SIZE = 4;
@@ -86,7 +87,7 @@ const FireAlerts = ({ t }) => {
 
   useEffect(() => {
     setAlertId(undefined);
-    setIconLayer(getIconLayer(filteredAlerts));
+    setIconLayer(getIconLayer(filteredAlerts, MAP_TYPES.ALERTS));
     if (!viewState) {
       setViewState(getViewState(defaultAoi.features[0].properties.midPoint, defaultAoi.features[0].properties.zoomLevel));
     }
@@ -135,7 +136,7 @@ const FireAlerts = ({ t }) => {
 
   const updatePage = page => {
     setAlertId(undefined);
-    setIconLayer(getIconLayer(filteredAlerts));
+    setIconLayer(getIconLayer(filteredAlerts, MAP_TYPES.ALERTS));
     setCurrentPage(page);
     const to = PAGE_SIZE * page;
     const from = to - PAGE_SIZE;
@@ -172,10 +173,10 @@ const FireAlerts = ({ t }) => {
         setViewState(getViewState(selectedAlert.center, currentZoomLevel, selectedAlert, setHoverInfo, setIsViewStateChanged))
         : setHoverInfo({ object: selectedAlert, coordinate: selectedAlert.center });
       setAlertId(id);
-      setIconLayer(getIconLayer(clonedAlerts));
+      setIconLayer(getIconLayer(clonedAlerts, MAP_TYPES.ALERTS));
     } else {
       setAlertId(undefined);
-      setIconLayer(getIconLayer(filteredAlerts));
+      setIconLayer(getIconLayer(filteredAlerts, MAP_TYPES.ALERTS));
     }
   }
 
