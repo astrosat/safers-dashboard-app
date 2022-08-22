@@ -67,7 +67,7 @@ const Missions = () => {
 
   useEffect(() => {
     if (allMissions.length > 0) {
-      setIconLayer(getIconLayer(allMissions, MAP_TYPES.MISSIONS));
+      setIconLayer(getIconLayer(allMissions, MAP_TYPES.CHATBOT_MISSIONS));
       if (!viewState) {
         setViewState(getViewState(defaultAoi.features[0].properties.midPoint, defaultAoi.features[0].properties.zoomLevel))
       }

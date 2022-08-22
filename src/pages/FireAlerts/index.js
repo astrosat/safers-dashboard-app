@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Button, Input, Card } from 'reactstrap';
-import { IconLayer } from 'deck.gl';
+//import { IconLayer } from 'deck.gl';
 import _ from 'lodash';
 import Pagination from 'rc-pagination';
 import toastr from 'toastr';
@@ -15,16 +15,18 @@ import Alert from './Alert';
 import Tooltip from './Tooltip';
 import { SET_FAV_ALERT_SUCCESS } from '../../store/alerts/types'
 
-import firePin from '../../assets/images/atoms-general-icon-fire-drop.png'
+//import firePin from '../../assets/images/atoms-general-icon-fire-drop.png'
 import 'toastr/build/toastr.min.css'
 import 'rc-pagination/assets/index.css';
 import { getBoundingBox, getViewState } from '../../helpers/mapHelper';
 import SearchButton from '../../components/SearchButton';
+import { getIconLayer } from '../../helpers/mapHelper';
+
 
 const PAGE_SIZE = 4;
-const ICON_MAPPING = {
-  marker: { x: 0, y: 0, width: 100, height: 100, mask: true }
-};
+// const ICON_MAPPING = {
+//   marker: { x: 0, y: 0, width: 100, height: 100, mask: true }
+// };
 
 const FireAlerts = ({ t }) => {
   const defaultAoi = useSelector(state => state.user.defaultAoi);
@@ -177,22 +179,22 @@ const FireAlerts = ({ t }) => {
     }
   }
 
-  const getIconLayer = (alerts) => {
-    return (new IconLayer({
-      data: alerts,
-      pickable: true,
-      getPosition: d => d.center,
-      iconAtlas: firePin,
-      iconMapping: ICON_MAPPING,
-      // onHover: !hoverInfo.objects && setHoverInfo,
-      id: 'icon',
-      getIcon: () => 'marker',
-      getColor: d => { return (d.isSelected ? [226, 123, 29] : [230, 51, 79]) },
-      sizeMinPixels: 80,
-      sizeMaxPixels: 100,
-      sizeScale: 0.5,
-    }))
-  }
+  // const getIconLayer = (alerts) => {
+  //   return (new IconLayer({
+  //     data: alerts,
+  //     pickable: true,
+  //     getPosition: d => d.center,
+  //     iconAtlas: firePin,
+  //     iconMapping: ICON_MAPPING,
+  //     // onHover: !hoverInfo.objects && setHoverInfo,
+  //     id: 'icon',
+  //     getIcon: () => 'marker',
+  //     getColor: d => { return (d.isSelected ? [226, 123, 29] : [230, 51, 79]) },
+  //     sizeMinPixels: 80,
+  //     sizeMaxPixels: 100,
+  //     sizeScale: 0.5,
+  //   }))
+  // }
 
   const handleResetAOI = useCallback(() => {
     setBoundingBox(undefined);

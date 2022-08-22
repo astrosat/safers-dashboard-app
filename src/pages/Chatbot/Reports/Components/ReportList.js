@@ -7,8 +7,8 @@ import { getIconLayer, getViewState } from '../../../../helpers/mapHelper';
 import PaginationWrapper from '../../../../components/Pagination';
 import { setFavorite } from '../../../../store/reports/action';
 import Report from './Report';
+import { MAP_TYPES } from '../../../../constants/common';
 
-const MAP_TYPE = 'reports';
 
 const ReportList = ({ reportId, currentZoomLevel, setViewState, setReportId, setIconLayer }) => {
   const { allReports: OrgReportList, filteredReports } = useSelector(state => state.reports);
@@ -31,16 +31,16 @@ const ReportList = ({ reportId, currentZoomLevel, setViewState, setReportId, set
       let reportList = _.cloneDeep(allReports);
       let selectedReport = _.find(reportList, { report_id });
       selectedReport.isSelected = true;
-      setIconLayer(getIconLayer(reportList, MAP_TYPE));
+      setIconLayer(getIconLayer(reportList, MAP_TYPES.CHATBOT_REPORTS));
       setViewState(getViewState(selectedReport.location, currentZoomLevel))
     } else {
       setReportId(undefined);
-      setIconLayer(getIconLayer(allReports, MAP_TYPE));
+      setIconLayer(getIconLayer(allReports, MAP_TYPES.CHATBOT_REPORTS));
     }
   }
   const updatePage = data => {
     setReportId(undefined);
-    setIconLayer(getIconLayer(data, MAP_TYPE));
+    setIconLayer(getIconLayer(data, MAP_TYPES.CHATBOT_REPORTS));
     setPageData(data);
   };
 

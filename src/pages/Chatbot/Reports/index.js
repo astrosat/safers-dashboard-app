@@ -65,7 +65,7 @@ const Reports = () => {
 
   useEffect(() => {
     if (allReports.length > 0) {
-      setIconLayer(getIconLayer(allReports, MAP_TYPES.REPORTS));
+      setIconLayer(getIconLayer(allReports, MAP_TYPES.CHATBOT_REPORTS));
       if (!viewState) {
         setViewState(getViewState(defaultAoi.features[0].properties.midPoint, defaultAoi.features[0].properties.zoomLevel))
       }

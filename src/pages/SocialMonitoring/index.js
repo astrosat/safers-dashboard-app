@@ -8,9 +8,10 @@ import BaseMap from '../../components/BaseMap/BaseMap';
 import TwitterContainer from './TwitterContainer';
 import { getStats, getTweets, } from '../../store/appAction';
 import { formatNumber } from '../../store/utility';
-import IconClusterLayer from './IconClusterLayer';
-import iconMapping from '../../constants/location-icon-mapping.json';
-import iconAtlas from '../../assets/images/location-icon-atlas.png';
+// import IconClusterLayer from './IconClusterLayer';
+// import iconMapping from '../../constants/location-icon-mapping.json';
+// import iconAtlas from '../../assets/images/location-icon-atlas.png';
+import { getIconLayer } from '../../helpers/mapHelper';
 
 //i18n
 import { withTranslation } from 'react-i18next'
@@ -65,17 +66,17 @@ const SocialMonitoring = ({t}) => {
     };
   }
 
-  const getIconLayer = (data) => {
-    return (new IconClusterLayer({
-      id: 'icon-cluster',
-      sizeScale: 40,
-      data,
-      pickable: true,
-      getPosition: d => d.coordinates,
-      iconAtlas,
-      iconMapping,
-    }))
-  }
+  // const getIconLayer = (data) => {
+  //   return (new IconClusterLayer({
+  //     id: 'icon-cluster',
+  //     sizeScale: 40,
+  //     data,
+  //     pickable: true,
+  //     getPosition: d => d.coordinates,
+  //     iconAtlas,
+  //     iconMapping,
+  //   }))
+  // }
 
   return (
     <div className='page-content'>

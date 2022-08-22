@@ -77,7 +77,7 @@ const People = () => {
 
   useEffect(() => {
     if (allPeople.length > 0) {
-      setIconLayer(getIconLayer(allPeople, MAP_TYPES.PEOPLE));
+      setIconLayer(getIconLayer(allPeople, MAP_TYPES.CHATBOT_PEOPLE));
       if (!viewState) {
         setViewState(getViewState(defaultAoi.features[0].properties.midPoint, defaultAoi.features[0].properties.zoomLevel))
       }

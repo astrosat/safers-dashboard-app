@@ -6,8 +6,7 @@ import { Row } from 'reactstrap';
 import { getIconLayer, getViewState } from '../../../../helpers/mapHelper';
 import PaginationWrapper from '../../../../components/Pagination';
 import People from './People';
-
-const MAP_TYPE = 'people';
+import { MAP_TYPES } from '../../../../constants/common';
 
 const PeopleList = ({ peopleId, currentZoomLevel, setViewState, setPeopleId, setIconLayer }) => {
   const { allPeople: OrgPeopleList, filteredPeople } = useSelector(state => { return state.people });
@@ -21,16 +20,16 @@ const PeopleList = ({ peopleId, currentZoomLevel, setViewState, setPeopleId, set
       let peopleList = _.cloneDeep(allPeople);
       let selectedPeople = _.find(peopleList, { id:people_id });
       selectedPeople.isSelected = true;
-      setIconLayer(getIconLayer(peopleList, MAP_TYPE));
+      setIconLayer(getIconLayer(peopleList, MAP_TYPES.CHATBOT_PEOPLE));
       setViewState(getViewState(selectedPeople.location, currentZoomLevel))
     } else {
       setPeopleId(undefined);
-      setIconLayer(getIconLayer(allPeople, MAP_TYPE));
+      setIconLayer(getIconLayer(allPeople, MAP_TYPES.CHATBOT_PEOPLE));
     }
   }
   const updatePage = data => {
     setPeopleId(undefined);
-    setIconLayer(getIconLayer(data, MAP_TYPE));
+    setIconLayer(getIconLayer(data, MAP_TYPES.CHATBOT_PEOPLE));
     setPageData(data);
   };
 
