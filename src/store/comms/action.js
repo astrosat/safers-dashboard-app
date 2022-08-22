@@ -2,20 +2,19 @@ import * as actionTypes from './types';
 import { endpoints } from '../../api/endpoints';
 import * as api from '../../api/base';
 
-export const getAllComms = (options) => async (dispatch) => {
-  //To Do - remove this and use api.get when actual APIs are ready
-  const custOption = {...options, baseURL: 'https://safers-dashboard-mock.herokuapp.com/api/',}
-  const response = await api.getCustom(endpoints.chatbot.comms.getAll, custOption);
+export const getAllComms = (options, feFilters) => async (dispatch) => {
+  const response = await api.get(endpoints.chatbot.comms.getAll, options);
   if (response.status === 200) {
-    return dispatch(getCommsSuccess(response.data));
+    return dispatch(getCommsSuccess(response.data, feFilters));
   }
   else
     return dispatch(getCommsFail(response.error));
 };
-const getCommsSuccess = (alerts) => {
+const getCommsSuccess = (alerts, feFilters) => {
   return {
     type: actionTypes.GET_COMMS_SUCCESS,
-    payload: alerts
+    payload: alerts,
+    feFilters
   };
 };
 const getCommsFail = (error) => {

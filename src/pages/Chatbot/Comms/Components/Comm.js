@@ -5,22 +5,22 @@ import { formatDate } from '../../../../store/utility';
 
 import { useTranslation } from 'react-i18next';
 
-const Comm = ({ card, reportId, setSelectedComm }) => {
+const Comm = ({ card, commID, setSelectedComm }) => {
 
   const { t } = useTranslation();
   const [seeMore, setSeeMore] = useState(true);
   const TAG_ONGOING = 'ONGOING';
   const TAG_PUBLIC = 'Public';
 
-  const isSelected = card.mission_id === reportId
+  const isSelected = card.id === commID
 
   const getMsg = (msg) => {
     if(seeMore){
       return (
-        <>{msg.substr(0, 80)}... <a href="javascript:void(0)" onClick={() => {setSeeMore(false)}}>See more</a></>
+        <>{msg.substr(0, 100)}... <span className="user-select-auto text-primary" onClick={() => {setSeeMore(false)}}>See more</span></>
       )
     }
-    return <>{msg} <a href="javascript:void(0)" onClick={() => {setSeeMore(true)}}>See less</a></>;
+    return <>{msg} <span className="user-select-auto text-primary" onClick={() => {setSeeMore(true)}}>See less</span></>;
   }
 
   const getBadge = () => {
@@ -43,7 +43,7 @@ const Comm = ({ card, reportId, setSelectedComm }) => {
 
   return (
     <Card
-      onClick={() => setSelectedComm(!isSelected ? card.mission_id : null)}
+      onClick={() => setSelectedComm(!isSelected ? card.id : null)}
       className={'alerts-card mb-2 ' + (isSelected ? 'alert-card-active' : '')}>
       <CardBody className='py-2 px-0 m-2'>
         {getBadge()}
@@ -60,7 +60,7 @@ const Comm = ({ card, reportId, setSelectedComm }) => {
             <Row className='mt-0 mb-1'>
               <Col>
                 <p className="text-muted no-wrap">
-                  {t('Assigned to', { ns: 'chatBot' })}: {(card.assignedTo.organization)}/{(card.assignedTo.organization)}/{(card.assignedTo.name)}
+                  {t('Assigned to', { ns: 'chatBot' })}: To Do
                 </p>
                 <CardText>
                   {t('Message', { ns: 'common' })}: {getMsg(card.message)}
@@ -77,7 +77,7 @@ const Comm = ({ card, reportId, setSelectedComm }) => {
 
 Comm.propTypes = {
   card: PropTypes.any,
-  reportId: PropTypes.string,
+  commID: PropTypes.string,
   setSelectedComm: PropTypes.func,
   setFavorite: PropTypes.func,
 }

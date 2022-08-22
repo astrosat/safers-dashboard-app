@@ -2,14 +2,13 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Button } from 'reactstrap';
 import toastr from 'toastr';
-import _ from 'lodash';
 
 import 'toastr/build/toastr.min.css'
 import 'rc-pagination/assets/index.css';
 import SortSection from './Components/SortSection';
 import MapSection from './Components/Map';
 import PeopleList from './Components/PeopleList';
-import { getAllPeople, resetPeopleResponseState, setFilters } from '../../../store/people/action';
+import { getAllPeople, resetPeopleResponseState } from '../../../store/people/action';
 import { getBoundingBox, getIconLayer, getViewState } from '../../../helpers/mapHelper';
 
 import { useTranslation } from 'react-i18next';
@@ -27,8 +26,8 @@ const People = () => {
   const [peopleId, setPeopleId] = useState(undefined);
   const [viewState, setViewState] = useState(undefined);
   const [iconLayer, setIconLayer] = useState(undefined);
-  const [sortOrder, setSortOrder] = useState('asc');
-  const [status, setStatus] = useState(undefined);
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [status, setStatus] = useState('');
   const [activity, setActivity] = useState('');
   const [midPoint, setMidPoint] = useState([]);
   const [boundingBox, setBoundingBox] = useState(undefined);
@@ -45,27 +44,18 @@ const People = () => {
 
     setPeopleId(undefined);
     const peopleParams = {
-      order: sortOrder,
-      status: status ? status : undefined,
       bbox: boundingBox?.toString(),
       default_date: false,
       default_bbox: !boundingBox,
-      activity: activity == '' ? undefined : activity,
       ...dateRangeParams
     };
-    dispatch(getAllPeople(peopleParams));
-  }, [dateRange, status, boundingBox])
-
-  useEffect(() => {
-    if(orgPplList.length > 0) {
-      let actFiltered = [...orgPplList];
-      if(activity !== ''){
-        actFiltered = actFiltered.filter((person) => person.activity == activity);
-      }
-      actFiltered = _.orderBy(actFiltered , [(o) => new Date(o.timestamp)], [sortOrder]);
-      dispatch(setFilters(actFiltered));
+    const feFilters = {      
+      activity,
+      status,
+      sortOrder
     }
-  }, [activity, sortOrder])
+    dispatch(getAllPeople(peopleParams, feFilters));
+  }, [dateRange, boundingBox])
 
   useEffect(() => {
     if (success?.detail) {

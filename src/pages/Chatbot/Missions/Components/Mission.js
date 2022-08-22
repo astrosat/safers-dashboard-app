@@ -13,7 +13,7 @@ const Mission = ({ card, missionId, setSelectedMission/*, setFavorite*/ }) => {
   const navigate = useNavigate();
   const [seeMore, setSeeMore] = useState(true);
 
-  const isSelected = card.mission_id === missionId;
+  const isSelected = card.id === missionId;
 
   const getMsg = (msg) => {
     if(seeMore){
@@ -39,7 +39,7 @@ const Mission = ({ card, missionId, setSelectedMission/*, setFavorite*/ }) => {
 
   return (
     <Card
-      onClick={() => setSelectedMission(!isSelected ? card.mission_id : null)}
+      onClick={() => setSelectedMission(!isSelected ? card.id : null)}
       className={'alerts-card mb-2 ' + (isSelected ? 'alert-card-active' : '')}>
       <CardBody className='p-0 m-2'>
         <Row className='mt-2'>
@@ -58,7 +58,7 @@ const Mission = ({ card, missionId, setSelectedMission/*, setFavorite*/ }) => {
                   {t('Start date', { ns: 'common' })}: {formatDate(card.start_date, 'YYYY-MM-DD')} | {t('End date', { ns: 'common' })}: {formatDate(card.end_date, 'YYYY-MM-DD')}
                 </p>
                 <p className="text-muted no-wrap">
-                  {t('Assigned to', { ns: 'chatBot' })}: {(card.assignedTo.organization)}/{(card.assignedTo.organization)}/{(card.assignedTo.name)}
+                  {t('Assigned to', { ns: 'chatBot' })}: To Do
                 </p>
               </Col>
             </Row>

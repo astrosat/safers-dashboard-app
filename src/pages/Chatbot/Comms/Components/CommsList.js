@@ -8,7 +8,7 @@ import PaginationWrapper from '../../../../components/Pagination';
 import Comm from './Comm';
 import { MAP_TYPES } from '../../../../constants/common';
 
-const CommsList = ({ reportId, currentZoomLevel, setViewState, setReportId, setIconLayer }) => {
+const CommsList = ({ commID, currentZoomLevel, setViewState, setCommID, setIconLayer }) => {
   const { allComms, filteredComms } = useSelector(state => state.comms);
   const [pageData, setPageData] = useState([]);
 
@@ -17,19 +17,19 @@ const CommsList = ({ reportId, currentZoomLevel, setViewState, setReportId, setI
 
   const setSelectedComm = (mission_id) => {
     if (mission_id) {
-      setReportId(mission_id);
+      setCommID(mission_id);
       let copyCommList = _.cloneDeep(commList);
-      let selectedComm = _.find(copyCommList, { mission_id });
+      let selectedComm = _.find(copyCommList, { id: mission_id });
       selectedComm.isSelected = true;
       setIconLayer(getIconLayer(copyCommList, MAP_TYPES.CHATBOT_COMMS));
       setViewState(getViewState(selectedComm.location, currentZoomLevel))
     } else {
-      setReportId(undefined);
+      setCommID(undefined);
       setIconLayer(getIconLayer(commList, MAP_TYPES.CHATBOT_COMMS));
     }
   }
   const updatePage = data => {
-    setReportId(undefined);
+    setCommID(undefined);
     setIconLayer(getIconLayer(data, MAP_TYPES.CHATBOT_COMMS));
     setPageData(data);
   };
@@ -42,7 +42,7 @@ const CommsList = ({ reportId, currentZoomLevel, setViewState, setReportId, setI
             <Comm
               key={comm.mission_id}
               card={comm}
-              reportId={reportId}
+              commID={commID}
               setSelectedComm={setSelectedComm}
             />)
         }
@@ -54,10 +54,10 @@ const CommsList = ({ reportId, currentZoomLevel, setViewState, setReportId, setI
 }
 
 CommsList.propTypes = {
-  reportId: PropTypes.any,
+  commID: PropTypes.any,
   currentZoomLevel: PropTypes.any,
   setViewState: PropTypes.func,
-  setReportId: PropTypes.func,
+  setCommID: PropTypes.func,
   setIconLayer: PropTypes.func,
 }
 

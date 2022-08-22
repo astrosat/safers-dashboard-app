@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col, Input } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
 //i18N
 import { withTranslation } from 'react-i18next';
 
+import { setFilters } from '../../../../store/people/action';
+import { getFilteredRec } from '../../filter';
+
+
 const SortSection = ({ t, status, activity, sortOrder, setStatus, setActivity, setSortOrder }) => {
   const { allPeople } = useSelector(state => state.people);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(allPeople.length > 0) {
+      const filters = {activity, status};
+      const sort = {fieldName: 'timestamp', order: sortOrder};
+      const actFiltered = getFilteredRec(allPeople, filters, sort);
+      dispatch(setFilters(actFiltered));
+    }
+  }, [activity, sortOrder, status])
 
   return (
     <>

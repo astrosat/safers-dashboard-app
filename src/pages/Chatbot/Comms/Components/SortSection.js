@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col, Input, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
 //i18N
 import { withTranslation } from 'react-i18next';
 
+import { setFilterdComms } from '../../../../store/comms/action';
+import { getFilteredRec } from '../../filter';
+
 const SortSection = ({ t, commStatus, sortOrder, setcommStatus, setSortOrder, target, setTarget, setTogglePolygonMap }) => {
   const { allComms } = useSelector(state => state.comms);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(allComms.length > 0) {
+      const filters = {target, status:commStatus};
+      const sort = {fieldName: 'start', order: sortOrder};
+      const actFiltered = getFilteredRec(allComms, filters, sort);
+      dispatch(setFilterdComms(actFiltered));
+    }
+  }, [target, sortOrder, commStatus])
 
   return (
     <>
@@ -33,8 +45,8 @@ const SortSection = ({ t, commStatus, sortOrder, setcommStatus, setSortOrder, ta
             onChange={(e) => setSortOrder(e.target.value)}
             value={sortOrder}
           >
-            <option value={'-date'} >{t('Sort By')} : {t('Date')} {t('desc')}</option>
-            <option value={'date'} >{t('Sort By')} : {t('Date')} {t('asc')}</option>
+            <option value={'desc'} >{t('Sort By')} : {t('Date')} {t('desc')}</option>
+            <option value={'asc'} >{t('Sort By')} : {t('Date')} {t('asc')}</option>
           </Input>
         </Col>
         <Col xl={4} className='my-1'>
@@ -49,8 +61,8 @@ const SortSection = ({ t, commStatus, sortOrder, setcommStatus, setSortOrder, ta
             data-testid='commStatus'
           >
             <option value={''} >--Status--</option>
-            <option value="ongoing" >{t('ongoing').toUpperCase()}</option>
-            <option value="expired" >{t('expired').toUpperCase()}</option>
+            <option value="Ongoing" >{t('ongoing').toUpperCase()}</option>
+            <option value="Expired" >{t('expired').toUpperCase()}</option>
           </Input>
         </Col>
         <Col xl={4} className='my-1'>
@@ -65,9 +77,7 @@ const SortSection = ({ t, commStatus, sortOrder, setcommStatus, setSortOrder, ta
             data-testid='target'
           >
             <option value={''} >--Target--</option>
-            <option value="citizen">{t('Citizen')}</option>
-            <option value="professional">{t('Professional')}</option>
-            <option value="organisation">{t('Organisation')}</option>
+            <option value="Public">{t('Public')}</option>
           </Input>
         </Col>
       </Row>

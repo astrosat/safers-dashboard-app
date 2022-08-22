@@ -1,5 +1,6 @@
 import * as actionTypes from './types';
 import { updateObject } from '../utility';
+import { getFilteredRec } from '../../pages/Chatbot/filter';
 
 const initialState = {
   allMissions: [],
@@ -42,7 +43,13 @@ const getMissionDetailFail = (state) => {
 }
 
 const getMissionsSuccess = (state, action) => {
+  const {order, status} = action.feFilters;
+  const filters = { status };
+  const sort = {fieldName: 'start', order };
+  const filteredMissions = getFilteredRec( action.payload, filters, sort );
+  
   const updatedState = {
+    filteredMissions,
     allMissions: action.payload,
     error: false,
   }

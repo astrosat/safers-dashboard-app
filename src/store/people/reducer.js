@@ -1,6 +1,6 @@
 import * as actionTypes from './types';
 import { updateObject } from '../utility';
-import _ from 'lodash';
+import { getFilteredRec } from '../../pages/Chatbot/filter';
 
 const initialState = {
   allPeople: [],
@@ -24,14 +24,12 @@ const peopleReducer = (state = initialState, action) => {
 };
 
 const getPeopleSuccess = (state, action) => {
-  let actFiltered = [...action.payload];
-  const {activity, order} = action.options;
-  if(activity && activity !== ''){
-    actFiltered = actFiltered.filter((person) => person.activity == activity);
-  }
-  actFiltered = _.orderBy(actFiltered , [(o) => new Date(o.timestamp)], [order]);
+  const {activity, status, sortOrder} = action.feFilters;
+  const filters = {activity, status};
+  const sort = {fieldName: 'timestamp', order: sortOrder};
+  const filteredPeople = getFilteredRec(action.payload, filters, sort);
   const updatedState = {
-    filteredPeople: actFiltered,
+    filteredPeople,
     allPeople: action.payload,
     error: false,
   }

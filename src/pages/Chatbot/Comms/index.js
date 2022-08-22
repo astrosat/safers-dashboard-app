@@ -22,12 +22,12 @@ const Comms = () => {
 
   const { t } = useTranslation();
 
-  const [reportId, setReportId] = useState(undefined);
+  const [commID, setCommID] = useState(undefined);
   const [viewState, setViewState] = useState(undefined);
   const [iconLayer, setIconLayer] = useState(undefined);
-  const [sortOrder, setSortOrder] = useState(undefined);
-  const [commStatus, setcommStatus] = useState(undefined);
-  const [target, setTarget] = useState(undefined);
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [commStatus, setcommStatus] = useState('');
+  const [target, setTarget] = useState('');
   const [midPoint, setMidPoint] = useState([]);
   const [boundingBox, setBoundingBox] = useState(undefined);
   const [currentZoomLevel, setCurrentZoomLevel] = useState(undefined);
@@ -46,18 +46,15 @@ const Comms = () => {
       ? { start: dateRange[0], end: dateRange[1] }
       : {};
 
-    setReportId(undefined);
+    setCommID(undefined);
     const reportParams = {
-      order: sortOrder ? sortOrder : '-date',
-      status: commStatus ? commStatus : undefined,
-      target: target ? target : undefined,
       bbox: boundingBox?.toString(),
       default_date: false,
       default_bbox: !boundingBox,
       ...dateRangeParams
     };
-    dispatch(getAllComms(reportParams));
-  }, [dateRange, commStatus, sortOrder, boundingBox, target])
+    dispatch(getAllComms(reportParams, {sortOrder, status:commStatus, target}));
+  }, [dateRange, boundingBox])
 
   useEffect(() => {
     if (success?.detail) {
@@ -115,10 +112,10 @@ const Comms = () => {
           <Row>
             <Col xl={12} className='px-3'>
               <CommsList
-                reportId={reportId}
+                commID={commID}
                 currentZoomLevel={currentZoomLevel}
                 setViewState={setViewState}
-                setReportId={setReportId}
+                setCommID={setCommID}
                 setIconLayer={setIconLayer} />
             </Col>
           </Row>

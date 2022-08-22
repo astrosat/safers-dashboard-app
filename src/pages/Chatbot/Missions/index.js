@@ -25,8 +25,8 @@ const Missions = () => {
   const [missionId, setMissionId] = useState(undefined);
   const [viewState, setViewState] = useState(undefined);
   const [iconLayer, setIconLayer] = useState(undefined);
-  const [sortOrder, setSortOrder] = useState(undefined);
-  const [missionStatus, setMissionStatus] = useState(undefined);
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [missionStatus, setMissionStatus] = useState('');
   const [midPoint, setMidPoint] = useState([]);
   const [boundingBox, setBoundingBox] = useState(undefined);
   const [currentZoomLevel, setCurrentZoomLevel] = useState(undefined);
@@ -47,15 +47,19 @@ const Missions = () => {
 
     setMissionId(undefined);
     const missionParams = {
-      order: sortOrder ? sortOrder : '-date',
-      Status: missionStatus ? missionStatus : undefined,
       bbox: boundingBox?.toString(),
       default_date: false,
       default_bbox: !boundingBox,
       ...dateRangeParams
     };
-    dispatch(getAllMissions(missionParams));
-  }, [dateRange, missionStatus, sortOrder, boundingBox])
+
+    const feFilters = {
+      order: sortOrder,
+      status: missionStatus
+    };
+
+    dispatch(getAllMissions(missionParams, feFilters));
+  }, [dateRange, boundingBox])
 
   useEffect(() => {
     if (success?.detail) {

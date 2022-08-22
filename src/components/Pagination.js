@@ -15,7 +15,8 @@ const PaginationWrapper = ({list, pageSize, setPageData}) => {
   };
 
   useEffect(() => {
-    updatePage(currentPage);
+    //Always set the default page to first if the list is updated
+    updatePage(1);
   }, [list]);
 
   

@@ -66,7 +66,7 @@ export const endpoints = {
       getReportInfo: '/chatbot/reports/:report_id',
     },
     comms: {
-      getAll: '/chatbot/comms'
+      getAll: '/chatbot/communications'
     },
     missions: {
       getMissions: '/chatbot/missions',

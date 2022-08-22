@@ -1,5 +1,6 @@
 import * as actionTypes from './types';
 import { updateObject } from '../utility';
+import { getFilteredRec } from '../../pages/Chatbot/filter';
 
 const initialState = {
   allComms: [],
@@ -22,7 +23,12 @@ const commsReducer = (state = initialState, action) => {
 };
 
 const getCommsSuccess = (state, action) => {
+  const {target, status, sortOrder} = action.feFilters;
+  const filters = {target, status};
+  const sort = {fieldName: 'start', order: sortOrder};
+  const filteredComms = getFilteredRec(action.payload, filters, sort);
   const updatedState = {
+    filteredComms,
     allComms: action.payload,
     error: false,
   }
