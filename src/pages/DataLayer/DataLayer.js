@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Button, Input, Card, InputGroup, InputGroupText } from 'reactstrap';
-import { BitmapLayer, FlyToInterpolator } from 'deck.gl';
+import { BitmapLayer, FlyToInterpolator, COORDINATE_SYSTEM } from 'deck.gl';
 import moment from 'moment';
 
 import BaseMap from '../../components/BaseMap/BaseMap';
@@ -20,6 +20,8 @@ import { getBoundingBox } from '../../helpers/mapHelper';
 import SimpleBar from 'simplebar-react';
 
 const SLIDER_SPEED = 800;
+const EUROPEAN_BBOX = [-18.369140, 14.519780, 41.660156, 71.130987]
+
 const DataLayer = ({ t, searchDataLayers }) => {
   const defaultAoi = useSelector(state => state.user.defaultAoi);
   const globalDataLayers = useSelector(state => state.dataLayer.dataLayers);
@@ -75,7 +77,7 @@ const DataLayer = ({ t, searchDataLayers }) => {
     setIsPlaying(false);
     if (currentLayer && currentLayer.urls) {
       const urls = getUrls();
-      const imageUrl = urls[0].replace('{bbox}', boundingBox);
+      const imageUrl = urls[0].replace('{bbox}', EUROPEAN_BBOX);
       setBitmapLayer(getBitmapLayer(imageUrl));
       setSliderRangeLimit(urls.length - 1);
     }
@@ -160,8 +162,9 @@ const DataLayer = ({ t, searchDataLayers }) => {
   const getBitmapLayer = (url) => {
     return (new BitmapLayer({
       id: 'bitmap-layer',
-      bounds: boundingBox,
-      image: url
+      bounds: EUROPEAN_BBOX,
+      image: url,
+      _imageCoordinateSystem: COORDINATE_SYSTEM.LNGLAT
     }))
   }
 
