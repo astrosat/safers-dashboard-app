@@ -16,7 +16,6 @@ import { fetchEndpoint } from '../../helpers/apiHelper';
 import { withTranslation } from 'react-i18next'
 import Slider from 'react-rangeslider';
 import 'react-rangeslider/lib/index.css'
-import { getBoundingBox } from '../../helpers/mapHelper';
 import SimpleBar from 'simplebar-react';
 
 const SLIDER_SPEED = 800;
@@ -30,7 +29,6 @@ const DataLayer = ({ t, searchDataLayers }) => {
   const [dataLayers, setDataLayers] = useState([]);
   const [currentLayer, setCurrentLayer] = useState(undefined);
   const [bitmapLayer, setBitmapLayer] = useState(undefined);
-  const [boundingBox, setBoundingBox] = useState(undefined);
   const [viewState, setViewState] = useState(undefined);
   const [sortByDate, setSortByDate] = useState(undefined);
   const [layerSource, setLayerSource] = useState(undefined);
@@ -52,25 +50,20 @@ const DataLayer = ({ t, searchDataLayers }) => {
   useEffect(() => {
     (async () => {
       const [sourceOptions, domainOptions] = await Promise.all([
-        fetchEndpoint('/data/layers/sources'), 
+        fetchEndpoint('/data/layers/sources'),
         fetchEndpoint('/data/layers/domains')
       ])
       setSelectOptions({ sourceOptions, domainOptions })
     })()
   }, []);
 
-  // places global data layers into local state, 
+  // places global data layers into local state,
   // so that search filtering can then be applied
   useEffect(() => {
     if (!dataLayers?.length) {
       setDataLayers(globalDataLayers);
     }
   }, [globalDataLayers]);
-
-  useEffect(() => {
-    setBoundingBox(
-      getBoundingBox(defaultAoi.features[0].properties.midPoint, defaultAoi.features[0].properties.zoomLevel, 300, 300));
-  }, [defaultAoi]);
 
   useEffect(() => {
     setSliderValue(0);
@@ -88,7 +81,7 @@ const DataLayer = ({ t, searchDataLayers }) => {
       const urls = getUrls();
       const timestamps = getTimestamps();
       if (urls[sliderValue]) {
-        const imageUrl = urls[sliderValue].replace('{bbox}', boundingBox);
+        const imageUrl = urls[0].replace('{bbox}', EUROPEAN_BBOX);
         setBitmapLayer(getBitmapLayer(imageUrl));
       }
       if (timestamps[sliderValue]) {
@@ -96,7 +89,6 @@ const DataLayer = ({ t, searchDataLayers }) => {
       }
     }
   }, [sliderValue, sliderChangeComplete]);
-
 
   useEffect(() => {
     let nextValue = sliderValue;
@@ -125,8 +117,8 @@ const DataLayer = ({ t, searchDataLayers }) => {
   }, [dataLayers]);
 
   useEffect(() => {
-    const dateRangeParams = dateRange 
-      ? { start: dateRange[0], end: dateRange[1] } 
+    const dateRangeParams = dateRange
+      ? { start: dateRange[0], end: dateRange[1] }
       : {};
     dispatch(getAllDataLayers(
       {
@@ -160,12 +152,12 @@ const DataLayer = ({ t, searchDataLayers }) => {
   }
 
   const getBitmapLayer = (url) => {
-    return (new BitmapLayer({
+    return new BitmapLayer({
       id: 'bitmap-layer',
       bounds: EUROPEAN_BBOX,
       image: url,
-      _imageCoordinateSystem: COORDINATE_SYSTEM.LNGLAT
-    }))
+      _imageCoordinateSystem: COORDINATE_SYSTEM.LNGLAT,
+    })
   }
 
   const formatTooltip = value => moment(Object.assign({}, Object.keys(currentLayer?.urls))[value]).format('LLL');
@@ -245,7 +237,7 @@ const DataLayer = ({ t, searchDataLayers }) => {
             onClick={() => setShowLegend(!showLegend)}
           >
             <i className="h4 mdi mdi-map-legend">legend</i>
-          </button>     
+          </button>
         </div>
       );
     }
@@ -260,7 +252,7 @@ const DataLayer = ({ t, searchDataLayers }) => {
     <div>
       {showLegend ? (
         <div className='legend'>
-          <img src={currentLayer.legend_url}/>
+          <img src={currentLayer.legend_url} />
         </div>
       ) : null
       }
@@ -279,8 +271,8 @@ const DataLayer = ({ t, searchDataLayers }) => {
                     onChange={(e) => setSortByDate(e.target.value)}
                     value={sortByDate}
                   >
-                    <option value={'-date'} >{t('Sort By')} : {t('Date')} {t('desc')}</option>
-                    <option value={'date'} >{t('Sort By')} : {t('Date')} {t('asc')}</option>
+                    <option value={'-date'}>{t('Sort By')} : {t('Date')} {t('desc')}</option>
+                    <option value={'date'}>{t('Sort By')} : {t('Date')} {t('asc')}</option>
                   </Input>
                 </Col>
                 <Col xl={4}>
@@ -296,7 +288,7 @@ const DataLayer = ({ t, searchDataLayers }) => {
                     <option value=''>Source : All</option>
                     {sourceOptions?.map((option) => (
                       <option key={option} value={option}>
-                          Source: {option}
+                        Source: {option}
                       </option>
                     )) ?? []}
                   </Input>
@@ -314,7 +306,7 @@ const DataLayer = ({ t, searchDataLayers }) => {
                     <option value=''>Domain : All</option>
                     {domainOptions?.map((option) => (
                       <option key={option} value={option}>
-                          Data Domain: {option}
+                        Data Domain: {option}
                       </option>
                     )) ?? []}
                   </Input>
@@ -340,7 +332,7 @@ const DataLayer = ({ t, searchDataLayers }) => {
                   name="searchEvent"
                   placeholder="Search by keyword"
                   autoComplete="on"
-                  onChange={({target: {value}}) => searchDataLayers(
+                  onChange={({ target: { value } }) => searchDataLayers(
                     value, globalDataLayers, setDataLayers
                   )}
                 />
@@ -349,14 +341,14 @@ const DataLayer = ({ t, searchDataLayers }) => {
           </Row>
           <Row>
             <Col>
-              <SimpleBar style={{ 
-                maxHeight: '500px', 
-                margin: '5px', 
-                zIndex: '100' 
+              <SimpleBar style={{
+                maxHeight: '500px',
+                margin: '5px',
+                zIndex: '100'
               }}>
                 <TreeView
                   data={filterNodesByProperty(dataLayers, {
-                    source: layerSource, 
+                    source: layerSource,
                     domain: dataDomain
                   })}
                   setCurrentLayer={setCurrentLayer}
@@ -380,7 +372,7 @@ const DataLayer = ({ t, searchDataLayers }) => {
           </Card>
         </Col>
       </Row>
-    </div >
+    </div>
   );
 }
 
