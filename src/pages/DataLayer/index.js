@@ -204,7 +204,7 @@ const DataLayerDashboard = () => {
   const formatTooltip = value => moment(Object.assign({}, Object.keys(currentLayer?.urls))[value]).format('LLL');
 
   const getSlider = (index) => {
-    if (currentLayer?.urls) {
+    if (currentLayer?.urls && Object.keys(currentLayer?.urls).length > 1) {
       return (
         <div style={{
           position: 'absolute',
@@ -247,6 +247,8 @@ const DataLayerDashboard = () => {
         </div>
       );
     }
+
+    return null
   }
 
   const getLegend = () => {
