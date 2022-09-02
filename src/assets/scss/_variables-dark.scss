@@ -493,7 +493,7 @@ $font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberati
 
 // stylelint-enable value-keyword-case
 $font-family-base:            var(--#{$variable-prefix}font-sans-serif);
-$font-family-code:            var(--#{$variable-prefix}font-monospace);
+$font-family-code:            var(--#{$variable-prefix}font-sans-serif);
 
 // $font-size-root effects the value of `rem`, which is used for as well font sizes, paddings and margins
 // $font-size-base effects the font size of the body text

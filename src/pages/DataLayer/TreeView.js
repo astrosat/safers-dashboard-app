@@ -45,6 +45,16 @@ const TreeView = ({ data, setCurrentLayer}) => {
     }
   }
 
+  const toggleMetaInfo = (metaURL) => {
+    if(!metaData){
+      setMetaActive('alert-card-active');
+      dispatch(getMetaData(metaURL))
+    }
+    else {
+      dispatch(resetMetaData());
+    }
+  }
+
   const mapper = (nodes, parentId, lvl) => {
     return nodes?.map((node, index) => {
       
@@ -75,7 +85,7 @@ const TreeView = ({ data, setCurrentLayer}) => {
                   :
                   <>
                     {(node.metadata_url) &&
-                      <i className={`bx bx-file font-size-18 me-2 meta-icon ${metaActive ? 'text-primary': ''}`} onClick={()=>{setMetaActive('alert-card-active');dispatch(getMetaData(node.metadata_url))}} />
+                      <i className={`bx bx-file font-size-18 me-2 meta-icon ${metaActive ? 'text-primary': ''}`} onClick={()=>{toggleMetaInfo(node.metadata_url)}} />
                     }
                     {moment(node.text).format('LLL')}
                   </>
