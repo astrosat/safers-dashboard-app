@@ -4,12 +4,26 @@ import ReactTooltip from 'react-tooltip';
 import { ListGroup, ListGroupItem, Collapse } from 'reactstrap';
 import { fetchEndpoint } from '../../helpers/apiHelper';
 
+
+const formatParameter = (node, key) => {
+  let value = '';
+  if (typeof node.parameters[key]==='object') {
+    value = JSON.stringify(node.parameters[key], null, 2);
+  } else {
+    value = `${node.parameters[key]}`
+  }
+  return `${key} : ${value}`
+}
+
 const PropsPanel = (node) => {
   const node2=node.node;
   if (!node2.parameters) return null;
+  node2.parameters['geometry'] = node2?.geometry_wkt;
   const parameters = Object.keys(node2.parameters);
+  console.log('node is ==>', node);
+  console.log('paramaters is ==>', parameters);
   // TODO: get a better key once we have node numbering from backend
-  const paramaters = parameters.map((key,ix)=><p className="props-line" key={ix}>{`${key} : ${node2.parameters[key]}`}</p>);
+  const paramaters = parameters.map((key,ix)=><div className="props-line" key={ix}>{formatParameter(node2, key)}</div>) ;
   return (
     <div className="props-box">
       {paramaters}
@@ -130,7 +144,7 @@ const OnDemandTreeView = ({ data, setCurrentLayer}) => {
                   &nbsp;<i onClick={(event)=>{event.stopPropagation(); toggleExpandCollapseProps(id)} } className={'bx bx-cog font-size-16'} />
                 </> : null
               }
-              { node?.parameters &&  itemPropsState[id] ?  <PropsPanel node={node} />: null}
+              { node?.parameters &&  itemPropsState[id] ?  <div className="mt-2"><PropsPanel node={node} /></div>: null}
             </>
           </ListGroupItem>
           {

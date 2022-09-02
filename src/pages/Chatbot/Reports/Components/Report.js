@@ -64,7 +64,7 @@ const Report = ({ card, reportId, setSelectedReport/*, setFavorite*/ }) => {
             <Row className='mt-2'>
               <Col>
                 <p className="text-muted no-wrap mb-0">
-                  date: {formatDate(card.timestamp)}
+                  Date: {formatDate(card.timestamp)}
                 </p>
               </Col>
 
@@ -72,7 +72,7 @@ const Report = ({ card, reportId, setSelectedReport/*, setFavorite*/ }) => {
             <Row className='mt-0'>
               <Col>
                 <p className="text-muted no-wrap">
-                  location: {(card.location).join(', ')}
+                  Location: {(card.location).join(', ')}
                 </p>
               </Col>
               <Col md={2}>

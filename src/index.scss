@@ -26,3 +26,7 @@ code {
 .geo-menuItem:hover {
     background-color: lightgrey;
 }
+
+.empty-loading:empty:before {
+    content: 'Loading...';
+}

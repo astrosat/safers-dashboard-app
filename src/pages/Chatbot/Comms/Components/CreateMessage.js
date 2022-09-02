@@ -11,7 +11,7 @@ import {
 import DateRangePicker from '../../../../components/DateRangePicker/DateRange';
 import MapInput from '../../../../components/BaseMap/MapInput';
 import { createMsg } from '../../../../store/comms/action';
-import { getError }  from '../../../../helpers/errorHelper';
+import { getError } from '../../../../helpers/errorHelper';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -26,9 +26,9 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
 
   const dispatch = useDispatch();
 
-  const { t } = useTranslation();  
+  const { t } = useTranslation();
   const { orgList = [] } = useSelector(state => state.common);
-  const { info:user } = useSelector(state => state.user);
+  const { info: user } = useSelector(state => state.user);
   const { msgCreated } = useSelector(state => state.comms);
 
   const [orgName, setorgName] = useState('');
@@ -48,7 +48,7 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
   }
 
   useEffect(() => {
-    if(orgList.length && user?.organization){
+    if (orgList.length && user?.organization) {
       const organization = _.find(orgList, { id: user.organization });
       setorgName(organization.name.split('-')[0])
     }
@@ -63,14 +63,14 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
   }, [msgCreated]);
 
   useEffect(() => {
-    if(dateRange){// On blur validation after setting values
+    if (dateRange) {// On blur validation after setting values
       validate();
     }
 
   }, [scope, dateRange, desc, restriction, coordinates, validCoords]);
 
   const handleDateRangePicker = (dates) => {
-    setDateRange(dates.map(date => 
+    setDateRange(dates.map(date =>
       moment(date).format('YYYY-MM-DD'))
     );
   }
@@ -79,37 +79,37 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
   const validate = () => {
     let errors = {};
 
-    if(!desc)
-      errors['desc'] = 'This field is required' ;
+    if (!desc)
+      errors['desc'] = 'This field is required';
 
-    if(!scope || scope === '')
-      errors['scope'] = 'This field is required' ;
+    if (!scope || scope === '')
+      errors['scope'] = 'This field is required';
 
-    if(scope && scope == 'Restricted' && (!restriction || restriction === '')){
-      errors['restriction'] = 'This field is required' ;
-    }   
+    if (scope && scope == 'Restricted' && (!restriction || restriction === '')) {
+      errors['restriction'] = 'This field is required';
+    }
 
-    if(!coordinates){
-      errors['coordinates'] = 'Please select your area on the map' ;
+    if (!coordinates) {
+      errors['coordinates'] = 'Please select your area on the map';
     }
     else if (!validCoords) {
-      errors['coordinates'] = 'Please correct your coordinates' ;
+      errors['coordinates'] = 'Please correct your coordinates';
     }
-    
 
-    if(!dateRange)
-      errors['dateRange'] = 'Please select start/end date' ;
-    
+
+    if (!dateRange)
+      errors['dateRange'] = 'Please select start/end date';
+
     setErrors(errors);
   }
 
   const submitMsg = () => {
     validate();
-    if(Object.keys(errors).length === 0){
+    if (Object.keys(errors).length === 0) {
       const payload = {
         message: desc,
-        start: dateRange[0] ? dateRange[0]: null,
-        end: dateRange[1] ? dateRange[1]: null,
+        start: dateRange[0] ? dateRange[0] : null,
+        end: dateRange[1] ? dateRange[1] : null,
         scope,
         restriction,
         geometry: coordinates ? coordinates : null
@@ -154,7 +154,7 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
             className={`btn-sm sort-select-input me-2 mb-2 ${getError('scope', errors, errors)}`}
             name="scope"
             type="select"
-            onChange={(e)=>{setScope(e.target.value)}}
+            onChange={(e) => { setScope(e.target.value) }}
           >
             <option value="">--{t('Scope')}--</option>
             <option value="Public">{t('Public')}</option>
@@ -162,19 +162,19 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
           </Input>
           {getError('scope', errors, errors, false)}
         </Col>
-        { scope === 'Restricted' && <Col xl={5}>
+        {scope === 'Restricted' && <Col xl={5}>
           <Input
             id="restriction"
             className={`btn-sm sort-select-input ${getError('restriction', errors, errors)}`}
             name="restriction"
             type="select"
-            onChange={(e)=>{setRestriction(e.target.value)}}
+            onChange={(e) => { setRestriction(e.target.value) }}
             value={restriction}
           >
             <option value="">--{t('Restrictions')}--</option>
             <option value="Citizen">{t('Citizen')}</option>
             <option value="Professional">{t('Professional')}</option>
-            <option value="Organisation">{t('Organisation')}</option>
+            <option value="Organization">{t('Organisation')}</option>
           </Input>
           {getError('restriction', errors, errors, false)}
         </Col>}
@@ -186,7 +186,7 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
           type='textarea'
           name="message-description"
           placeholder='Message Description'
-          onChange={(e) => {setDesc(e.target.value);}}
+          onChange={(e) => { setDesc(e.target.value); }}
           rows="10"
         />
         {getError('desc', errors, errors, false)}

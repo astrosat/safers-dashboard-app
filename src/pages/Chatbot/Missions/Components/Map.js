@@ -8,7 +8,7 @@ import SearchButton from '../../../../components/SearchButton';
 const MapSection = ({
   viewState,
   iconLayer,
-  getReportsByArea,
+  getMissionsByArea,
   handleViewStateChange,
   setNewWidth,
   setNewHeight,
@@ -21,7 +21,7 @@ const MapSection = ({
     return (
       <SearchButton
         index={index}
-        getInfoByArea={getReportsByArea}
+        getInfoByArea={getMissionsByArea}
       />
     )
   }
@@ -60,7 +60,7 @@ const MapSection = ({
 MapSection.propTypes = {
   viewState: PropTypes.any,
   iconLayer: PropTypes.any,
-  getReportsByArea: PropTypes.func,
+  getMissionsByArea: PropTypes.func,
   handleViewStateChange: PropTypes.func,
   setNewWidth: PropTypes.func,
   setNewHeight: PropTypes.func,

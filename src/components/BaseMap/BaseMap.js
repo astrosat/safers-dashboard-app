@@ -55,7 +55,7 @@ const BaseMap = ({
     getMapSize();
   }, [layers]);
 
-  const handleClick = info => {
+  const handleClick = (info, event) => {
     if (info?.object?.properties?.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM)
         setViewState({
@@ -67,7 +67,7 @@ const BaseMap = ({
           transitionInterpolator: new FlyToInterpolator(),
         });
     } else {
-      onClick(info);
+      onClick(info, event);
     }
   }
 

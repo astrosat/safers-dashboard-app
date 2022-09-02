@@ -139,19 +139,8 @@ const WildfireSimulation = ({
 
   return (
     <Row>
-      <Col xl={12}>
-        <Row xl={5} className='mb-3'>
-          <Col className='d-flex align-items-center'>
-            <h4 className='m-0'>{t('requestMap')}</h4>
-          </Col>
-          <Col className="d-flex justify-content-end align-items-center">
-            <Button color='link'
-              onClick={handleResetAOI} className='p-0'>
-              {t('default-aoi')}
-            </Button>
-          </Col>
-        </Row>
-        <Row xl={12}>
+      <Col>
+        <Row>
           <Formik
             initialValues={{
               simulationTitle: '',
@@ -177,35 +166,50 @@ const WildfireSimulation = ({
               isSubmitting,
             }) => (
               <Form onSubmit={handleSubmit} className='d-flex flex-column justify-content-between'>
-                <Row className='w-100'>
-                  <Col className='d-flex flex-column justify-content-between'>
-                    <Row>
-                      {getGeneralErrors(error)}
-                    </Row>
+                <Row>
+                  <Col xl={5} className='d-flex flex-column justify-content-between'>
+                    {/* do not remove this div, it is required to group these four elements together for styling purposes. */}
+                    <div>
+                      <Row>
+                        <Col className='d-flex align-items-center'>
+                          <h4>{t('requestMap')}</h4>
+                        </Col>
+                        <Col className="d-flex justify-content-end align-items-center">
+                          <Button color='link'
+                            onClick={handleResetAOI} className='p-0'>
+                            {t('default-aoi')}
+                          </Button>
+                        </Col>
+                      </Row>
 
-                    <Row xl={12}>
-                      <h5>{t('wildfireSimulation')}</h5>
-                    </Row>
+                      <Row>
+                        {getGeneralErrors(error)}
+                      </Row>
 
-                    <Row>
-                      <FormGroup className="form-group">
-                        <Label for="dataLayerType">
-                          {t('simulationTitle')}
-                        </Label>
-                        <Input
-                          name="simulationTitle"
-                          className={
-                            errors.simulationTitle ? 'is-invalid' : null
-                          }
-                          id="simulationTitle"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.simulationTitle}
-                          placeholder="[Type Simulation Title]"
-                        />
-                        {getError('simulationTitle', errors, touched, false)}
-                      </FormGroup>
-                    </Row>
+                      <Row xl={12}>
+                        <h5>{t('wildfireSimulation')}</h5>
+                      </Row>
+
+                      <Row>
+                        <FormGroup className="form-group">
+                          <Label for="dataLayerType">
+                            {t('simulationTitle')}
+                          </Label>
+                          <Input
+                            name="simulationTitle"
+                            className={
+                              errors.simulationTitle ? 'is-invalid' : null
+                            }
+                            id="simulationTitle"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.simulationTitle}
+                            placeholder="[Type Simulation Title]"
+                          />
+                          {getError('simulationTitle', errors, touched, false)}
+                        </FormGroup>
+                      </Row>
+                    </div>
 
                     <Row>
                       <FormGroup className='d-flex-column'>

@@ -73,8 +73,8 @@ export const getIconColorFromContext = (mapType, feature) => {
   return color;
 }
 
-export const getIconLayer = (alerts, mapType = MAP_TYPES.alerts) => {
-  const icon = mapType == MAP_TYPES.REPORTS || MAP_TYPES.IN_SITU ? locationPin : firePin
+export const getIconLayer = (alerts, mapType = MAP_TYPES.alerts, customIcon = '', customData = {}) => {
+  const icon = customIcon? customIcon : (mapType == MAP_TYPES.REPORTS || MAP_TYPES.IN_SITU ? locationPin : firePin)
   return (new IconLayer({
     data: alerts,
     pickable: true,
@@ -105,7 +105,8 @@ export const getIconLayer = (alerts, mapType = MAP_TYPES.alerts) => {
     },
     sizeMinPixels: 80,
     sizeMaxPixels: 100,
-    sizeScale: 0.5
+    sizeScale: 0.5,
+    ...customData
   }))
 }
 

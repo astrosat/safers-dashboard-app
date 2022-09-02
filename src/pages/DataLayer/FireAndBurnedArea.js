@@ -72,19 +72,8 @@ const FireAndBurnedArea = ({
 
   return (
     <Row>
-      <Col className='d-flex flex-column justify-content-between'>
-        <Row className='mb-3'>
-          <Col className='d-flex align-items-center'>
-            <h4 className='m-0'>{t('requestMap')}</h4>
-          </Col>
-          <Col className="d-flex justify-content-end align-items-center">
-            <Button color='link'
-              onClick={handleResetAOI} className='p-0'>
-              {t('default-aoi')}
-            </Button>
-          </Col>
-        </Row>
-        <Row className='h-100'>
+      <Col>
+        <Row>
           <Formik
             initialValues={{ 
               dataLayerType: '', 
@@ -109,10 +98,21 @@ const FireAndBurnedArea = ({
               setFieldValue,
               isSubmitting,
             }) => (
-              <Form onSubmit={handleSubmit} className='d-flex flex-column justify-content-between p-0'>
+              <Form onSubmit={handleSubmit} className='d-flex flex-column justify-content-between'>
                 <Row>
                   <Col xl={5} className='d-flex flex-column justify-content-between'>
                     <Row>
+                      <Row>
+                        <Col>
+                          <h4>{t('requestMap')}</h4>
+                        </Col>
+                        <Col className="d-flex justify-content-end align-items-center">
+                          <Button color='link'
+                            onClick={handleResetAOI} className='p-0'>
+                            {t('default-aoi')}
+                          </Button>
+                        </Col>
+                      </Row>
                       <Row>
                         {getGeneralErrors(error)}
                       </Row>

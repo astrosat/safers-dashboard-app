@@ -2,15 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Button, Input, Card, InputGroup, InputGroupText, Modal } from 'reactstrap';
 import { BitmapLayer } from 'deck.gl';
-import { getDataLayerTimeSeriesData } from '../../store/appAction';
 import BaseMap from '../../components/BaseMap/BaseMap';
 
 import OnDemandTreeView from './OnDemandTreeView';
-import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
-import { getIconLayer } from '../../helpers/mapHelper';
 import { withTranslation } from 'react-i18next'
 import SimpleBar from 'simplebar-react';
 import { DATA_LAYERS_PANELS } from './constants';
+import DataLayerInformation from './DataLayerInformation';
 
 const OnDemandDataLayer = ({ 
   t,
@@ -31,16 +29,15 @@ const OnDemandDataLayer = ({
   bitmapLayer,
   getAllTitles,
   viewState,
-  featureInfoData,
   currentLayer,
   dispatch
 }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [searchedMapRequests, setSearchedMapRequests] = useState(null);  
   
-  const [tempSelectedPixel, setTempSelectedPixel] = useState([]);  
-  const [selectedPixel, setSelectedPixel] = useState([]);
+
   const [tempLayerData, setTempLayerData] = useState(null);
+  const [information, setInformation] = useState(null);
 
   // places fetched map requests into local state, 
   // so that search filtering can then be applied
@@ -69,73 +66,6 @@ const OnDemandDataLayer = ({
     setActiveTab(+value);
     toggleModal();
   } 
-
-  const getPixelValue = () => {
-    var valueString = '';
-    if(featureInfoData?.features?.length > 0 && featureInfoData?.features[0]?.properties) {
-      for (const key in featureInfoData.features[0].properties) {
-        if (Object.hasOwnProperty.call(featureInfoData.features[0].properties, key)) {
-          valueString = valueString+`${key}: ${featureInfoData.features[0].properties[key]}\n`;
-        }
-      }
-    }
-    return valueString;
-  }  
-
-  const clearInfo = () => {
-    setSelectedPixel([]);  
-    setTempLayerData(null);
-  }
-
-  const renderClearBtn = () => {
-    return (
-      <div className='position-absolute' style={{ top: '5px', right: '10px' }}>
-        <button onClick={clearInfo} className="custom-clear-btn d-flex justify-content-center align-items-center" type="button">
-          <i className="bx bx-x" style={{ fontSize: '25px' }}></i>
-        </button>
-      </div>
-    );
-  }
-  
-  const toggleDisplayLayerInfo = () => {
-    setSelectedPixel(tempSelectedPixel);
-    apiFetch('GetFeatureInfo');
-  }
-
-  const apiFetch = (requestType) => {
-    var tempUrl = ''
-    if(requestType == 'GetFeatureInfo') {
-      tempUrl = currentLayer.pixel_url.replace('{bbox}', `${tempSelectedPixel[0]},${tempSelectedPixel[1]},${tempSelectedPixel[0]+0.0001},${tempSelectedPixel[1]+0.0001}`);
-    }
-    dispatch(getDataLayerTimeSeriesData(tempUrl, requestType));
-  }
-
-  const generateGeoJson = (data)=> {    
-    const layer = getIconLayer(
-      [{ geometry: { coordinates : data.coordinate} }], 
-      null, 
-      'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png', 
-      {
-        getSize: () => 5,
-        iconMapping: {
-          marker: {
-            x: 0,
-            y: 0,
-            width: 128,
-            height: 128,
-            anchorY: 128,
-            mask: true
-          }
-        },
-        sizeScale: 8,
-        sizeMinPixels: 40,
-        sizeMaxPixels: 40,
-        getColor: () => [57, 58, 58],
-      }
-    );
-    setTempLayerData(layer);
-    setTempSelectedPixel(data.coordinate);
-  }
 
   return (
     <>
@@ -288,31 +218,29 @@ const OnDemandDataLayer = ({
         </Col>
         <Col xl={7} className='mx-auto'>
           <Card className='map-card mb-0' style={{ height: 670 }}>
-            <ContextMenuTrigger id={'OnDemandDataLayerMapMenu'}>
+            <DataLayerInformation   
+              currentLayer={currentLayer}
+              tempLayerData={tempLayerData}
+              setTempLayerData={setTempLayerData}
+              setInformation={setInformation}
+              dispatch={dispatch}
+              menuId={'OnDemandDataLayerMapMenu'}
+              featureOnly={true}
+            >
               <BaseMap
                 layers={[new BitmapLayer(bitmapLayer), tempLayerData]}
                 initialViewState={viewState}
                 widgets={[]}
                 screenControlPosition='top-right'
                 navControlPosition='bottom-right'
-                onClick={generateGeoJson}
               />
-            </ContextMenuTrigger>
-            <ContextMenu id={'OnDemandDataLayerMapMenu'} className="geo-menu">
-              {currentLayer?.id && <MenuItem className="geo-menuItem" onClick={toggleDisplayLayerInfo}>
-                    Get Feature Info
-              </MenuItem>}
-            </ContextMenu>
+            </DataLayerInformation>
             {getSlider()}
             {getLegend()}
           </Card>
         </Col>
       </Row>
-      
-      {selectedPixel?.length > 0 && <div className='mt-2 sign-up-aoi-map-bg position-relative'>
-        {getPixelValue()}
-        {renderClearBtn()}
-      </div>}
+      {information}
     </>
   );
 }
