@@ -73,9 +73,7 @@ const InSituAlerts = () => {
       clusterIconSize: 35,
       getPinSize: () => 35,
       pixelOffset: [-18,-18],
-      pinSize: 25,
-      onGroupClick: true,
-      onPointClick: true,
+      pinSize: 25
     });
   };
 
