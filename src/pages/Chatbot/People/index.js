@@ -79,9 +79,9 @@ const People = () => {
   useEffect(() => {
     if (allPeople.length > 0) {
       setIconLayer(getIconLayer(allPeople, MAP_TYPES.PEOPLE, 'people', dispatch, setViewState));
-      if (!viewState) {
-        setViewState(getViewState(defaultAoi.features[0].properties.midPoint, defaultAoi.features[0].properties.zoomLevel))
-      }
+    }
+    if (!viewState) {
+      setViewState(getViewState(defaultAoi.features[0].properties.midPoint, defaultAoi.features[0].properties.zoomLevel))
     }
   }, [allPeople]);
 
