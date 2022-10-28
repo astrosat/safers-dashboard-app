@@ -1,12 +1,20 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import moment from 'moment';
 import Flatpickr from 'react-flatpickr'
+import { Spanish  } from 'flatpickr/dist/l10n/es.js'
+import { German } from 'flatpickr/dist/l10n/de.js'
+import { Italian } from 'flatpickr/dist/l10n/it.js'
+import { French } from 'flatpickr/dist/l10n/fr.js'
 import { InputGroup } from 'reactstrap';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import 'flatpickr/dist/themes/material_blue.css'
+
+//i18n
+import { withTranslation } from 'react-i18next'
+
 
 const DateComponent = ({ 
   setDates = () => { }, 
@@ -15,9 +23,32 @@ const DateComponent = ({
   defaultDateRange,
   placeholder=null,
   isDateRangeDisabled=false,
-  onChange= () => {}
+  onChange= () => {},
+  i18n
 }) => {
   const fp = useRef(null);
+  const [trsnalation, setTrsnalation] = useState(undefined)
+
+  useEffect(() => {
+    let lang = null;
+    switch(i18n.language){
+    case 'fr':
+      lang = French;
+      break;
+    case 'es':
+      lang = Spanish;
+      break;
+    case 'de':
+      lang = German;
+      break;
+    case 'it':
+      lang = Italian;
+      break;
+    default:
+      lang = undefined;
+    }
+    setTrsnalation(lang);
+  }, [i18n.language])
 
   const defaultDate = defaultDateRange?.map(date => 
     moment(date).format('DD/MM/YY')
@@ -50,7 +81,8 @@ const DateComponent = ({
           options={{
             mode: 'range',
             dateFormat: 'd/m/y',
-            defaultDate
+            defaultDate,
+            locale: trsnalation
           }}
         />
 
@@ -72,7 +104,8 @@ DateComponent.propTypes = {
   resetDates: PropTypes.func,
   defaultDateRange: PropTypes.array,
   placeholder: PropTypes.string,
-  isDateRangeDisabled: PropTypes.bool
+  isDateRangeDisabled: PropTypes.bool,
+  i18n: PropTypes.object
 }
 
-export default DateComponent
+export default withTranslation(['common'])(DateComponent)
