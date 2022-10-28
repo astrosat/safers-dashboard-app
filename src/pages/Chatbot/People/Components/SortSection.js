@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
-import { Row, Col, Input } from 'reactstrap';
+import React, { useEffect, useState } from 'react';
+import { Row, Col, Input, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 //i18N
 import { withTranslation } from 'react-i18next';
 
-import { setFilters } from '../../../../store/people/action';
-import { getFilteredRec } from '../../filter';
+import { setFilters, refreshPeople } from '../../../../store/people/action';
+import useSetNewAlerts from '../../../../customHooks/useSetNewAlerts';
+import { getFilteredRec }  from '../../filter';
+import toastr from 'toastr';
 
 
 const SortSection = ({ 
@@ -19,8 +21,9 @@ const SortSection = ({
   setSortOrder,
   activitiesOptions
 }) => {
-  const { allPeople } = useSelector(state => state.people);
+  const { allPeople, filteredPeople, pollingData } = useSelector(state => state.people);
   const dispatch = useDispatch();
+  const [numberOfUpdates, setNumberOfUpdates] = useState(undefined);
 
   useEffect(() => {
     if(allPeople.length > 0) {
@@ -31,13 +34,33 @@ const SortSection = ({
     }
   }, [activity, sortOrder, status])
 
+  useSetNewAlerts((numberOfUpdates) => {
+    setNumberOfUpdates(numberOfUpdates);
+    if(numberOfUpdates > 0)
+      toastr.success(t('update-notification', { ns: 'chatBot' }));
+  }, pollingData, allPeople, [pollingData, allPeople])
+
+  const refreshPollingData = (data) => {
+    setSortOrder('desc');
+    setStatus('');
+    setActivity('');
+    dispatch(refreshPeople(data));
+  }
+
   return (
     <>
 
       <Row className=''>
         <Col></Col>
-        <Col xl={3} className="d-flex justify-content-end">
-          <span className='my-auto alert-report-text'>{t('Results')} {allPeople.length}</span>
+        <Col className="d-flex justify-content-end">
+          {numberOfUpdates > 0 && 
+          <Button className="btn mt-1 py-0 px-1 me-2 bg-danger"
+            onClick={() => refreshPollingData(pollingData)}
+            aria-label="refresh-results"
+          >
+            <i className="mdi mdi-sync"></i><span>{numberOfUpdates} {t('new-updates')}</span>
+          </Button>}
+          <span className='my-auto alert-report-text'>{t('Results')} { filteredPeople ? filteredPeople.length : allPeople.length }</span>
         </Col>
       </Row>
       <hr />

@@ -23,19 +23,22 @@ const createMissionsFail = (error) => {
   };
 
 };
-export const getAllMissions = (options, feFilters) => async (dispatch) => {
+export const getAllMissions = (options, feFilters=null, isPolling=false) => async (dispatch) => {
   const response = await api.get(endpoints.chatbot.missions.getMissions, options);
   if (response.status === 200) {
-    return dispatch(getMissionsSuccess(response.data, feFilters));
+    return dispatch(getMissionsSuccess(response.data, feFilters, isPolling));
   }
   else
     return dispatch(getMissionsFail(response.error));
 };
-const getMissionsSuccess = (alerts, feFilters) => {
+const getMissionsSuccess = (alerts, feFilters, isPolling) => {
   return {
     type: actionTypes.GET_MISSIONS_SUCCESS,
-    payload: alerts,
-    feFilters
+    payload: {
+      alerts,
+      feFilters,
+      isPolling
+    }
   };
 };
 const getMissionsFail = (error) => {
@@ -104,3 +107,11 @@ const getMissionDetailFail = (error) => {
     payload: error
   };
 };
+
+export const refreshMissions = (payload) => {
+  return {
+    type: actionTypes.REFRESH_MISSIONS,
+    payload: payload
+  };
+}
+

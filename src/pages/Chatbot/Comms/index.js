@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Button } from 'reactstrap';
 import toastr from 'toastr';
+import PropTypes from 'prop-types';
 
 import 'toastr/build/toastr.min.css'
 import 'rc-pagination/assets/index.css';
@@ -14,11 +15,12 @@ import { getBoundingBox, getViewState } from '../../../helpers/mapHelper';
 import { useTranslation } from 'react-i18next';
 import { MAP_TYPES } from '../../../constants/common';
 import { getIconLayer } from '../../../helpers/mapHelper';
+import useInterval from '../../../customHooks/useInterval';
 
-const Comms = () => {
+const Comms = ({ pollingFrequency }) => {
   const defaultAoi = useSelector(state => state.user.defaultAoi);
   const { allComms, success, filteredComms } = useSelector(state => state.comms);
-  const dateRange = useSelector(state => state.common.dateRange);
+  const { dateRange } = useSelector(state => state.common);
 
   const { t } = useTranslation();
 
@@ -55,6 +57,12 @@ const Comms = () => {
     };
     dispatch(getAllComms(reportParams, {sortOrder, status:commStatus, target}));
   }
+
+
+  useInterval(() => {
+    const dateRangeParams = dateRange ? { start: dateRange[0], end: dateRange[1] } : {};
+    dispatch(getAllComms(dateRangeParams, null, true));
+  }, pollingFrequency)
 
   useEffect(() => {
     loadComms();
@@ -158,6 +166,10 @@ const Comms = () => {
       </Row>
     </div >
   );
+}
+
+Comms.propTypes = {
+  pollingFrequency: PropTypes.number,
 }
 
 export default Comms;

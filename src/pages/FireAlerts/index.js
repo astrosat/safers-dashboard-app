@@ -113,10 +113,10 @@ const FireAlerts = ({ t }) => {
     dispatch(setFavoriteAlert(id, !selectedAlert.favorite)).then((result) => {
       if (result.type === SET_FAV_ALERT_SUCCESS) {
         selectedAlert.favorite = !selectedAlert.favorite;
-        hoverInfo.object &&
+        hoverInfo?.object &&
           setHoverInfo({
             object: {
-              properies: selectedAlert,
+              properties: selectedAlert,
             },
             coordinate: selectedAlert.center,
           });

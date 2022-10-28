@@ -25,6 +25,8 @@ const commonReducer = (state = initialState, action) => {
   case actionTypes.CM_GET_ORGLIST_FAIL: return getOrgListFail(state, action);
   case actionTypes.CM_GET_ROLELIST_SUCCESS: return getRoleListSuccess(state, action);
   case actionTypes.CM_GET_ROLELIST_FAIL: return getRoleListFail(state, action);
+  case actionTypes.CM_GET_TEAMLIST_SUCCESS: return getTeamListSuccess(state, action);
+  case actionTypes.CM_GET_TEAMLIST_FAIL: return getTeamListFail(state, action);
   case actionTypes.GET_AOI_SUCCESS: return getAoiSuccess(state, action);
   case actionTypes.GET_AOI_FAIL: return getAoiFail(state, action);
   case actionTypes.SET_SELECTED_AOI: return selectAoi(state, action);
@@ -84,6 +86,21 @@ const getRoleListSuccess = (state, action) => {
 }
 
 const getRoleListFail = (state) => {
+  const updatedState = {
+    error: true,
+  }
+  return updateObject(state, updatedState);
+}
+
+const getTeamListSuccess = (state, action) => {
+  const updatedState = {
+    teamList: action.payload,
+    error: false,
+  }
+  return updateObject(state, updatedState);
+}
+
+const getTeamListFail = (state) => {
   const updatedState = {
     error: true,
   }

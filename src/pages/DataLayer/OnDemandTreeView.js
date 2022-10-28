@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import { Badge, ListGroup, ListGroupItem, Collapse, Modal } from 'reactstrap';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 
 import { fetchEndpoint } from '../../helpers/apiHelper';
@@ -35,6 +35,8 @@ const OnDemandTreeView = ({ data, setCurrentLayer, t, setViewState, viewState, s
   const [tooltipInfo, setTooltipInfo] = useState(undefined);
   const [isDeleteMapRequestDialogOpen, setIsDeleteMapRequestDialogOpen] = useState(false);
   const [mapRequestToDelete, setMapRequestToDelete] = useState(null);
+
+  const user = useSelector(state => state.user?.info);
   
   useEffect(() => {
     setCurrentLayer(() => {
@@ -81,6 +83,7 @@ const OnDemandTreeView = ({ data, setCurrentLayer, t, setViewState, viewState, s
 
       const id = node.id ?? node.key;
       const tooltipDisplay = tooltipInfo || node.info;
+      const isOwner = node?.user && node.user === user?.id;
       const item =
         <>
           <ListGroupItem
@@ -177,11 +180,11 @@ const OnDemandTreeView = ({ data, setCurrentLayer, t, setViewState, viewState, s
 
                     setViewState({ ...viewState, ...newViewState })
                   }} className="bx bx-map font-size-16" />
-                  &nbsp;<i onClick={async (event)=> {
+                  &nbsp;{isOwner && <i onClick={async (event) => {
                     event.stopPropagation();
                     setMapRequestToDelete(node)
                     setIsDeleteMapRequestDialogOpen(!isDeleteMapRequestDialogOpen)
-                  }} className="bx bx-trash font-size-16" />
+                  }} className="bx bx-trash font-size-16" />}
                 </> : null
               }
               { node?.parameters && itemPropsState[id]

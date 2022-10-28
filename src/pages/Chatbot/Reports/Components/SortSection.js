@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Input } from 'reactstrap';
+import { Row, Col, Input, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchEndpoint } from '../../../../helpers/apiHelper'
 import { getFilteredRec } from '../../filter';
-import { setFilterdReports } from '../../../../store/reports/action';
+import { setFilterdReports, refreshReports } from '../../../../store/reports/action';
+import useSetNewAlerts from '../../../../customHooks/useSetNewAlerts';
+import toastr from 'toastr';
 
 //i18N
 import { withTranslation } from 'react-i18next';
@@ -14,8 +16,9 @@ const SortSection = ({
   boundingBox,
   mapFilter
 }) => {
-  const { allReports: OrgReportList, sortOrder, category, missionId } = useSelector(state => state.reports);
+  const { allReports: OrgReportList, filteredReports=[], sortOrder, category, missionId, pollingData } = useSelector(state => state.reports);
   const [selectOptions, setSelectOptions] = useState([]);
+  const [numberOfUpdates, setNumberOfUpdates] = useState(undefined);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -43,6 +46,17 @@ const SortSection = ({
     })()
   }, []);
 
+  useSetNewAlerts((numberOfUpdates) => {
+    setNumberOfUpdates(numberOfUpdates);
+    if(numberOfUpdates > 0)
+      toastr.success(t('update-notification', { ns: 'chatBot' }));
+  }, pollingData, OrgReportList, [pollingData, OrgReportList], 'report_id')
+
+  const refreshPollingData = (data) => {
+    applyFilter('desc', '', '')
+    dispatch(refreshReports(data));
+  }
+
   return (
     <>
       <Row className=''>
@@ -64,9 +78,16 @@ const SortSection = ({
             <option value={false}>{t('Unassigned to Mission')}</option>
           </Input>
         </Col>
-        <Col xl={5} />
-        <Col xl={3} className="d-flex justify-content-end">
-          <span className='my-auto alert-report-text'>{t('Results')} {OrgReportList.length}</span>
+        <Col xl={4} />
+        <Col xl={4} className="d-flex justify-content-end">
+          {numberOfUpdates > 0 && 
+          <Button className="btn mt-1 py-0 px-1 me-2 bg-danger"
+            onClick={() => refreshPollingData(pollingData)}
+            aria-label="refresh-results"
+          >
+            <i className="mdi mdi-sync"></i><span>{numberOfUpdates} {t('new-updates')}</span>
+          </Button>}
+          <span className='my-auto alert-report-text'>{t('Results')} {filteredReports ? filteredReports.length : 0}</span>
         </Col>
       </Row>
       <hr />

@@ -8,5 +8,7 @@
   "Message Title": "Message Title",
   "Mission Title": "Mission Title",
   "Select Area": "Please select your area on the map",
-  "Select Date": "Please select start/end date"
+  "Select Date": "Please select start/end date",
+  "update-notification": "New updates available. Please refresh the list."
+
 }

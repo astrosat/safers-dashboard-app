@@ -4,6 +4,7 @@ import { getFilteredRec } from '../../pages/Chatbot/filter';
 
 const initialState = {
   allMissions: [],
+  pollingData: [],
   sortByDate: 'desc',
   alertSource: 'all',
   error: false,
@@ -25,6 +26,7 @@ const missionReducer = (state = initialState, action) => {
   case actionTypes.GET_MISSION_DETAIL_FAIL: return getMissionDetailFail(state, action);
   case actionTypes.CREATE_MISSION_SUCCESS: return createMissionSuccess(state, action);
   case actionTypes.CREATE_MISSION_FAIL: return createMissionsFail(state, action);
+  case actionTypes.REFRESH_MISSIONS: return refreshData(state, action);
   default:
     return state;
   }
@@ -61,15 +63,26 @@ const getMissionDetailFail = (state) => {
 }
 
 const getMissionsSuccess = (state, action) => {
-  const {order, status} = action.feFilters;
-  const filters = { status };
-  const sort = {fieldName: 'start', order };
-  const filteredMissions = getFilteredRec( action.payload, filters, sort );
-  
-  const updatedState = {
-    filteredMissions,
-    allMissions: action.payload,
-    error: false,
+
+  let updatedState = {};
+
+  if(action.payload.isPolling){
+    updatedState = {
+      pollingData: action.payload.alerts,
+      error: false,
+    }
+  }
+  else {
+    const {order, status} = action.payload.feFilters;
+    const filters = { status };
+    const sort = {fieldName: 'start', order };
+    const filteredMissions = getFilteredRec( action.payload.alerts, filters, sort );
+    
+    updatedState = {
+      filteredMissions,
+      allMissions: action.payload.alerts,
+      error: false,
+    }
   }
   return updateObject(state, updatedState);
 }
@@ -108,6 +121,15 @@ const resetMissionResponseState = (state) => {
     error: false,
     missionCreated: null,
     success: null
+  }
+  return updateObject(state, updatedState);
+}
+
+const refreshData = (state, action) => {
+  const updatedState = {
+    allMissions: action.payload,
+    filteredMissions: null,
+    error: false,
   }
   return updateObject(state, updatedState);
 }

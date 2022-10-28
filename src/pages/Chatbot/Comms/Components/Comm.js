@@ -60,7 +60,7 @@ const Comm = ({ card, commID, setSelectedComm }) => {
             <Row className='mt-0 mb-1 mt-3'>
               <Col>
                 <CardText>
-                  {t('Message', { ns: 'common' })}: {getMsg(card.message)}
+                  {t('Message', { ns: 'common' })}: {card?.message && getMsg(card.message)}
                 </CardText>
               </Col>
               <Col md={3}  className='d-flex align-items-end justify-content-end'>

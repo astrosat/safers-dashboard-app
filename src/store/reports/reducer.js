@@ -3,6 +3,7 @@ import { updateObject } from '../utility';
 
 const initialState = {
   allReports: [],
+  pollingData: [],
   alertSource: 'all',
   error: false,
   success: null,
@@ -24,6 +25,7 @@ const reportReducer = (state = initialState, action) => {
   case actionTypes.SET_REPORT_FILTERS: return setFilters(state, action);
   case actionTypes.GET_REPORT_DETAIL_SUCCESS: return getReportDetailSuccess(state, action);
   case actionTypes.GET_REPORT_DETAIL_FAIL: return getReportDetailFail(state, action);
+  case actionTypes.REFRESH_REPORTS: return refreshData(state, action);
   default:
     return state;
   }
@@ -45,6 +47,22 @@ const getReportDetailFail = (state) => {
 }
 
 const getReportsSuccess = (state, action) => {
+  let updatedState = {};
+  if(action.payload.isPolling){
+    updatedState = {
+      pollingData: action.payload.reports,
+      error: false,
+    }
+  }else {
+    updatedState = {
+      allReports: action.payload.reports,
+      error: false,
+    }
+  }
+  return updateObject(state, updatedState);
+}
+
+const refreshData = (state, action) => {
   const updatedState = {
     allReports: action.payload,
     error: false,

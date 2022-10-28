@@ -1,15 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Input, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 //i18N
 import { withTranslation } from 'react-i18next';
 
-import { setFilterdComms } from '../../../../store/comms/action';
+import { setFilterdComms, refreshData } from '../../../../store/comms/action';
 import { getFilteredRec } from '../../filter';
+import useSetNewAlerts from '../../../../customHooks/useSetNewAlerts';
+import toastr from 'toastr';
 
 const SortSection = ({ t, commStatus, sortOrder, setcommStatus, setSortOrder, target, setTarget, setTogglePolygonMap }) => {
-  const { allComms } = useSelector(state => state.comms);
+  const { allComms, filteredComms, pollingData } = useSelector(state => state.comms);
+  const [numberOfUpdates, setNumberOfUpdates] = useState(undefined);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -21,16 +24,36 @@ const SortSection = ({ t, commStatus, sortOrder, setcommStatus, setSortOrder, ta
     }
   }, [target, sortOrder, commStatus])
 
+  useSetNewAlerts((numberOfUpdates) => {
+    setNumberOfUpdates(numberOfUpdates);
+    if(numberOfUpdates > 0)
+      toastr.success(t('update-notification', { ns: 'chatBot' }));
+  }, pollingData, allComms, [pollingData, allComms])
+
+  const refreshPollingData = (data) => {
+    setSortOrder('desc');
+    setcommStatus('');
+    setTarget('');
+    dispatch(refreshData(data));
+  }
+
   return (
     <>
       <Row>
-        <Col>          
+        <Col>      
           <Button onClick={setTogglePolygonMap}>
             Create New Message
-          </Button>
+          </Button>   
         </Col>
         <Col className="d-flex justify-content-end">
-          <span className='my-auto alert-report-text'>{t('Results')} {allComms.length}</span>
+          {numberOfUpdates > 0 && 
+          <Button className="btn mt-1 py-0 px-1 me-2 bg-danger"
+            onClick={() => refreshPollingData(pollingData)}
+            aria-label="refresh-results"
+          >
+            <i className="mdi mdi-sync"></i><span>{numberOfUpdates} {t('new-updates')}</span>
+          </Button>}
+          <span className='my-auto alert-report-text'>{t('Results')} { filteredComms ? filteredComms.length : allComms.length }</span>
         </Col>
       </Row>
       <hr />

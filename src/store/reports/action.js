@@ -2,18 +2,21 @@ import * as actionTypes from './types';
 import { endpoints } from '../../api/endpoints';
 import * as api from '../../api/base';
 
-export const getAllReports = (options) => async (dispatch) => {
+export const getAllReports = (options, isPolling=false) => async (dispatch) => {
   const response = await api.get(endpoints.chatbot.reports.getReports, options);
   if (response.status === 200) {
-    return dispatch(getReportsSuccess(response.data));
+    return dispatch(getReportsSuccess(response.data, isPolling));
   }
   else
     return dispatch(getReportsFail(response.error));
 };
-const getReportsSuccess = (alerts) => {
+const getReportsSuccess = (reports, isPolling) => {
   return {
     type: actionTypes.GET_REPORTS_SUCCESS,
-    payload: alerts
+    payload: {
+      reports,
+      isPolling
+    }
   };
 };
 const getReportsFail = (error) => {
@@ -83,3 +86,9 @@ const getReportDetailFail = (error) => {
     payload: error
   };
 };
+export const refreshReports = (payload) => {
+  return {
+    type: actionTypes.REFRESH_REPORTS,
+    payload: payload
+  };
+}

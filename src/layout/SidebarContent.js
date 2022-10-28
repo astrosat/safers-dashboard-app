@@ -16,9 +16,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 
 const SidebarContent = (props) => {
-  const isNewAlert = useSelector(state => state.alerts.isNewAlert);
   const newAlertsCount = useSelector(state => state.alerts.newItemsCount);
-  const isNewEvent = useSelector(state => state.eventAlerts.isNewEvent);
   const newEventsCount = useSelector(state => state.eventAlerts.newItemsCount);
   const {isNewNotification, newItemsCount:newNotificationsCount } = useSelector(state => state.notifications);
   const { 
@@ -124,14 +122,14 @@ const SidebarContent = (props) => {
               <Link to='/fire-alerts' className=''>
                 <i className='bx bx-error-circle'></i>
                 <span className='text-capitalize'>{props.t('fire-alerts')}</span>
-                {isNewAlert && <span className='new-info-indicator float-end'>{newAlertsCount}</span>}
+                {newAlertsCount > 0  && <span className='new-info-indicator float-end'>{newAlertsCount}</span>}
               </Link>
             </li>
             <li>
               <Link to='/event-alerts' className=''>
                 <i className='bx bxs-hot'></i>
                 <span className='text-capitalize'>{props.t('Events')}</span>
-                {isNewEvent && <span className='new-info-indicator float-end'>{newEventsCount}</span>}
+                {newEventsCount > 0 && <span className='new-info-indicator float-end'>{newEventsCount}</span>}
               </Link>
             </li>
             <li>
@@ -162,7 +160,7 @@ const SidebarContent = (props) => {
             <li>
               <Link to='/chatbot'>
                 <i className='bx bx-bot'></i>
-                <span className='text-capitalize'>{props.t('Chatbot Module')}</span>
+                <span className='text-capitalize'>{props.t('chatbot-module')}</span>
               </Link>
             </li>
             <li>

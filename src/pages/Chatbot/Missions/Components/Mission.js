@@ -73,7 +73,7 @@ const Mission = ({ card, missionId, setSelectedMission/*, setFavorite*/ }) => {
             <Row className='mt-0'>
               <Col>
                 <CardText>
-                  {t('Description', { ns: 'common' })}: {getMsg(card.description)}
+                  {t('Description', { ns: 'common' })}: {card?.description && getMsg(card.description)}
                 </CardText>
               </Col>
               <Col md={2}>

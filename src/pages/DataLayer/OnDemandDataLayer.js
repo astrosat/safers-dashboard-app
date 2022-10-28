@@ -5,6 +5,7 @@ import { BitmapLayer } from 'deck.gl';
 import BaseMap from '../../components/BaseMap/BaseMap';
 
 import OnDemandTreeView from './OnDemandTreeView';
+import { formatDate } from '../../store/utility';
 import { withTranslation } from 'react-i18next'
 import SimpleBar from 'simplebar-react';
 import { DATA_LAYERS_PANELS } from './constants';
@@ -30,10 +31,12 @@ const OnDemandDataLayer = ({
   searchDataTree,
   setViewState,
   viewState,
+  timestamp,
   currentLayer,
   showLegend,
   legendUrl,
   dispatch,
+  sliderChangeComplete,
   resetMap,
 }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
@@ -56,6 +59,22 @@ const OnDemandDataLayer = ({
   };
 
   const toggleModal = () => setModalIsOpen(prev => !prev);
+
+  const isTimeseries = currentLayer?.urls && Object.keys(currentLayer?.urls).length > 1
+
+  const getCurrentTimestamp = () => {
+    if (isTimeseries) {
+      return (
+        timestamp ? (
+          <div className='timestamp-container'>
+            <p className='timestamp-display'>
+              {formatDate(timestamp)}
+            </p>
+          </div>
+        ) : null
+      )
+    }
+  }
 
   const handleDialogButtonClick = ({ target: { value } }) => {
     setActiveTab(+value);
@@ -246,7 +265,6 @@ const OnDemandDataLayer = ({
               setInformation={setInformation}
               dispatch={dispatch}
               menuId={'OnDemandDataLayerMapMenu'}
-              featureOnly={true}
             >
               <BaseMap
                 layers={layers}
@@ -259,6 +277,7 @@ const OnDemandDataLayer = ({
             </DataLayerInformation>
             {getSlider()}
             {getLegend()}
+            {sliderChangeComplete && getCurrentTimestamp()}
           </Card>
         </Col>
       </Row>
@@ -285,6 +304,7 @@ OnDemandDataLayer.propTypes = {
   bitmapLayer: PropTypes.any,
   setViewState: PropTypes.func,
   viewState: PropTypes.any,
+  timestamp: PropTypes.string,
   searchDataTree: PropTypes.func,
   handleResetAOI: PropTypes.any,
   featureInfoData: PropTypes.any,
@@ -292,6 +312,7 @@ OnDemandDataLayer.propTypes = {
   showLegend: PropTypes.bool,
   legendUrl: PropTypes.string,
   dispatch: PropTypes.any,
+  sliderChangeComplete: PropTypes.bool,
   resetMap: PropTypes.func,
 }
 

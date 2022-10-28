@@ -58,5 +58,7 @@
   "coordinate-error": "Incorrect format / coordinates",
   "wkt-info-topic": "WKT Guidance",
   "wkt-info-desc1": "Sample of supporting format of WKT",
-  "wkt-info-desc2": "For more info , please refer wiki link"
+  "wkt-info-desc2": "For more info , please refer wiki link",
+  "new-updates": "new update(s)",
+  "chatbot-module": "Chatbot Module"
 }

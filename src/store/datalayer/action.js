@@ -63,14 +63,48 @@ const getMetaDataFail = (error) => {
 
 export const getDataLayerTimeSeriesData = (options, type) => async (dispatch) => {
   // const response = await api.get('https://geoserver-test.safers-project.cloud/geoserver/ermes/wms'.concat('?', queryString.stringify(options)));
-  const response = await fetch(options);
-  if (response.status === 200 && type == 'GetTimeSeries') {
-    return dispatch(getTimeSeriesDataSuccess(await response.text()));
-  } else if (response.status === 200 && type == 'GetFeatureInfo') {
-    return dispatch(getFeatureInfoSuccess(await response.json()));
+  let error = '';
+  if (type === 'GetTimeSeries') {
+    const FIRST_REQUEST = 0 // Index
+    let timeSeriesStr = '';
+    for (const [request_index, url] of options.entries()) {
+      const response = await fetch(url);
+      if (api.isSuccessResp(response.status)) {// Remove longitude / latitude and time entries in followup responses 
+        if(request_index > FIRST_REQUEST){
+          /* 
+            Each response contain following 3 lines in CSV format
+            # longitude
+            # latitude
+            # time 
+            So make sure only first response (from geoserver) has the 3 lines and follow up does not contain as we merge the responses and keep timeseries data together
+          */
+          const txt = await response.text();
+          const tempArr = txt.split('\n');
+          tempArr.splice(0,3);
+          timeSeriesStr += tempArr.join('\n');
+        } else {
+          timeSeriesStr = await response.text()
+        }
+      } else {
+        error = response?.error;
+        break;
+      }
+    }   
+    if(!error.length) {
+      return dispatch(getTimeSeriesDataSuccess(timeSeriesStr));
+    }
+  } 
+  
+  if (type === 'GetFeatureInfo') {
+    const response = await fetch(options);
+    if(api.isSuccessResp(response.status)) {
+      return dispatch(getFeatureInfoSuccess(await response.json()));
+    } else {
+      error = response?.error;
+    }
   }
-  else
-    return dispatch(getTimeSeriesDataFail(response.error));
+  return dispatch(getTimeSeriesDataFail(error));
+  
 };
 const getTimeSeriesDataSuccess = (TimeSeries) => {
   return {

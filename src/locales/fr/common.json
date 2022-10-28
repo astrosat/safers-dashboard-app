@@ -51,5 +51,6 @@
   "Location": "Emplacement",
   "save-aoi-success-msg": "Zone d'intérêt définie avec succès",
   "open": "OUVRIR",
-  "All" : "Toute"
+  "All" : "Toute",
+  "chatbot-module": "Module Chatbot"
 }

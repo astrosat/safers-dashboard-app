@@ -4,27 +4,25 @@ import PropTypes from 'prop-types'
 import { isWKTValid } from '../../helpers/mapHelper';
 import { withTranslation } from 'react-i18next'
 
-const MapInput = (props) => {
+const MapInput = ({isValidFormat=()=>{}, setCoordinates, coordinates, t, ...rest}) => {
 
   const [showError, setShowError] = useState(false);
   const [wktStr, setWktStr] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const { isValidFormat, setCoordinates, coordinates, t } = props;
-
   const toggle = () => setIsOpen(!isOpen);
 
   useEffect(() => {
-    if(coordinates !== null){
+    if(coordinates || !showError && coordinates===''){
       setWktStr(coordinates);
       isValidFormat(true);
       setShowError(false);
     }
-  }, [coordinates])
+  }, [coordinates, showError, setWktStr, isValidFormat, setShowError])
 
   const onChange = (val) => {
     const isValid = isWKTValid(val);
     setWktStr(val);
-    isValid ? setCoordinates(val) : setCoordinates(null);
+    isValid ? setCoordinates(val) : setCoordinates('');
     setShowError(!isValid);
     isValidFormat(isValid);
   }
@@ -32,7 +30,13 @@ const MapInput = (props) => {
   return (<>
     <div className='polygon-edit-input'>
       <Input
-        {...props}
+        className={rest.className}
+        id={rest.id ? rest.id : 'coord-input'}
+        name={rest.name ? rest.name : 'coord-input'}
+        onBlur={rest.onBlur ? rest.onBlur : undefined}
+        placeholder={rest.placeholder ? rest.placeholder : undefined}
+        rows={rest.rows ? rest.rows : undefined}
+        type={rest.type ? rest.type : undefined}
         onChange={(e) => onChange(e.target.value)}
         value={wktStr}
       />

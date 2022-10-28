@@ -1,4 +1,5 @@
 import React , { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink, TabContent, TabPane, Container } from 'reactstrap';
 import { useLocation } from 'react-router-dom';
 import classnames from 'classnames';
@@ -7,11 +8,14 @@ import People from './People';
 import Reports from './Reports';
 import Comms from './Comms';
 import Missions from './Missions';
+import { GENERAL } from '../../constants/common';
 import { useNavigate } from 'react-router-dom';
 
 const Chatbot = () => {
 
   const [customActiveTab, setCustomActiveTab] = useState();
+  const { config } = useSelector(state => state.common);
+  const pollingFrequency = config?.polling_frequency * GENERAL.MILLISEC_TO_SECOND ?? 0;
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
@@ -34,13 +38,13 @@ const Chatbot = () => {
 
     switch(tab) {
     case '1': 
-      return <People />;
+      return <People pollingFrequency={pollingFrequency} />;
     case '2':
-      return <Comms />;
+      return <Comms pollingFrequency={pollingFrequency} />;
     case '3':
-      return <Missions />;
+      return <Missions pollingFrequency={pollingFrequency} />;
     case '4':
-      return <Reports />;
+      return <Reports pollingFrequency={pollingFrequency} />;
     }
   }
 

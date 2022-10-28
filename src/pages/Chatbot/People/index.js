@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Button } from 'reactstrap';
 import toastr from 'toastr';
+import PropTypes from 'prop-types'
+
 
 import 'toastr/build/toastr.min.css'
 import 'rc-pagination/assets/index.css';
@@ -14,11 +16,12 @@ import { getBoundingBox, getViewState, getIconLayer } from '../../../helpers/map
 import { useTranslation } from 'react-i18next';
 import { MAP_TYPES } from '../../../constants/common';
 import { fetchEndpoint } from '../../../helpers/apiHelper';
+import useInterval from '../../../customHooks/useInterval';
 
-const People = () => {
+const People = ({ pollingFrequency }) => {
   const defaultAoi = useSelector(state => state.user.defaultAoi);
   const { allPeople: orgPplList, filteredPeople, success } = useSelector(state => state.people);
-  const dateRange = useSelector(state => state.common.dateRange);
+  const { dateRange } = useSelector(state => state.common);
 
   let allPeople = filteredPeople || orgPplList;
 
@@ -81,6 +84,11 @@ const People = () => {
       setIconLayer(getIconLayer(allPeople, MAP_TYPES.PEOPLE, 'people', dispatch, setViewState, {id: peopleId}));
     }
   }, [allPeople, peopleId]);
+
+  useInterval(() => {
+    const dateRangeParams = dateRange ? { start: dateRange[0], end: dateRange[1] } : {};
+    dispatch(getAllPeople(dateRangeParams, null, true));
+  }, pollingFrequency)
 
   const getPeopleByArea = () => {
     setBoundingBox(getBoundingBox(midPoint, currentZoomLevel, newWidth, newHeight));
@@ -149,6 +157,10 @@ const People = () => {
       </Row>
     </div >
   );
+}
+
+People.propTypes = {
+  pollingFrequency: PropTypes.number,
 }
 
 export default People;

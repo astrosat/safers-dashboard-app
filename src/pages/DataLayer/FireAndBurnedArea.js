@@ -13,13 +13,8 @@ import {
   postMapRequest,
   getAllMapRequests
 } from '../../store/appAction';
-import {
-  area as getFeatureArea,
-  bbox,
-  bboxPolygon
-} from '@turf/turf';
 import wkt from 'wkt';
-import { isWKTValid } from '../../helpers/mapHelper';
+import MapInput from '../../components/BaseMap/MapInput';
 
 Yup.addMethod(Yup.date, 'max30Days', function (message) {
   return this.test(
@@ -48,7 +43,7 @@ const fireAndBurnedAreaSchema = Yup.object().shape({
     .required('This field cannot be empty'),
   requestTitle: Yup.string().required('This field cannot be empty'),
   mapSelection: Yup.string()
-    .required('This field cannot be empty'),
+    .required('Should contain a valid Well-Known Text'),
   isMapAreaValid: Yup.boolean()
     .oneOf([true], 'Sorry, this would give too large an output. Reduce the spatial resolution or try a smaller area.'),
   isMapAreaValidWKT: Yup.boolean()
@@ -76,6 +71,8 @@ const FireAndBurnedArea = ({
   t,
   handleResetAOI,
   backToOnDemandPanel,
+  mapInputOnChange,
+  isRasterSizeWithinLimits
 }) => {
   const dispatch = useDispatch();
   const error = useSelector(state => state.auth.error);
@@ -106,23 +103,6 @@ const FireAndBurnedArea = ({
     {id: 36002, name:'Burned area severity map'},
     {id: 36001, name:'Burned area delineation map'}
   ];
-
-  const isRasterSizeWithinLimits = (features, spatial_resolution) => {
-    // check to make sure that raster is never more than MAX_RASTER_SIZE by MAX_RASTER_SIZE
-    const MAX_RASTER_SIZE = 15000;
-    if (features) {
-      // we get different shapes if we draw on map or change resolution
-      const polygon = features?.geometry ? features.geometry : features;
-      // use Bounding box as that's what affects raster size, not the polygon area
-      const bboxArea = getFeatureArea(bboxPolygon(bbox(polygon)));
-      const maxValidArea = Math.pow(spatial_resolution * MAX_RASTER_SIZE,2.0);
-      // Keeping these commented out as they're really useful for troubleshooting
-      //console.log(`max valid area at ${spatial_resolution} is ${maxValidArea/1000000.0}km^2, selection is ${bboxArea/1000000}km^2`)
-      //console.log(`is valid is ${bboxArea < maxValidArea}`)
-      return bboxArea < maxValidArea;
-    }
-    return false;
-  }
 
   return (
     <Row>
@@ -227,30 +207,16 @@ const FireAndBurnedArea = ({
                             <Label for="mapSelection">
                               {t('mapSelection')}
                             </Label>
-                            <Input
+                            <MapInput
+                              className={errors.mapSelection ? 'is-invalid' : ''}
                               id="mapSelection"
                               name="mapSelection"
                               type="textarea"
                               rows="5"
-                              className={errors.mapSelection ? 'is-invalid' : ''}
-                              onChange={({ target: { value } }) => {
-                                setFieldValue('mapSelection', value);
-                                if (!value) {
-                                  setFieldValue('isMapAreaValid', true);
-                                } else {
-                                  const isGeometryValid = isWKTValid(value);
-                                  setFieldValue('isMapAreaValidWKT', isGeometryValid);
-                                  const features = wkt.parse(value);
-                                  if (features) {
-                                    const isAreaValid = isRasterSizeWithinLimits(features, values.resolution);
-                                    setFieldValue('isMapAreaValid', isAreaValid);
-                                    setFieldValue('isMapAreaValidWKT', true);
-                                  }
-                                }
-                              }}
+                              setCoordinates={(value) => {  mapInputOnChange(value, setFieldValue, true, values.resolution);  }}
                               onBlur={handleBlur}
-                              value={values.mapSelection}
-                              placeholder='Enter Well Known Text or draw a polygon on the map'
+                              coordinates={values.mapSelection}
+                              placeholder={t('mapSelectionTxtGuide')}
                             />
                             {touched.mapSelection && getError('mapSelection', errors, touched, false)}
                             {values.isMapAreaValid === false && values.mapSelection !== '' ? getError('isMapAreaValid', errors, touched, false, true) : null}
@@ -415,6 +381,8 @@ FireAndBurnedArea.propTypes = {
   t: PropTypes.any,
   handleResetAOI: PropTypes.func,
   backToOnDemandPanel: PropTypes.func,
+  mapInputOnChange: PropTypes.func,
+  isRasterSizeWithinLimits: PropTypes.func,
 }
 
 export default withTranslation(['dataLayers', 'common'])(FireAndBurnedArea);

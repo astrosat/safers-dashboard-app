@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Button } from 'reactstrap';
 import toastr from 'toastr';
+import PropTypes from 'prop-types'
 
 import 'toastr/build/toastr.min.css'
 import 'rc-pagination/assets/index.css';
@@ -13,8 +14,9 @@ import { getBoundingBox, getViewState, getIconLayer } from '../../../helpers/map
 
 import { useTranslation } from 'react-i18next';
 import { MAP_TYPES } from '../../../constants/common';
+import useInterval from '../../../customHooks/useInterval';
 
-const Reports = () => {
+const Reports = ({ pollingFrequency }) => {
   const defaultAoi = useSelector(state => state.user.defaultAoi);
   const { allReports: OrgReportList, success, filteredReports, boundingBox:gBbox, mapFilter } = useSelector(state => state.reports);
   const dateRange = useSelector(state => state.common.dateRange);
@@ -52,6 +54,11 @@ const Reports = () => {
     };
     dispatch(getAllReports(reportParams));
   }, [dateRange, boundingBox])
+
+  useInterval(() => {
+    const dateRangeParams = dateRange ? { start: dateRange[0], end: dateRange[1] } : {};
+    dispatch(getAllReports(dateRangeParams, true));
+  }, pollingFrequency)
 
   useEffect(() => {
     if (success?.detail) {
@@ -136,6 +143,10 @@ const Reports = () => {
       </Row>
     </div >
   );
+}
+
+Reports.propTypes = {
+  pollingFrequency: PropTypes.number,
 }
 
 export default Reports;

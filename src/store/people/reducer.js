@@ -4,11 +4,11 @@ import { getFilteredRec } from '../../pages/Chatbot/filter';
 
 const initialState = {
   allPeople: [],
+  pollingData: [],
   sortByDate: 'desc',
   alertSource: 'all',
   error: false,
   success: null,
-  filteredPeople: null,
   peopleDetail: null
 };
 
@@ -18,23 +18,41 @@ const peopleReducer = (state = initialState, action) => {
   case actionTypes.GET_PEOPLE_FAIL: return getPeopleFail(state, action);
   case actionTypes.RESET_PEOPLE_STATE: return resetPeopleResponseState(state, action);
   case actionTypes.SET_PEOPLE_FILTERS: return setFilters(state, action);
+  case actionTypes.REFRESH_PEOPLE: return refreshData(state, action);
   default:
     return state;
   }
 };
 
 const getPeopleSuccess = (state, action) => {
-  const {activity, status, sortOrder} = action.feFilters;
-  const filters = {activity, status};
-  const sort = {fieldName: 'timestamp', order: sortOrder};
-  const filteredPeople = getFilteredRec(action.payload, filters, sort);
+
+  let updatedState = {};
+
+  if(action.payload.isPolling){
+    updatedState = {
+      pollingData: action.payload.alerts,
+      error: false,
+    }
+  } else {
+    const {activity, status, sortOrder} = action.payload.feFilters;
+    const filters = {activity, status};
+    const sort = {fieldName: 'timestamp', order: sortOrder};
+    const filteredPeople = getFilteredRec(action.payload.alerts, filters, sort);
+    updatedState = { filteredPeople, allPeople: action.payload.alerts };
+  }
+
+  return updateObject(state, updatedState);
+}
+
+const refreshData = (state, action) => {
   const updatedState = {
-    filteredPeople,
     allPeople: action.payload,
+    filteredPeople: null,
     error: false,
   }
   return updateObject(state, updatedState);
 }
+
 
 const setFilters = (state, action) => {
   const updatedState = {

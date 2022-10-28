@@ -23,6 +23,7 @@ export {
 export {
   getOrgList,
   getRoleList,
+  getTeamList,
   getAllAreas,
   generalInProgress,
   getConfig,
@@ -85,3 +86,15 @@ export {
   resetNotificationApiParams,
   setNewNotificationState
 } from './notifications/action'
+export {
+  getAllPeople,
+  setFilters,
+  resetPeopleResponseState,
+  refreshPeople
+} from './people/action'
+export {
+  getAllComms,
+  setFilterdComms,
+  resetCommsResponseState,
+  refreshData
+} from './comms/action'

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Button } from 'reactstrap';
 import toastr from 'toastr';
+import PropTypes from 'prop-types'
 
 import 'toastr/build/toastr.min.css'
 import 'rc-pagination/assets/index.css';
@@ -15,9 +16,10 @@ import { useTranslation } from 'react-i18next';
 import { MAP_TYPES } from '../../../constants/common';
 import CreateMission from './Components/CreateMission';
 import { getIconLayer } from '../../../helpers/mapHelper';
+import useInterval from '../../../customHooks/useInterval';
 
 
-const Missions = () => {
+const Missions = ({ pollingFrequency }) => {
   const defaultAoi = useSelector(state => state.user.defaultAoi);
   const { allMissions: OrgMissionList, success, filteredMissions } = useSelector(state => state.missions);
   const dateRange = useSelector(state => state.common.dateRange);
@@ -87,6 +89,12 @@ const Missions = () => {
       setIconLayer(getIconLayer(allMissions, MAP_TYPES.MISSIONS, 'target', dispatch, setViewState, {id: missionId}));
     }
   }, [allMissions, missionId]);
+
+  useInterval(() => {
+    const dateRangeParams = dateRange ? { start: dateRange[0], end: dateRange[1] } : {};
+    dispatch(getAllMissions(dateRangeParams, null, true));
+  }, pollingFrequency)
+
 
   const getMissionsByArea = () => {
     setBoundingBox(getBoundingBox(midPoint, currentZoomLevel, newWidth, newHeight));
@@ -161,6 +169,10 @@ const Missions = () => {
       </Row>
     </div >
   );
+}
+
+Missions.propTypes = {
+  pollingFrequency: PropTypes.number,
 }
 
 export default Missions;

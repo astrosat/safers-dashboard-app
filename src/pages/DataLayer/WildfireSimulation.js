@@ -6,7 +6,6 @@ import { Button, Input, FormGroup, Label, Row, Col, Card, Form } from 'reactstra
 import {
   area as getFeatureArea
 } from '@turf/turf';
-import wkt from 'wkt';
 import { FieldArray, Formik } from 'formik';
 import MapSection from './Map';
 import * as Yup from 'yup'
@@ -18,14 +17,11 @@ import {
 } from '../../store/appAction';
 import 'react-rangeslider/lib/index.css'
 import moment from 'moment';
-import { isWKTValid } from '../../helpers/mapHelper';
+import MapInput from '../../components/BaseMap/MapInput';
+import { MAP } from '../../constants/common';
 
-
-// 40,000 km2 = 40 million m2
-const MAX_GEOMETRY_AREA = {
-  label: '40,000 square kilometres',
-  value: 40000000000
-};
+// increase the bbox used to view Wildfire layers by 20 kms
+const DEFAULT_WILDFIRE_GEOMETRY_BUFFER = 20
 
 const TIME_LIMIT = 72;
 
@@ -74,9 +70,9 @@ const WildfireSimulationSchema = Yup.object().shape({
     .required('This field cannot be empty'),
   mapSelection: Yup.string()
     .typeError('Area must be valid Well-Known Text')
-    .required('This field cannot be empty'),
+    .required('Should contain a valid Well-Known Text'),
   isMapAreaValid: Yup.boolean()
-    .oneOf([true], `Area must be no greater than ${MAX_GEOMETRY_AREA.label}`),
+    .oneOf([true], `Area must be no greater than ${MAP.MAX_GEOMETRY_AREA.label}`),
   isMapAreaValidWKT: Yup.boolean()
     .oneOf([true], 'Geometry needs to be valid WKT'),
   ignitionDateTime: Yup.date()
@@ -122,6 +118,7 @@ const WildfireSimulation = ({
   t,
   handleResetAOI,
   backToOnDemandPanel,
+  mapInputOnChange
 }) => {
   const dispatch = useDispatch();
 
@@ -157,6 +154,7 @@ const WildfireSimulation = ({
     const payload = {
       data_types: layerTypes.map(item => item.id),
       geometry: transformedGeometry,
+      geometry_buffer_size: DEFAULT_WILDFIRE_GEOMETRY_BUFFER,
       title: formData.simulationTitle,
       parameters: {
         description: formData.simulationDescription,
@@ -359,31 +357,16 @@ const WildfireSimulation = ({
                         <Label for="mapSelection">
                           {t('mapSelection')}
                         </Label>
-                        <Input
+                        <MapInput
+                          className={errors.mapSelection ? 'is-invalid' : ''}
                           id="mapSelection"
                           name="mapSelection"
                           type="textarea"
                           rows="5"
-                          className={errors.mapSelection ? 'is-invalid' : ''}
-                          onChange={({ target: { value } }) => {
-                            // NB not called if map is used, only if paste/typed into field
-                            setFieldValue('mapSelection', value);
-                            if (!value) {
-                              setFieldValue('isMapAreaValid', true);
-                            } else {
-                              const isGeometryValid = isWKTValid(value);
-                              setFieldValue('isMapAreaValidWKT', isGeometryValid);
-                              const features = wkt.parse(value);
-                              if (features) {
-                                const isAreaValid = Math.ceil(getFeatureArea(features)) <= MAX_GEOMETRY_AREA.value;
-                                setFieldValue('isMapAreaValid', isAreaValid);
-                                setFieldValue('isMapAreaValidWKT', true);
-                              }
-                            }
-                          }}
+                          setCoordinates={(value) => {  mapInputOnChange(value, setFieldValue);  }}
                           onBlur={handleBlur}
-                          value={values.mapSelection}
-                          placeholder='Enter Well Known Text or draw a polygon on the map'
+                          coordinates={values.mapSelection}
+                          placeholder={t('mapSelectionTxtGuide')}
                         />
                         {touched.mapSelection && getError('mapSelection', errors, touched, false)}
                         {values.isMapAreaValid === false ? getError('isMapAreaValid', errors, touched, false, true) : null}
@@ -466,7 +449,7 @@ const WildfireSimulation = ({
                         togglePolygonMap={true}
                         handleAreaValidation={feature => {
                           const area = Math.ceil(getFeatureArea(feature));
-                          return area <= MAX_GEOMETRY_AREA.value;
+                          return area <= MAP.MAX_GEOMETRY_AREA.value;
                         }}
                       />
                     </Card>
@@ -607,6 +590,7 @@ WildfireSimulation.propTypes = {
   t: PropTypes.any,
   handleResetAOI: PropTypes.func,
   backToOnDemandPanel: PropTypes.func,
+  mapInputOnChange: PropTypes.func,
 }
 
 export default withTranslation(['dataLayers', 'common'])(WildfireSimulation);

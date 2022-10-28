@@ -42,6 +42,7 @@ export const endpoints = {
     config: '/config',
     organizations: '/organizations/',
     roles: '/roles/',
+    teams: '/teams/',
     termsNconditions: '/api/documents/terms-current',
     privacyPolicy: '/api/documents/privacy-current',
   },

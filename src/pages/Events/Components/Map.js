@@ -29,11 +29,13 @@ const MapSection = ({
 
   const renderTooltip = (info) => {
     const { object } = info;
+    const coordinate = object?.geometry.coordinates;
+
     if (object) {
       return <ToolTip
         key={object.properties.id}
         object={object.properties}
-        coordinate={object.properties.center}
+        coordinate={coordinate}
         isEdit={isEdit}
         setIsEdit={setIsEdit}
         setFavorite={setFavorite}
