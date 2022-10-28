@@ -116,19 +116,19 @@ const UpdateProfile = ({ t }) => {
   const handleClick = () => {
     fileUploader.current.click();
   }
-
+  
   const myProfileSchema = Yup.object().shape({
     first_name: Yup.string()
-      .required('The field cannot be empty'),
+      .required(t('field-empty-err', { ns: 'common' })),
     last_name: Yup.string()
-      .required('The field cannot be empty'),
+      .required(t('field-empty-err', { ns: 'common' })),
     role: Yup.string()
-      .required('The field cannot be empty'),
+      .required(t('field-empty-err', { ns: 'common' })),
   })
     .when((values, schema) => {
       if (values.role !== citizenId) {
         return schema.shape({
-          organization: Yup.string().required('The field cannot be empty'),
+          organization: Yup.string().required(t('field-empty-err', { ns: 'common' })),
         });
       }
     });
@@ -186,7 +186,7 @@ const UpdateProfile = ({ t }) => {
                     {orgName}
                   </Col>
                   <Col md="6" className='p-2 dflt-seperator'>
-                    <i className='bx bx-map me-2'></i><span>{t('Area of Interest', { ns: 'common' })}</span>
+                    <i className='bx bx-flag me-2'></i><span>{t('Area of Interest', { ns: 'common' })}</span>
                   </Col>
                   <Col md="6" className='p-2 dflt-seperator'>
                     {defaultAoi?.features[0].properties.name}
@@ -260,7 +260,7 @@ const UpdateProfile = ({ t }) => {
                       </Col>
                       <Col md={6}>
                         <div className="mb-3">
-                          <Label htmlFor="formrow-password-Input">{t('Organization')}</Label>
+                          <Label htmlFor="formrow-password-Input">{t('Organization', { ns: 'common' })}</Label>
                           <Input
                             type="select"
                             id="organization"

@@ -60,5 +60,8 @@
   "wkt-info-desc1": "Sample of supporting format of WKT",
   "wkt-info-desc2": "For more info , please refer wiki link",
   "new-updates": "new update(s)",
-  "chatbot-module": "Chatbot Module"
+  "chatbot-module": "Chatbot Module",
+  "field-empty-err": "The field can not be empty",
+  "psw-match-err": "Passwords must match",
+  "change-psw-not-available": "Sorry, changing passwords is not available at the moment"
 }

@@ -28,15 +28,15 @@ const ResetPsw = ({ t }) => {
 
   const pswResetSchema = Yup.object().shape({
     old_password: Yup.string()
-      .required('The field cannot be empty'),
+      .required(t('field-empty-err', { ns: 'common' })),
     new_password1: Yup.string()
       .matches(
         pwdRegEx,
         pwdValidationTxt
       )
-      .required('The field cannot be empty'),
+      .required(t('field-empty-err', { ns: 'common' })),
     new_password2: Yup.string()
-      .oneOf([Yup.ref('new_password1')], 'Passwords must match'),
+      .oneOf([Yup.ref('new_password1')], t('psw-match-err', { ns: 'common' })),
   });
 
   return (
@@ -45,7 +45,7 @@ const ResetPsw = ({ t }) => {
         <Card color="dark default-panel">
           <CardBody>
             <CardTitle className="mb-2 dflt-seperator">
-              <h3 className="h5 mb-0">Personal Details</h3>
+              <h3 className="h5 mb-0">{t('Personal Details')}</h3>
             </CardTitle>
             <Formik
               initialValues={{
@@ -159,7 +159,7 @@ const ResetPsw = ({ t }) => {
                     </>
                     :
                     <>
-                      <h5>Sorry, changing passwords is not available at the moment</h5>
+                      <h5>{t('change-psw-not-available', { ns: 'common' })}</h5>
                     </>
                   }
                 </Form>

@@ -84,7 +84,7 @@ const MyProfile = ({t}) => {
                       <Card color="dark default-panel">
                         <CardBody>
                           <CardTitle className="mb-2 dflt-seperator">
-                            <h3 className="h5 mb-0">{t('Selected Area of Interest')}</h3>
+                            <h3 className="h5 mb-0">{t('select-aoi')}</h3>
                           </CardTitle>
                           <AoiHelper />
                         </CardBody>

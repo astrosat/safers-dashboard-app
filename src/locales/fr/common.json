@@ -12,10 +12,10 @@
   "Admin": "Administratrice",
   "Profile": "Profil",
   "Logout": "Se déconnecter",
-  "Area of interest": "Lieu d'intérêt",
+  "Area of Interest": "Zone d'intérêt",
   "Select Area": "Sélectionnez la zone",
   "Warning": "Avertissement",
-  "Close": "proche",
+  "Close": "Fermer",
   "Yes": "Oui",
   "clear": "DÉGAGER",
   "save-aoi": "ENREGISTRER LA ZONE D'INTÉRÊT",
@@ -52,5 +52,10 @@
   "save-aoi-success-msg": "Zone d'intérêt définie avec succès",
   "open": "OUVRIR",
   "All" : "Toute",
-  "chatbot-module": "Module Chatbot"
+  "chatbot-module": "Module Chatbot",
+  "profile": "Profile",
+  "logout": "Déconnexion",
+  "field-empty-err": "Champs Obligatoire",
+  "psw-match-err": "Les mots de passe doivent être identiques",
+  "change-psw-not-available": "Désolé, le changement de mots de passe n'est pas disponible pour le moment"
 }

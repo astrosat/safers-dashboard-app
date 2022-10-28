@@ -48,13 +48,13 @@ const ProfileMenu = props => {
           <DropdownItem tag='a' href='/my-profile/view'>
             {' '}
             <i className='bx bx-user font-size-16 align-middle me-1' />
-            {props.t('Profile')}{' '}
+            <span className="text-capitalize">{props.t('profile')}{' '}</span>
           </DropdownItem>
           <div className='dropdown-divider' />
           <DropdownItem className='clickable' tag='span' onClick={() => { dispatch(signOut()) }}>
             {' '}
             <i className='bx bx-power-off font-size-16 align-middle me-1 text-danger logout' />
-            {props.t('Logout')}{' '}
+            <span className="text-capitalize">{props.t('logout')}{' '}</span>
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
@@ -68,4 +68,4 @@ ProfileMenu.propTypes = {
 }
 
 
-export default withTranslation()(ProfileMenu)
+export default withTranslation(['common'])(ProfileMenu)
