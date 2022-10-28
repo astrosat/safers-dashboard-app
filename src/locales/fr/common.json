@@ -1,9 +1,10 @@
 {
   "Dashboards": "Tableaux de bord",
-  "Dashboard": "Tableau de bord",
+  "Dashboard": "Données",
   "Default": "Défaut",
-  "Fire Alerts": "Alertes incendie",
-  "Data Layers": "Couches de données",
+  "fire-alerts": "Alertes incendie",
+  "Data Layers": "Données",
+  "in-situ-cameras": "Caméras sur site",
   "Events": "Événements",
   "Reports": "Rapports",
   "Notifications": "Avis",

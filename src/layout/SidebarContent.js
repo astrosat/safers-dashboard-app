@@ -123,21 +123,21 @@ const SidebarContent = (props) => {
             <li>
               <Link to='/fire-alerts' className=''>
                 <i className='bx bx-error-circle'></i>
-                <span>{props.t('Fire Alerts')}</span>
+                <span className='text-capitalize'>{props.t('fire-alerts')}</span>
                 {isNewAlert && <span className='new-info-indicator float-end'>{newAlertsCount}</span>}
               </Link>
             </li>
             <li>
               <Link to='/event-alerts' className=''>
                 <i className='bx bxs-hot'></i>
-                <span>{props.t('Events')}</span>
+                <span className='text-capitalize'>{props.t('Events')}</span>
                 {isNewEvent && <span className='new-info-indicator float-end'>{newEventsCount}</span>}
               </Link>
             </li>
             <li>
               <Link to='/data-layer' className=''>
                 <i className='bx bx-copy'></i>
-                <span>{props.t('Data Layers')}</span>
+                <span className='text-capitalize'>{props.t('Data Layers')}</span>
                 {isNewMapRequestAlert && !isMapRequestPageActive 
                   ? (
                     <span className='new-info-indicator float-end'>               
@@ -156,19 +156,19 @@ const SidebarContent = (props) => {
             <li>
               <Link to='/insitu-alerts'>
                 <i className='bx bx-image'></i>
-                <span>{props.t('In-Situ Cameras')}</span>
+                <span className='text-capitalize'>{props.t('in-situ-cameras')}</span>
               </Link>
             </li>
             <li>
               <Link to='/chatbot'>
                 <i className='bx bx-bot'></i>
-                <span>{props.t('Chatbot Module')}</span>
+                <span className='text-capitalize'>{props.t('Chatbot Module')}</span>
               </Link>
             </li>
             <li>
               <Link to='/notifications'>
                 <i className='bx bx-bell'></i>
-                <span>{props.t('Notifications')}</span>
+                <span className='text-capitalize'>{props.t('Notifications')}</span>
                 {isNewNotification && <span className='new-info-indicator float-end'>{newNotificationsCount}</span>}
               </Link>
             </li>
