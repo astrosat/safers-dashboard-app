@@ -107,7 +107,7 @@ const InfoContainer = ({t}) => {
               </Col>
               <Col md={10}>
                 <CardSubtitle className="my-auto">
-                  {t('Estimated damage')}: {event && event.damage ? event.damage :  'not recorded'}
+                  {t('estimated-damage')}: {event && event.damage ? event.damage :  'not recorded'}
                 </CardSubtitle>
               </Col>
             </Row>

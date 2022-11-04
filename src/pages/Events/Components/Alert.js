@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import { Badge, Card, CardBody, CardText, CardTitle, Col, Row } from 'reactstrap';
 import { formatDate } from '../../../store/utility';
+//i18n
+import { withTranslation } from 'react-i18next'
 
-const Alert = ({ card, alertId, setSelectedAlert, setFavorite }) => {
+const Alert = ({ card, alertId, setSelectedAlert, setFavorite, t }) => {
 
   const getBadge = () => {
     let iconColor = card.status == 'ONGOING' ? 'text-danger' : '';
@@ -68,7 +70,7 @@ const Alert = ({ card, alertId, setSelectedAlert, setFavorite }) => {
             <Row className='mt-2'>
               <Col>
                 <small className="text-muted card-desc date no-wrap">
-                  Start: {formatDate(card.start_date)} - End: {card.end_date ? formatDate(card.end_date, 'YYYY-MM-DD') : '-'}
+                  {t('Start', { ns: 'common' })}: {formatDate(card.start_date)} - {t('End', { ns: 'common' })}: {card.end_date ? formatDate(card.end_date, 'YYYY-MM-DD') : '-'}
                 </small>
               </Col>
               <Col md={2}>
@@ -90,6 +92,7 @@ Alert.propTypes = {
   alertId: PropTypes.string,
   setSelectedAlert: PropTypes.func,
   setFavorite: PropTypes.func,
+  t: PropTypes.func,
 }
 
-export default Alert;
+export default withTranslation(['events'])(Alert);

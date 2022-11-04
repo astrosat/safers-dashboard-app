@@ -112,7 +112,7 @@ const SortSection = ({ t,
                 data-testid="searchEvents"
                 name="searchEvents"
                 className='search-input'
-                placeholder='Search for an event'
+                placeholder={t('search-input-txt', { ns: 'events' })}
                 onChange={(e) => filterBySearchText(e.target.value)}
               />
             </InputGroup>

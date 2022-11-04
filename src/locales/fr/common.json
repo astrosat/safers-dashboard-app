@@ -64,5 +64,7 @@
   "event": "Événements",
   "urgency": "Urgence",
   "severity": "Sévérité",
-  "certainty": "Assurance"
+  "certainty": "Assurance",
+  "description": "Description",
+  "center": "Centre"
 }

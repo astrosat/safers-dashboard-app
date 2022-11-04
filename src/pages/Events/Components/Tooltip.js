@@ -103,7 +103,7 @@ const Tooltip = ({ object, coordinate, isEdit = false, setIsEdit, setFavorite, t
             </Col>
             <Col md={10} sm={10}>
               <CardSubtitle className="my-auto">
-                {event?.center ? `Center: ${event.center[0]}, ${event.center[1]}` : 'N/A'}
+                {event?.center ? `${t('center', { ns: 'common' })}: ${event.center[0]}, ${event.center[1]}` : 'N/A'}
               </CardSubtitle>
             </Col>
           </Row>
@@ -172,7 +172,7 @@ const Tooltip = ({ object, coordinate, isEdit = false, setIsEdit, setFavorite, t
             </Col>
             <Col >
               <CardSubtitle className="my-auto text-muted d-flex text-nowrap">
-                {t('Estimated damage')} : &nbsp;
+                {t('estimated-damage')} : &nbsp;
                 {
                   editToggle ?
                     <Input type='text' className='tootip-input ms-2' value={damage ? damage : ''} onChange={(e) => { setDamage(e.target.value) }} />

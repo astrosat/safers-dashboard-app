@@ -71,5 +71,6 @@
   "urgency": "urgency",
   "severity": "severity",
   "certainty": "certainty",
-  "description": "description"
+  "description": "description",
+  "center": "Center"
 }
