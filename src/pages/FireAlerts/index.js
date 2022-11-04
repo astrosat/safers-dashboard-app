@@ -82,7 +82,7 @@ const FireAlerts = ({ t }) => {
 
   useEffect(() => {
     if (alerts.length > filteredAlerts.length) {
-      toastr.success('New alerts are received. Please refresh the list.', '', { preventDuplicates: true, });
+      toastr.success(t('polling-alert-msg', { ns: 'fireAlerts' }), '', { preventDuplicates: true, });
     }
   }, [alerts]);
 
@@ -373,11 +373,11 @@ const FireAlerts = ({ t }) => {
                   value={alertSource}
                   data-testid="fireAlertSource"
                 >
-                  <option value={''}>Source : All</option>
+                  <option value={''}>{t('source')} : {t('all')}</option>
                   {sources.map((source, index) => {
                     return (
                       <option key={index} value={source}>
-                        Source : {source}
+                        {t('source')} : {source}
                       </option>
                     );
                   })}

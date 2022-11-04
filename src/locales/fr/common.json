@@ -57,5 +57,12 @@
   "logout": "Déconnexion",
   "field-empty-err": "Champs Obligatoire",
   "psw-match-err": "Les mots de passe doivent être identiques",
-  "change-psw-not-available": "Désolé, le changement de mots de passe n'est pas disponible pour le moment"
+  "change-psw-not-available": "Désolé, le changement de mots de passe n'est pas disponible pour le moment",
+  "source": "Source",
+  "all": "Toutes",
+  "category": "Catégorie",
+  "event": "Événements",
+  "urgency": "Urgence",
+  "severity": "Sévérité",
+  "certainty": "Assurance"
 }

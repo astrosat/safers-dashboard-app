@@ -120,8 +120,8 @@ const Tooltip = ({ object, coordinate, isEdit = false, setIsEdit, setFavorite, v
           <Row className='g-0'>
             <Col md={3}>
               <CardText className='mb-2'>
-                <small className="font-italic">
-                  Category:
+                <small className="font-italic text-capitalize">
+                  {t('category')}:
                 </small>
               </CardText>
             </Col>
@@ -135,8 +135,8 @@ const Tooltip = ({ object, coordinate, isEdit = false, setIsEdit, setFavorite, v
           <Row className='g-0'>
             <Col md={3}>
               <CardText className='mb-2'>
-                <small className="font-italic">
-                  Event:
+                <small className="font-italic text-capitalize">
+                  {t('event')}:
                 </small>
               </CardText>
             </Col>
@@ -150,8 +150,8 @@ const Tooltip = ({ object, coordinate, isEdit = false, setIsEdit, setFavorite, v
           <Row className='g-0'>
             <Col md={3}>
               <CardText className='mb-2'>
-                <small className="font-italic">
-                  Urgency:
+                <small className="font-italic text-capitalize">
+                  {t('urgency')}:
                 </small>
               </CardText>
             </Col>
@@ -165,8 +165,8 @@ const Tooltip = ({ object, coordinate, isEdit = false, setIsEdit, setFavorite, v
           <Row className='g-0'>
             <Col md={3}>
               <CardText className='mb-2'>
-                <small className="font-italic">
-                  Severity:
+                <small className="font-italic text-capitalize">
+                  {t('severity')}:
                 </small>
               </CardText>
             </Col>
@@ -180,8 +180,8 @@ const Tooltip = ({ object, coordinate, isEdit = false, setIsEdit, setFavorite, v
           <Row className='g-0'>
             <Col md={3}>
               <CardText className='mb-2'>
-                <small className="font-italic">
-                  Certainty:
+                <small className="font-italic text-capitalize">
+                  {t('certainty')}:
                 </small>
               </CardText>
             </Col>
@@ -196,7 +196,7 @@ const Tooltip = ({ object, coordinate, isEdit = false, setIsEdit, setFavorite, v
             <Col md={3}>
               <CardText className='mb-2'>
                 <small className="font-italic">
-                  Description:
+                  {t('description')}:
                 </small>
               </CardText>
             </Col>

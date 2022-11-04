@@ -63,5 +63,13 @@
   "chatbot-module": "Chatbot Module",
   "field-empty-err": "The field can not be empty",
   "psw-match-err": "Passwords must match",
-  "change-psw-not-available": "Sorry, changing passwords is not available at the moment"
+  "change-psw-not-available": "Sorry, changing passwords is not available at the moment",
+  "source": "Source",
+  "all": "All",
+  "category": "category",
+  "event": "event",
+  "urgency": "urgency",
+  "severity": "severity",
+  "certainty": "certainty",
+  "description": "description"
 }
