@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 //import { FlyToInterpolator, COORDINATE_SYSTEM } from 'deck.gl';
 import { FlyToInterpolator } from 'deck.gl';
 import { Nav, Row, Col, NavItem, NavLink, TabPane, TabContent } from 'reactstrap';
-import { useTranslation } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 
 import moment from 'moment';
 import Slider from 'react-rangeslider';
@@ -25,8 +26,7 @@ import wkt from 'wkt';
 import { isWKTValid } from '../../helpers/mapHelper';
 import { area as getFeatureArea,  bbox, bboxPolygon } from '@turf/turf';
 
-const DataLayerDashboard = () => {
-  const { t } = useTranslation();
+const DataLayerDashboard = ({ t }) => {
   const dispatch = useDispatch();
   const timer = useRef(null);
 
@@ -423,7 +423,7 @@ const DataLayerDashboard = () => {
                         }}
                         onClick={() => setActiveTab(DATA_LAYERS_PANELS.mapLayers)}
                       >
-                        {t('Operational Map Layers')}
+                        {t('operational-map-layer', { ns: 'dataLayers' })}
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -433,7 +433,7 @@ const DataLayerDashboard = () => {
                         }}
                         onClick={() => setActiveTab(DATA_LAYERS_PANELS.onDemandMapLayers)}
                       >
-                        {t('On-Demand Map Layers')}
+                        {t('on-demand-map-layer', {ns: 'dataLayers'})}
                       </NavLink>
                     </NavItem>
                   </Nav>
@@ -511,4 +511,8 @@ const DataLayerDashboard = () => {
   );
 };
 
-export default DataLayerDashboard;
+DataLayerDashboard.propTypes = {
+  t: PropTypes.func
+}
+
+export default withTranslation(['common', 'dataLayers'])(DataLayerDashboard);

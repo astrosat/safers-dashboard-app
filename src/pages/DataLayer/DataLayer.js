@@ -147,10 +147,10 @@ const DataLayer = ({
                   onChange={(e) => setLayerSource(e.target.value)}
                   value={layerSource}
                 >
-                  <option value={''} >Source: All</option>
+                  <option value={''} >{t('source')}: {t('all')}</option>
                   {operationalSourceOptions?.map((option) => (
                     <option key={option} value={option}>
-                      Source: {option}
+                      {t('source')}: {option}
                     </option>
                   )) ?? []}
                 </Input>
@@ -165,10 +165,10 @@ const DataLayer = ({
                   onChange={(e) => setDataDomain(e.target.value)}
                   value={dataDomain}
                 >
-                  <option value={''} >Domain: All</option>
+                  <option value={''} >{t('domain')}: {t('domain-all')}</option>
                   {operationalDomainOptions?.map((option) => (
                     <option key={option} value={option}>
-                      Domain: {option}
+                      {t('domain')}: {option}
                     </option>
                   )) ?? []}
                 </Input>

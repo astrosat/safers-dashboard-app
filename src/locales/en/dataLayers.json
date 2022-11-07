@@ -28,5 +28,7 @@
   "fuelMoistureContent": "Fuel Moisture Content [%]",
   "selectLayerTypes": "Select Data Layer Type(s)",
   "Confirm Delete Layer": "Are you sure you want to delete this request?",
-  "mapSelectionTxtGuide": "Enter Well Known Text or draw a polygon on the map"
+  "mapSelectionTxtGuide": "Enter Well Known Text or draw a polygon on the map",
+  "operational-map-layer": "Operational Map Layers",
+  "on-demand-map-layer": "On-Demand Map Layers"
 }

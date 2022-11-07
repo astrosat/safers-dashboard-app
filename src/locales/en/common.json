@@ -26,7 +26,6 @@
   "asc": "asc",
   "Results": "Results",
   "Search This Area": "Search This Area",
-  "Source": "Source",
   "save": "SAVE",
   "cancel": "Cancel",
   "create-event": "CREATE EVENT",
@@ -72,5 +71,7 @@
   "severity": "severity",
   "certainty": "certainty",
   "description": "description",
-  "center": "Center"
+  "center": "Center",
+  "domain": "Domain",
+  "domain-all": "All"
 }

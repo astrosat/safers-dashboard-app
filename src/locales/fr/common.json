@@ -26,7 +26,7 @@
   "asc": "ascendante",
   "Results": "Résultats",
   "Search This Area": "Rechercher dans cette zone",
-  "Source": "La source",
+  "source": "La source",
   "save": "SAUVEGARDER",
   "cancel": "Annuler",
   "create-event": "CRÉER UN ÉVÈNEMENT",
@@ -58,7 +58,6 @@
   "field-empty-err": "Champs Obligatoire",
   "psw-match-err": "Les mots de passe doivent être identiques",
   "change-psw-not-available": "Désolé, le changement de mots de passe n'est pas disponible pour le moment",
-  "source": "Source",
   "all": "Toutes",
   "category": "Catégorie",
   "event": "Événements",
@@ -66,5 +65,7 @@
   "severity": "Sévérité",
   "certainty": "Assurance",
   "description": "Description",
-  "center": "Centre"
+  "center": "Centre",
+  "domain": "Thème",
+  "domain-all": "Tous"
 }
