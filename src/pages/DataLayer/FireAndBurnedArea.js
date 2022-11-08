@@ -38,35 +38,6 @@ Yup.addMethod(Yup.date, 'max30Days', function (message) {
   )
 })
 
-const fireAndBurnedAreaSchema = Yup.object().shape({
-  dataLayerType: Yup.array()
-    .required('This field cannot be empty'),
-  requestTitle: Yup.string().required('This field cannot be empty'),
-  mapSelection: Yup.string()
-    .required('Should contain a valid Well-Known Text'),
-  isMapAreaValid: Yup.boolean()
-    .oneOf([true], 'Sorry, this would give too large an output. Reduce the spatial resolution or try a smaller area.'),
-  isMapAreaValidWKT: Yup.boolean()
-    .oneOf([true], 'Geometry needs to be valid WKT'),
-  startDate: Yup.date()
-    .typeError('Must be valid date selection')
-    .required('This field cannot be empty'),
-  endDate: Yup.date()
-    .typeError('Must be valid date selection')
-    .required('This field cannot be empty')
-    .max30Days('End date must be no greater than 30 days from start date'),
-  frequency: Yup.number()
-    .integer('This field must be an integer')
-    .typeError('This field must be a number')
-    .min(1, 'Should be at least 1')
-    .optional(), 
-  resolution: Yup.number()
-    .typeError('This field must be a number')
-    .min(10, 'Should be at least 10')
-    .max(60, 'Should be at most 60')
-    .optional('Should be between 10 and 60'), 
-});
-
 const FireAndBurnedArea = ({ 
   t,
   handleResetAOI,
@@ -76,6 +47,35 @@ const FireAndBurnedArea = ({
 }) => {
   const dispatch = useDispatch();
   const error = useSelector(state => state.auth.error);
+
+  const fireAndBurnedAreaSchema = Yup.object().shape({
+    dataLayerType: Yup.array()
+      .required(t('field-empty-err', { ns: 'common' })),
+    requestTitle: Yup.string().required(t('field-empty-err', { ns: 'common' })),
+    mapSelection: Yup.string()
+      .required(t('field-err-vallid-wkt', {ns: 'dataLayers'})),
+    isMapAreaValid: Yup.boolean()
+      .oneOf([true], t('field-err-wkt-large-area', {ns: 'dataLayers'})),
+    isMapAreaValidWKT: Yup.boolean()
+      .oneOf([true], t('field-err-vallid-wkt', {ns: 'dataLayers'})),
+    startDate: Yup.date()
+      .typeError(t('field-err-valid-date'))
+      .required(t('field-empty-err', { ns: 'common' })),
+    endDate: Yup.date()
+      .typeError(t('field-err-valid-date'))
+      .required(t('field-empty-err', { ns: 'common' }))
+      .max30Days(t('field-err-endDate-duration')),
+    frequency: Yup.number()
+      .integer(t('field-err-integer'))
+      .typeError(t('field-err-number'))
+      .min(1, 'Should be at least 1')
+      .optional(), 
+    resolution: Yup.number()
+      .typeError(t('field-err-number'))
+      .min(10, t('field-err-min', {min: 10}))
+      .max(60, t('field-err-max', {max: 60}))
+      .optional(t('field-err-between', {min: 10, max: 60})), 
+  });
 
   const onSubmit = (formData) => {
     const payload = {

@@ -105,28 +105,28 @@ const OnDemandDataLayer = ({
         style={{ maxWidth: '50rem' }}
       >
         <div className='d-flex flex-column align-items-center p-5'>
-          <h2>{t('Select Data Type')}</h2>
+          <h2>{t('select-data-type', {ns: 'dataLayers'})}</h2>
           <div className='d-flex flex-nowrap gap-5 my-5'>
             <button
               value={DATA_LAYERS_PANELS.fireAndBurnedAreas} 
               onClick={handleDialogButtonClick}
               className='data-layers-dialog-btn'
             >
-              {t('Fire and Burned Area')}
+              {t('fireAndBurnedAreas' , {ns: 'dataLayers'})}
             </button>
             <button 
               value={DATA_LAYERS_PANELS.postEventMonitoring} 
               onClick={handleDialogButtonClick}
               className='data-layers-dialog-btn'
             >
-              {t('Post Event Monitoring')}
+              {t('post-event-monitoring', {ns: 'dataLayers'})}
             </button>
             <button
               value={DATA_LAYERS_PANELS.wildfireSimulation} 
               onClick={handleDialogButtonClick}
               className='data-layers-dialog-btn'
             >
-              {t('Wildfire Simulation')}
+              {t('wildfireSimulation', {ns: 'dataLayers'})}
             </button>
           </div>
           <button 
@@ -222,7 +222,7 @@ const OnDemandDataLayer = ({
                 <Input
                   id="searchEvent"
                   name="searchEvent"
-                  placeholder="Search by keyword"
+                  placeholder={t('search-by-keyword')}
                   autoComplete="on"
                   onChange={handleSearch}
                 />

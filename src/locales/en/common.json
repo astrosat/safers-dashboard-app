@@ -73,5 +73,11 @@
   "description": "description",
   "center": "Center",
   "domain": "Domain",
-  "domain-all": "All"
+  "domain-all": "All",
+  "search-by-keyword": "Search by keyword",
+  "field-error-valid-date": "Must be valid date selection",
+  "field-err-number": "This field must be an integer",
+  "field-err-min": "Should be at least {{min}}",
+  "field-err-max": "Should be at least {{max}}",
+  "field-err-between": "Should be between {{min}} and {{max}}"
 }

@@ -192,7 +192,7 @@ const DataLayer = ({
               <Input
                 id="searchEvent"
                 name="searchEvent"
-                placeholder="Search by keyword"
+                placeholder={t('search-by-keyword')}
                 autoComplete="on"
                 onChange={handleSearch}
               />

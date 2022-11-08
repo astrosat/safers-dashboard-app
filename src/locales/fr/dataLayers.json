@@ -15,5 +15,11 @@
   "resolution": "Résolution spatiale (m)",
   "Confirm Delete Layer": "Are you sure you want to delete this request?",
   "operational-map-layer": "Données cartographiques opérationelles",
-  "on-demand-map-layer": "Données cartographiques a la demande"
+  "on-demand-map-layer": "Données cartographiques a la demande",
+  "select-data-type": "Rechercher par type de donnée",
+  "post-event-monitoring": "Surveillance post événement",
+  "wildfireSimulation": "Similation incendie",
+  "field-err-vallid-wkt": "Should contain a valid Well-Known Text",
+  "field-err-wkt-large-area": "Sorry, this would give too large an output. Reduce the spatial resolution or try a smaller area.",
+  "field-err-endDate-duration": "End date must be no greater than 30 days from start date"
 }
