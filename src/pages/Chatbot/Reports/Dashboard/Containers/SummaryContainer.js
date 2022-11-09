@@ -51,10 +51,10 @@ const SummaryContainer = ({ reportDetail, t }) => {
             <span>{t('Hazard Type')}: {reportDetail.hazard}</span>
           </Row>
           <Row className='my-2'>
-            <span>{t('Status')}: {reportDetail.status}</span>
+            <span>{t('status', { ns: 'common' })}: {reportDetail.status}</span>
           </Row>
           <Row className='my-2'>
-            <span>{t('Category')}: {reportDetail.categories.join(', ')}</span>
+            <span>{t('category', { ns: 'common' })}: {reportDetail.categories.join(', ')}</span>
           </Row>
           <Row className='my-2'>
             <Col lg={2} id="cat-info">

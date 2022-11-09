@@ -74,8 +74,8 @@ const SortSection = ({
             }}
           >
             <option value=''>{t('All')}</option>
-            <option value={true}>{t('Assigned to Mission')}</option>
-            <option value={false}>{t('Unassigned to Mission')}</option>
+            <option value={true}>{t('filter-assigned-to', { ns: 'chatBot' })}</option>
+            <option value={false}>{t('filter-unassigned-to', { ns: 'chatBot' })}</option>
           </Input>
         </Col>
         <Col xl={4} />
@@ -118,9 +118,9 @@ const SortSection = ({
             data-testid='reportAlertCategory'
             value={category}
           >
-            <option value={''}>{t('Category')}: All</option>
+            <option value={''}>{t('category')}: {t('all')}</option>
             {selectOptions.map((option) => (
-              <option key={option.toLowerCase()} value={option}>{t('Category')}: {option}</option>
+              <option key={option.toLowerCase()} value={option}>{t('category')}: {option}</option>
             ))}
           </Input>
         </Col>

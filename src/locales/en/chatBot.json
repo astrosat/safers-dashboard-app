@@ -10,5 +10,7 @@
   "Select Date": "Please select start/end date",
   "update-notification": "New updates available. Please refresh the list.",
   "create-new-msg": "create New Message",
-  "create-new-mission": "Create New Mission"
+  "create-new-mission": "Create New Mission",
+  "filter-assigned-to": "Assigned to Mission",
+  "filter-unassigned-to": "Unassigned to Mission"
 }
