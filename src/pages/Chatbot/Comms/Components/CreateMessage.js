@@ -85,7 +85,7 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
   const validateRestriction = (returnErr=false) => {
     const tempError = {...errors};
     if (scope && scope == 'Restricted' && (!restriction || restriction === '')) {
-      tempError['restriction'] = 'This field is required';
+      tempError['restriction'] = t('field-empty-err', { ns: 'common' });
     } 
     else {
       delete tempError['restriction'];
@@ -99,10 +99,10 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
   const validateCoord = (returnErr=false) => {
     const tempError = {...errors};
     if (!coordinates || coordinates === '') {
-      tempError['coordinates'] = t('Select Area', { ns: 'chatBot' });
+      tempError['coordinates'] = t('field-err-select-area', { ns: 'chatBot' });
     }
     else if (!validCoords) {
-      tempError['coordinates'] = t('Correct Coordinates', { ns: 'chatBot' });
+      tempError['coordinates'] = t('field-err-correct-coord', { ns: 'chatBot' });
     }
     else {
       delete tempError['coordinates'];
@@ -117,7 +117,7 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
   const validateField = (attrib, val, returnErr=false) => {
     const tempError = {...errors};
     if(!val || val == ''){
-      tempError[attrib] = attrib === 'dateRange' ? t('Select Date', { ns: 'chatBot' }) : t('This field is required');
+      tempError[attrib] = attrib === 'dateRange' ? t('field-err-valid-date', { ns: 'common' }) : t('field-empty-err', { ns: 'common' });
     }
     else {
       delete tempError[attrib];
@@ -159,7 +159,7 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
       <FormGroup className="form-group mt-3">
         <DateRangePicker
           type='text'
-          placeholder={t('Start Date | End date')}
+          placeholder={`${t('Start', {ns: 'common'})} ${t('Date', {ns: 'common'})} | ${t('End', {ns: 'common'})} ${t('Date', {ns: 'common'})}`}
           className={`${getError('dateRange', errors, errors)}`}
           setDates={handleDateRangePicker}
           isTooltipInput={true}
@@ -183,9 +183,9 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
         />
         {getError('coordinates', errors, errors, false)}
       </FormGroup>
-      <Label className='form-label mt-3 mb-0'>{t('Organization')}: {orgName}</Label>
+      <Label className='form-label mt-3 mb-0'>{t('organisation', {ns: 'common'})}: {orgName}</Label>
       <Row className='my-3'>
-        <Col xl={1} md={2}><Label htmlFor="target">{t('Target')}: </Label></Col>
+        <Col xl={1} md={2}><Label htmlFor="target">{t('target' , {ns: 'common'})}: </Label></Col>
         <Col xl={5} className="pe-xl-0 text-center">
           <Input
             id="scope"
@@ -195,9 +195,9 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
             onChange={(e) => { setScope(e.target.value) }}
             onBlur={(e) => {validateField('scope', e.target.value)}}
           >
-            <option value="">--{t('Scope')}--</option>
-            <option value="Public">{t('Public')}</option>
-            <option value="Restricted">{t('Restricted')}</option>
+            <option value="">--{t('scope', {ns: 'common'})}--</option>
+            <option value="Public">{t('public', {ns: 'common'})}</option>
+            <option value="Restricted">{t('restricted', {ns: 'common'})}</option>
           </Input>
           {getError('scope', errors, errors, false)}
         </Col>
@@ -225,7 +225,7 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
           className={`${getError('desc', errors, errors)}`}
           type='textarea'
           name="message-description"
-          placeholder={t('Message Description', { ns: 'chatBot' })}
+          placeholder={t('msg-desc', { ns: 'chatBot' })}
           onChange={(e) => { setDesc(e.target.value); }}
           onBlur={(e) => {validateField('desc', e.target.value)}}
           rows="10"
@@ -237,14 +237,14 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
           type="button"
           onClick={onCancel}
         >
-          {t('Cancel')}
+          {t('cancel', { ns: 'common' })}
         </Button>
         <Button
           type="button"
           className="mx-3"
           onClick={submitMsg}
         >
-          {t('Send')}
+          {t('send', { ns: 'common' })}
         </Button>
       </div>
     </>

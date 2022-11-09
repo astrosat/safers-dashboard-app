@@ -41,8 +41,8 @@ const SortSection = ({ t, commStatus, sortOrder, setcommStatus, setSortOrder, ta
     <>
       <Row>
         <Col>      
-          <Button onClick={setTogglePolygonMap}>
-            Create New Message
+          <Button onClick={setTogglePolygonMap} className="text-capitalize">
+            {t('create-new-msg' , {ns: 'chatBot'})}
           </Button>   
         </Col>
         <Col className="d-flex justify-content-end">
@@ -83,7 +83,7 @@ const SortSection = ({ t, commStatus, sortOrder, setcommStatus, setSortOrder, ta
             value={commStatus}
             data-testid='commStatus'
           >
-            <option value={''} >--Status--</option>
+            <option value={''} >--{t('status')}--</option>
             <option value="Ongoing" >{t('ongoing').toUpperCase()}</option>
             <option value="Expired" >{t('expired').toUpperCase()}</option>
           </Input>
@@ -100,10 +100,10 @@ const SortSection = ({ t, commStatus, sortOrder, setcommStatus, setSortOrder, ta
             data-testid='target'
           >
             <option value={''} >--Target--</option>
-            <option value="Public">{t('Public')}</option>
-            <option value="Citizen">{t('Citizen')}</option>
-            <option value="Professional">{t('Professional')}</option>
-            <option value="Organization">{t('Organisation')}</option>
+            <option value="Public" className='text-capitalization'>{t('public')}</option>
+            <option value="Citizen" className='text-capitalization'>{t('citizen')}</option>
+            <option value="Professional" className='text-capitalization'>{t('professional')}</option>
+            <option value="Organization" className='text-capitalization'>{t('organisation')}</option>
           </Input>
         </Col>
       </Row>

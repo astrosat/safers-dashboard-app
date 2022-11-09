@@ -1,14 +1,14 @@
 {
   "Assigned to": "Assigned to",
-  "msg-desc": "Message Description",
+  "msg-desc": "Description du message",
   "mission-desc": "Mission Description",
   "Team": "Team",
-  "Map Selection": "Please edit and draw on the map",
-  "field-err-correct-coord": "Please correct your coordinates",
+  "Map Selection": "Modifier et dessiner sur la carte",
+  "Correct Coordinates": "Please correct your coordinates",
   "Message Title": "Message Title",
   "Mission Title": "Mission Title",
-  "field-err-select-area": "Please select your area on the map",
+  "Select Area": "Please select your area on the map",
   "Select Date": "Please select start/end date",
   "update-notification": "New updates available. Please refresh the list.",
-  "create-new-msg": "create New Message"
+  "create-new-msg": "Créer un nouveau message"
 }

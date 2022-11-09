@@ -90,11 +90,11 @@ const SortSection = ({
             value={status}
             data-testid='status'
           >
-            <option value={''} >--Status--</option>
-            <option value="Active" >{t('Active').toUpperCase()}</option>
-            <option value="Off" >{t('Off').toUpperCase()}</option>
-            <option value="Ready" >{t('Ready').toUpperCase()}</option>
-            <option value="Moving" >{t('Moving').toUpperCase()}</option>
+            <option value={''} >--{t('status')}--</option>
+            <option value="Active" >{t('active').toUpperCase()}</option>
+            <option value="Off" >{t('off').toUpperCase()}</option>
+            <option value="Ready" >{t('ready').toUpperCase()}</option>
+            <option value="Moving" >{t('moving').toUpperCase()}</option>
           </Input>
         </Col>
         <Col xl={4} className='my-1'>
@@ -108,7 +108,7 @@ const SortSection = ({
             value={activity}
             data-testid='activity'
           >
-            <option value={''} >--Activity--</option>
+            <option value={''} className="text-capitalize">--{t('activity')}--</option>
             {activitiesOptions.map(option => (
               <option key={option} value={t(`${option}`)}>{option}</option>
             ))}

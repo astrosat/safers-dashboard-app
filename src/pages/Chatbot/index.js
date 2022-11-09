@@ -11,6 +11,8 @@ import Missions from './Missions';
 import { GENERAL } from '../../constants/common';
 import { useNavigate } from 'react-router-dom';
 
+import { withTranslation } from 'react-i18next'
+
 const Chatbot = () => {
 
   const [customActiveTab, setCustomActiveTab] = useState();
@@ -64,7 +66,7 @@ const Chatbot = () => {
                 }}
               >
                 <span className='d-none d-sm-block me-2'><i className='fas fa-user-alt'></i></span>
-                <span className='d-block'>{t('People')}</span>
+                <span className='d-block'>{t('people', {ns: 'common'})}</span>
               </NavLink>
             </NavItem>
             <NavItem>
@@ -79,7 +81,7 @@ const Chatbot = () => {
                 data-testid="updateProfilePasswordBtn"
               >
                 <span className='d-none d-sm-block me-2'><i className='fas fa-envelope'></i></span>
-                <span className='d-block'>{t('Comms')}</span>
+                <span className='d-block'>{t('comms')}</span>
               </NavLink>
             </NavItem>
             <NavItem>
@@ -132,4 +134,4 @@ const Chatbot = () => {
   );
 }
 
-export default Chatbot;
+export default withTranslation(['common'])(Chatbot);

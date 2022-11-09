@@ -230,7 +230,7 @@ const CreateMission = ({ t, onCancel, coordinates, setCoordinates }) => {
         className={`${getError('desc', errors, errors)}`}
         type='textarea'
         name="mission-description"
-        placeholder={t('Mission Description', { ns: 'chatBot' })}
+        placeholder={t('mission-desc', { ns: 'chatBot' })}
         onChange={(e) => {setDesc(e.target.value)}}
         onBlur={(e)=>{validateField('desc', e.target.value)}}
         value={desc}
