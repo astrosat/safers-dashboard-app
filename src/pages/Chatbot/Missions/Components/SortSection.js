@@ -44,7 +44,7 @@ const SortSection = ({ t, missionStatus, sortOrder, setMissionStatus, setSortOrd
         <Col>
           <Button
             onClick={setTogglePolygonMap}>
-            Create New Mission
+            {t('create-new-mission' , {ns: 'chatBot'})}
           </Button>
         </Col>
         <Col xl={4} className="d-flex justify-content-end">
@@ -85,9 +85,9 @@ const SortSection = ({ t, missionStatus, sortOrder, setMissionStatus, setSortOrd
             value={missionStatus}
             data-testid='missionStatus'
           >
-            <option value={''} >--Status--</option>
+            <option value={''} >--{t('status')}--</option>
             <option value="Created" >{t('created').toUpperCase()}</option>
-            <option value="Taken In Charge" >{t('taken in charge').toUpperCase()}</option>
+            <option value="Taken In Charge" >{t('take-in-charge').toUpperCase()}</option>
             <option value="Completed" >{t('completed').toUpperCase()}</option>
           </Input>
         </Col>

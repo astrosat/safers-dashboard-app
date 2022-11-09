@@ -75,7 +75,7 @@ const CreateMission = ({ t, onCancel, coordinates, setCoordinates }) => {
   const validateField = (attrib, val, returnErr=false) => {
     const tempError = {...errors};
     if(!val || val == ''){
-      tempError[attrib] = t('This field is required');
+      tempError[attrib] = t('field-empty-err');
     }
     else {
       delete tempError[attrib];
@@ -89,10 +89,10 @@ const CreateMission = ({ t, onCancel, coordinates, setCoordinates }) => {
   const validateCoord = (returnErr=false) => {
     const tempError = {...errors};
     if (!coordinates || coordinates === '') {
-      tempError['coordinates'] = t('Select Area', { ns: 'chatBot' });
+      tempError['coordinates'] = t('field-err-select-area', { ns: 'chatBot' });
     }
     else if (!validCoords) {
-      tempError['coordinates'] = t('Correct Coordinates', { ns: 'chatBot' });
+      tempError['coordinates'] = t('field-err-correct-coord', { ns: 'chatBot' });
     }
     else {
       delete tempError['coordinates'];
@@ -136,7 +136,7 @@ const CreateMission = ({ t, onCancel, coordinates, setCoordinates }) => {
         id="mission-title-input"
         className={`${getError('title', errors, errors)}`}
         name="title"
-        placeholder={t('Mission Title', { ns: 'chatBot' })}
+        placeholder={t('mission-title', { ns: 'chatBot' })}
         type="text"
         onChange={(e) => {setTitle(e.target.value);}}
         onBlur={(e) => {validateField('title', e.target.value)}}
@@ -148,7 +148,7 @@ const CreateMission = ({ t, onCancel, coordinates, setCoordinates }) => {
     <FormGroup className="form-group mt-3">
       <DateRangePicker
         type='text'
-        placeholder={`${t('Start Date')} - ${t('End Date')}`}
+        placeholder={`${t('Start', {ns: 'common'})} ${t('Date', {ns: 'common'})} | ${t('End', {ns: 'common'})} ${t('Date', {ns: 'common'})}`}
         className={`${getError('dateRange', errors, errors)}`}
         setDates={handleDateRangePicker}
         defaultDateRange={dateRange}
@@ -174,9 +174,9 @@ const CreateMission = ({ t, onCancel, coordinates, setCoordinates }) => {
       {getError('coordinates', errors, errors, false)}
     </FormGroup>
     <div className='mt-3'>
-      <Label className='fw-bold' htmlFor="target">{t('Assign To')}: </Label>
+      <Label className='fw-bold' htmlFor="target">{t('assign-to')}: </Label>
       <Row>
-        <Col><Label className='form-label mt-3 mb-0'>{t('Organisation')}: {orgName}</Label></Col>
+        <Col><Label className='form-label mt-3 mb-0'>{t('organisation')}: {orgName}</Label></Col>
         <Col>
           <Input
             id="team"
@@ -191,7 +191,7 @@ const CreateMission = ({ t, onCancel, coordinates, setCoordinates }) => {
             }}
             value={teamId}
           >
-            <option value={''} >--{t('Team')}--</option>
+            <option value={''} >--{t('team')}--</option>
             {
               teamList?.map(team => {
                 return (
@@ -211,7 +211,7 @@ const CreateMission = ({ t, onCancel, coordinates, setCoordinates }) => {
             onChange={(e) => { setChatbotUserId(e.target.value); validate(); }}
             value={chatbotUserId}
           >
-            <option value={''} >--{t('Chatbot User')}--</option>
+            <option value={''} >--{t('chatbot-user')}--</option>
             {
               teamList?.find(team => team.id == teamId)?.members.map(member => {
                 return (
@@ -243,14 +243,14 @@ const CreateMission = ({ t, onCancel, coordinates, setCoordinates }) => {
         type="button"
         onClick={onCancel}
       >
-        {t('Cancel')}
+        {t('cancel')}
       </Button>
       <Button
         type="button"
         className="mx-3"
         onClick={submitMsg}
       >
-        {t('Send')}
+        {t('send')}
       </Button>
     </div>
   </>)

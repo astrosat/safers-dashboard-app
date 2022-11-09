@@ -95,7 +95,7 @@ const Chatbot = () => {
                 }}
               >
                 <span className='d-none d-sm-block me-2'><i className='fas fa-flag-checkered'></i></span>
-                <span className='d-block'>{t('Mission', { ns: 'common' })}</span>
+                <span className='d-block'>{t('mission', { ns: 'common' })}</span>
               </NavLink>
             </NavItem>
             <NavItem>
