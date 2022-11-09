@@ -7,5 +7,10 @@
   "cl1-txt": "feux de bois/végétaux",
   "cl2-txt": "incendies impliquant des matériaux/liquides inflammables",
   "cl3-txt": "incendies impliquant des gaz",
-  "geo-direction-txt": "Direction géographique du feu par rapport à la position de la caméra"
+  "geo-direction-txt": "Direction géographique du feu par rapport à la position de la caméra",
+  "cam-data": "Donnée",
+  "cam-number": "Nombre de caméra",
+  "cam-location": "Lieu des caméras",
+  "cam-direction": "Direction des caméras",
+  "cam-last-feed": "Dernier chargement des informations"
 }

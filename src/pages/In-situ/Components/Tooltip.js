@@ -7,7 +7,10 @@ import {
 import { Popup } from 'react-map-gl';
 import { formatDate } from '../../../store/utility';
 
-const Tooltip = ({ object }) => {
+//i18n
+import { withTranslation } from 'react-i18next'
+
+const Tooltip = ({ object, t }) => {
   const obj = (object?.objects) ? object.objects : [object.object];
 
   return (
@@ -26,23 +29,23 @@ const Tooltip = ({ object }) => {
             <div className='my-2 m-4 map-tooltip'>
               <Row className='mb-2'>
                 <Col md={2} className='d-flex g-0 text-white'>
-                  <b>Data:</b>
+                  <b>{t('cam-data')}:</b>
                 </Col>
                 <Col md={10} className='text-white ms-auto'>
-                  <p className='mb-1'>Camera Number: {id}</p>
+                  <p className='mb-1'>{t('cam-number')}: {id}</p>
                   <p className='mb-1'>
-                    Camera Location: Lon. {location.longitude}, 
+                    {t('cam-location')}: Lon. {location.longitude}, 
                     Lat. {location.latitude}
                   </p>
-                  <p className='mb-1'>Camera Direction: {direction}&#176;</p>
+                  <p className='mb-1'>{t('cam-direction')}: {direction}&#176;</p>
                   <p className='mb-1'>
-                    Last Uploaded feed: {last_update ? formatDate(last_update) : '-'}
+                    {t('cam-last-feed')}: {last_update ? formatDate(last_update) : '-'}
                   </p>
                 </Col>
               </Row>
               <Row>
                 <Col md={2} className='d-flex g-0 text-white'>
-                  <b>Info:</b>
+                  <b>{t('Info', {ns: 'common'})}:</b>
                 </Col>
                 <Col md={10}>
                   {description}
@@ -61,6 +64,7 @@ const Tooltip = ({ object }) => {
 Tooltip.propTypes = {
   coordinate: PropTypes.array,
   object: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  t: PropTypes.func
 }
 
-export default Tooltip;
+export default withTranslation(['inSitu'])(Tooltip);

@@ -7,5 +7,11 @@
   "cl1-txt": "fires invloving wood/plants",
   "cl2-txt": "fires invloving flammable materials / liquids",
   "cl3-txt": "fires invloving gases",
-  "geo-direction-txt": "Geographical direction  of the fire respect to the position of the camera"
+  "geo-direction-txt": "Geographical direction  of the fire respect to the position of the camera",
+  "cam-data": "Data",
+  "cam-number": "Camera Number",
+  "cam-location": "Camera Location",
+  "cam-direction": "Camera Direction",
+  "cam-last-feed": "Last Uploaded feed",
+  "cam-info": "Last Uploaded feed"
 }
