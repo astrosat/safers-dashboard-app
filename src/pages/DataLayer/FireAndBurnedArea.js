@@ -57,18 +57,18 @@ const FireAndBurnedArea = ({
     isMapAreaValid: Yup.boolean()
       .oneOf([true], t('field-err-wkt-large-area', {ns: 'dataLayers'})),
     isMapAreaValidWKT: Yup.boolean()
-      .oneOf([true], t('field-err-vallid-wkt', {ns: 'dataLayers'})),
+      .oneOf([true], t('field-err-vallid-wkt', {ns: 'common'})),
     startDate: Yup.date()
-      .typeError(t('field-err-valid-date'))
+      .typeError(t('field-err-valid-date' , { ns: 'common' }))
       .required(t('field-empty-err', { ns: 'common' })),
     endDate: Yup.date()
-      .typeError(t('field-err-valid-date'))
+      .typeError(t('field-err-valid-date' , { ns: 'common' }))
       .required(t('field-empty-err', { ns: 'common' }))
-      .max30Days(t('field-err-endDate-duration')),
+      .max30Days(t('field-err-endDate-duration', {ns: 'dataLayers'})),
     frequency: Yup.number()
       .integer(t('field-err-integer'))
       .typeError(t('field-err-number'))
-      .min(1, 'Should be at least 1')
+      .min(1, t('field-err-min', { ns: 'common', min: 1 }))
       .optional(), 
     resolution: Yup.number()
       .typeError(t('field-err-number'))
@@ -174,7 +174,7 @@ const FireAndBurnedArea = ({
                               multiple
                             >
                               <option disabled value=''>
-                                {t('selectLayerTypes')}
+                                {t('selectLayerTypes', {ns: 'dataLayers'})}
                               </option>
                               {layerTypes.map(item => (
                                 <option key={`option_${item.name}`} value={item.id}>{`${item.id} - ${item.name}`}</option>

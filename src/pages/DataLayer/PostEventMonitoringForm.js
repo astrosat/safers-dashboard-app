@@ -30,32 +30,6 @@ const MIN_START_DATE = {
 };
 const MIN_END_DATE = '2018-05-02';
 
-const postEventMonitoringSchema = Yup.object().shape({
-  dataLayerType: Yup.array()
-    .required('This field cannot be empty'),
-  requestTitle: Yup.string().required('This field cannot be empty'),
-  mapSelection: Yup.string()
-    .typeError('Selected area must be valid Well-Known Text')
-    .required('Should contain a valid Well-Known Text'),
-  isMapAreaValid: Yup.boolean()
-    .oneOf([true], `Selected Area must be no greater than ${MAX_GEOMETRY_AREA.label}`),
-  isMapAreaValidWKT: Yup.boolean()
-    .oneOf([true], 'Geometry needs to be valid WKT'),
-  startDate: Yup.date()
-    .typeError('Must be valid date selection')
-    .required('This field cannot be empty')
-    .min(
-      MIN_START_DATE.date, 
-      `Date must be at least ${MIN_START_DATE.label}`
-    ),
-  endDate: Yup.date()
-    .typeError('Must be valid date selection')
-    .min(
-      MIN_END_DATE, 
-      `Date must be greater than ${MIN_START_DATE.label}`
-    )
-});
-
 const PostEventMonitoring = ({
   t,
   handleResetAOI,
@@ -64,6 +38,32 @@ const PostEventMonitoring = ({
 }) => {
   const dispatch = useDispatch();
   const error = useSelector(state => state.auth.error);
+
+  const postEventMonitoringSchema = Yup.object().shape({
+    dataLayerType: Yup.array()
+      .required(t('field-empty-err', { ns: 'common' })),
+    requestTitle: Yup.string().required(t('field-empty-err', { ns: 'common' })),
+    mapSelection: Yup.string()
+      .typeError(t('field-err-vallid-wkt', {ns: 'dataLayers'}))
+      .required(t('field-err-vallid-wkt', {ns: 'dataLayers'})),
+    isMapAreaValid: Yup.boolean()
+      .oneOf([true], t('field-err-area-greater-than', {ns: 'dataLayers', maxgeoarea: MAX_GEOMETRY_AREA.label})),
+    isMapAreaValidWKT: Yup.boolean()
+      .oneOf([true], t('field-err-geometry-valid', {ns: 'dataLayers'})),
+    startDate: Yup.date()
+      .typeError(t('field-err-valid-date', {ns: 'common'}))
+      .required(t('field-empty-err', { ns: 'common' }))
+      .min(
+        MIN_START_DATE.date, 
+        t('field-err-date-min', {ns: 'dataLayers', datemin: MIN_START_DATE.label})
+      ),
+    endDate: Yup.date()
+      .typeError(t('field-err-valid-date', {ns: 'common'}))
+      .min(
+        MIN_END_DATE, 
+        t('field-err-date-above', {ns: 'dataLayers', datemin: MIN_START_DATE.label})
+      )
+  });
 
   const onSubmit = (formData) => {
     const payload = {
@@ -127,7 +127,7 @@ const PostEventMonitoring = ({
                           <Col className="d-flex justify-content-end align-items-center">
                             <Button color='link'
                               onClick={handleResetAOI} className='p-0'>
-                              {t('default-aoi')}
+                              {t('default-aoi', {ns: 'common'})}
                             </Button>
                           </Col>
                         </Row>
@@ -135,7 +135,7 @@ const PostEventMonitoring = ({
                           {getGeneralErrors(error)}
                         </Row>
                         <Row>
-                          <h5>{t('postEventMonitoring')}</h5>
+                          <h5>{t('postEventMonitoring', {ns: 'common'})}</h5>
                         </Row>
                         <Row>
                           <FormGroup className="form-group">
@@ -155,7 +155,7 @@ const PostEventMonitoring = ({
                               multiple
                             >
                               <option disabled value=''>
-                      Select Data Layer Type(s)
+                                {t('selectLayerTypes', {ns: 'dataLayers'})}
                               </option>
                               {layerTypes.map(item => (
                                 <option key={`option_${item.name}`} value={item.id}>{`${item.id} - ${item.name}`}</option>

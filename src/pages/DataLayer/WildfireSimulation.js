@@ -56,55 +56,7 @@ Yup.addMethod(Yup.number, 'uniqueTimeOffset', function (message) {
   )
 })
 
-const WildfireSimulationSchema = Yup.object().shape({
-  simulationTitle: Yup.string()
-    .required('This field cannot be empty'),
-  simulationDescription: Yup.string()
-    .required('This field cannot be empty'),
-  simulationTimeLimit: Yup.number()
-    .typeError('This field must be a number')
-    .min(1, `Simulation time limit must be between 1 and ${TIME_LIMIT} hours`)
-    .max(TIME_LIMIT, `Simulation time limit must be between 1 and ${TIME_LIMIT} hours`)
-    .required('This field cannot be empty'),
-  probabilityRange: Yup.string()
-    .required('This field cannot be empty'),
-  mapSelection: Yup.string()
-    .typeError('Area must be valid Well-Known Text')
-    .required('Should contain a valid Well-Known Text'),
-  isMapAreaValid: Yup.boolean()
-    .oneOf([true], `Area must be no greater than ${MAP.MAX_GEOMETRY_AREA.label}`),
-  isMapAreaValidWKT: Yup.boolean()
-    .oneOf([true], 'Geometry needs to be valid WKT'),
-  ignitionDateTime: Yup.date()
-    .typeError('This field must be a valid date selection')
-    .required('This field cannot be empty'),
-  boundaryConditions: Yup
-    .array()
-    .of(
-      Yup.object().shape({
-        timeOffset: Yup.number()
-          .typeError('This field must be a number')
-          .min(0, `Time offset must be between 1 and ${TIME_LIMIT} hours`)
-          .max(TIME_LIMIT, `Time offset must be between 1 and ${TIME_LIMIT} hours`)
-          .uniqueTimeOffset('Time offset values must be unique')
-          .required('This field cannot be empty'),
-        windDirection: Yup.number('This field must be a number')
-          .typeError('This field must be a number')
-          .min(0, 'Wind direction must be between 0 and 360 degrees')
-          .max(360, 'Wind direction must be between 0 and 360 degrees')
-          .required('This field cannot be empty'),
-        windSpeed: Yup.number('This field must be a number')
-          .typeError('This field must be a number')
-          .min(0, 'Wind speed must be between 0 and 300 km/h')
-          .max(300, 'Wind speed must be between 0 and 300 km/h')
-          .required('This field cannot be empty'),
-        fuelMoistureContent: Yup.number('This field must be a number')
-          .typeError('This field must be a number')
-          .min(0, 'Fuel moisture must be between 0% and 100%')
-          .max(100, 'Fuel moisture must be between 0% and 100%')
-          .required('This field cannot be empty')
-      }))
-});
+
 
 const renderDynamicError = errorMessage => (
   errorMessage ? (
@@ -126,6 +78,57 @@ const WildfireSimulation = ({
 
   // to manage number of dynamic (vertical) table rows in `Boundary Conditions`
   const [tableEntries, setTableEntries] = useState([0]);
+
+  const WildfireSimulationSchema = Yup.object().shape({
+    simulationTitle: Yup.string()
+      .required(t('field-empty-err', { ns: 'common' })),
+    simulationDescription: Yup.string()
+      .required(t('field-empty-err', { ns: 'common' })),
+    simulationTimeLimit: Yup.number()
+      .typeError(t('field-err-number'))
+      .min(1, t('field-err-simulation-between', {ns: 'dataLayers', timelimit: TIME_LIMIT}))
+      .max(TIME_LIMIT,  t('field-err-simulation-between', {ns: 'dataLayers', timelimit: TIME_LIMIT}))
+      .required(t('field-empty-err', { ns: 'common' })),
+    probabilityRange: Yup.string()
+      .required(t('field-empty-err', { ns: 'common' })),
+    mapSelection: Yup.string()
+      .typeError(t('field-err-vallid-wkt', {ns: 'dataLayers'}))
+      .required(t('field-err-vallid-wkt', {ns: 'dataLayers'})),
+    isMapAreaValid: Yup.boolean()
+      .oneOf([true], t('field-err-area-greater-than', {ns: 'dataLayers', maxgeoarea: MAP.MAX_GEOMETRY_AREA.label})),
+    isMapAreaValidWKT: Yup.boolean()
+      .oneOf([true], t('field-err-geometry-valid', {ns: 'dataLayers'})),
+    ignitionDateTime: Yup.date()
+      .typeError(t('field-err-valid-date', {ns: 'common'}))
+      .required(t('field-empty-err', { ns: 'common' })),
+    boundaryConditions: Yup
+      .array()
+      .of(
+        Yup.object().shape({
+          timeOffset: Yup.number()
+            .typeError(t('field-empty-err', { ns: 'common' }))
+            .min(0, t('field-err-timeoffset-between', {ns: 'dataLayers', timelimit: TIME_LIMIT }))
+            .max(TIME_LIMIT, t('field-err-timeoffset-between', {ns: 'dataLayers', timelimit: TIME_LIMIT }))
+            .uniqueTimeOffset(t('field-err-timeoffset-unique', {ns: 'dataLayers' }))
+            .required(t('field-empty-err', { ns: 'common' })),
+          windDirection: Yup.number(t('field-err-number'))
+            .typeError(t('field-err-number'))
+            .min(0, t('field-err-wind-between', {ns: 'dataLayers' }))
+            .max(360, t('field-err-wind-between', {ns: 'dataLayers' }))
+            .required(t('field-empty-err', { ns: 'common' })),
+          windSpeed: Yup.number(t('field-err-number'))
+            .typeError(t('field-err-number'))
+            .min(0, t('field-err-wind-speed-between', {ns: 'dataLayers' }))
+            .max(300, t('field-err-wind-speed-between', {ns: 'dataLayers' }))
+            .required(t('field-empty-err', { ns: 'common' })),
+          fuelMoistureContent: Yup.number(t('field-err-number'))
+            .typeError(t('field-err-number'))
+            .min(0, t('field-err-fuel-moisture', {ns: 'dataLayers' }))
+            .max(100,  t('field-err-fuel-moisture', {ns: 'dataLayers' }))
+            .required(t('field-empty-err', { ns: 'common' }))
+        }))
+  });
+
 
   // The other two forms allow user to select these from a dropdown.
   // For this form we hard-code the list and pass along to the API
@@ -232,7 +235,7 @@ const WildfireSimulation = ({
                         <Col className="d-flex justify-content-end align-items-center">
                           <Button color='link'
                             onClick={handleResetAOI} className='p-0'>
-                            {t('default-aoi')}
+                            {t('default-aoi', {ns: 'common'})}
                           </Button>
                         </Col>
                       </Row>

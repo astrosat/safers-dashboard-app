@@ -14,7 +14,6 @@
   "frequency": "Frequency [days]",
   "resolution": "Spatial Resolution [m]",
   "postEventMonitoring": "Post-Event monitoring",
-  "default-aoi": "Default AOI",
   "wildfireSimulation": "Wildfire Simulation",
   "simulationTitle": "Simulation Title",
   "probabilityRange": "Probability Range",
@@ -35,5 +34,15 @@
   "post-event-monitoring": "Post Event Monitoring",
   "field-err-vallid-wkt": "Should contain a valid Well-Known Text",
   "field-err-wkt-large-area": "Sorry, this would give too large an output. Reduce the spatial resolution or try a smaller area.",
-  "field-err-endDate-duration": "End date must be no greater than 30 days from start date"
+  "field-err-endDate-duration": "End date must be no greater than 30 days from start date",
+  "field-err-simulation-between": "Simulation time limit must be between 1 and {{timelimit}} hours",
+  "field-err-area-greater-than": "Area must be no greater than {{maxgeoarea}}",
+  "field-err-geometry-valid": "Geometry needs to be valid WKT",
+  "field-err-timeoffset-between": "Time offset must be between 1 and {{timelimit}} hours",
+  "field-err-timeoffset-unique": "Time offset values must be unique",
+  "field-err-wind-between": "Wind direction must be between 0 and 360 degrees",
+  "field-err-wind-speed-between": "Wind speed must be between 0 and 300 km/h",
+  "field-err-fuel-moisture": "Fuel moisture must be between 0% and 100%",
+  "field-err-date-min": "Date must be at least {{datemin}}",
+  "field-err-date-above": "Date must be greater than {{datemin}}"
 }
