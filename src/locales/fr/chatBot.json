@@ -11,6 +11,7 @@
   "update-notification": "New updates available. Please refresh the list.",
   "create-new-msg": "Créer un nouveau message",
   "create-new-mission": "Créer une nouvelle mission",
+  "associated-reports": "Associated reports",
   "filter-assigned-to": "Assigné à la mission",
   "filter-unassigned-to": "Non assigné à la mission"
 }

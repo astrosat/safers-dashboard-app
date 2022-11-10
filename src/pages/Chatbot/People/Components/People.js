@@ -33,23 +33,23 @@ const People = ({ card, peopleId, setSelectedPeople/*, setFavorite*/ }) => {
                   <span className='card-title'>{card.username}</span>
                 </CardTitle>
                 <CardText className='card-desc'>
-                  {t('Status')}: {getBadge()}
+                  {t('status', {ns: 'common'})}: {getBadge()}
                 </CardText>
                 <CardText className='card-desc'>
-                  {t('Activity')}: {card.activity}
+                  {t('activity', {ns: 'common'})}: {card.activity}
                 </CardText>
               </Col>
             </Row>
             <Row className='mt-0'>
               <Col>
                 <p className="text-muted no-wrap text-capitalize mb-1">
-                  {t('location')}: {(card.location).join(', ')}
+                  {t('Location' , {ns: 'common'})}: {(card.location).join(', ')}
                 </p>
               </Col>
               <Col>
                 <CardText>
                   <span className='float-end alert-source-text me-2 mb-1'>
-                    {t('Last Updated')}: {formatDate(card.timestamp)}
+                    {t('last-updated')}: {formatDate(card.timestamp)}
                   </span>
                 </CardText>
               </Col>

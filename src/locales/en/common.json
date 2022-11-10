@@ -97,6 +97,7 @@
   "team": "Team",
   "chatbot-user": "Chatbot Users",
   "details": "Details",
+  "last-updated": "Last Updated",
   "field-err-valid-date": "Must be valid date selection",
   "field-err-number": "This field must be an integer",
   "field-err-min": "Should be at least {{min}}",

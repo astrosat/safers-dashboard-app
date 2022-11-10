@@ -133,7 +133,7 @@ const OnDemandDataLayer = ({
             onClick={toggleModal}
             className='data-layers-dialog-cancel'
           >
-            {t('Cancel')}
+            {t('cancel')}
           </button>
         </div>
       </Modal>
@@ -145,7 +145,7 @@ const OnDemandDataLayer = ({
                 <Button 
                   className="request-map btn-orange mb-3" 
                   onClick={toggleModal}>
-                  {t('Request a map')}
+                  {t('requestMap', {ns : 'dataLayers'})}
                 </Button>
               </div>
             </Col>

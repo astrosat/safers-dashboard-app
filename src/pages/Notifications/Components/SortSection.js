@@ -31,12 +31,12 @@ const SortSection = ({ filteredNotifications, notificationSource, setNotificatio
             id="notificationSource"
             className="btn-sm sort-select-input ms-3"
             name="notificationSource"
-            placeholder="Source"
+            placeholder={t('source')}
             type="select"
             onChange={(e) => setNotificationSource(e.target.value)}
             value={notificationSource}
           >
-            <option value={'all'} > {t('Source')} : {t('All')}</option>
+            <option value={'all'} > {t('source')} : {t('All')}</option>
             {notificationSources.map((notificationSource, idx) =>
               <option value={notificationSource} key={idx}>{t('Source')} : {notificationSource}</option>
             )}
@@ -45,12 +45,12 @@ const SortSection = ({ filteredNotifications, notificationSource, setNotificatio
             id="notificationtScopeRestriction"
             className="btn-sm sort-select-input ms-3"
             name="notificationtScopeRestriction"
-            placeholder="Scope"
+            placeholder={t('scope')}
             type="select"
             onChange={(e) => setNotificationScopeRestriction(e.target.value)}
             value={notificationScopeRestriction}
           >
-            <option value={'all'} > {t('Scope')} : {t('All')}</option>
+            <option value={'all'} > {t('scope')} : {t('All')}</option>
             {notificationScopesRestrictions.map((notificationScopeRestriction, idx) =>
               <option value={notificationScopeRestriction} key={idx}>{t('Scope')} : {notificationScopeRestriction}</option>
             )}

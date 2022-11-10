@@ -99,7 +99,7 @@ const SortSection = ({ t, commStatus, sortOrder, setcommStatus, setSortOrder, ta
             value={target}
             data-testid='target'
           >
-            <option value={''} >--Target--</option>
+            <option value={''} >--{t('target')}--</option>
             <option value="Public" className='text-capitalization'>{t('public')}</option>
             <option value="Citizen" className='text-capitalization'>{t('citizen')}</option>
             <option value="Professional" className='text-capitalization'>{t('professional')}</option>

@@ -32,6 +32,7 @@
   "on-demand-map-layer": "On-Demand Map Layers",
   "select-data-type": "Select Data Type",
   "post-event-monitoring": "Post Event Monitoring",
+  "simulation-desc": "Simulation description",
   "field-err-vallid-wkt": "Should contain a valid Well-Known Text",
   "field-err-wkt-large-area": "Sorry, this would give too large an output. Reduce the spatial resolution or try a smaller area.",
   "field-err-endDate-duration": "End date must be no greater than 30 days from start date",

@@ -271,7 +271,7 @@ const WildfireSimulation = ({
                       <Row>
                         <FormGroup className="form-group">
                           <Label for="simulationDescription">
-                            {t('Simulation Description')}
+                            {t('simulation-desc', {ns: 'dataLayers'})}
                           </Label>
                           <Input
                             id="simulationDescription"
@@ -284,7 +284,7 @@ const WildfireSimulation = ({
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.simulationDescription}
-                            placeholder="Simulation description"
+                            placeholder={t('simulation-desc', {ns: 'dataLayers'})}
                           />
                           {touched.simulationDescription && getError('simulationDescription', errors, touched, false)}
                         </FormGroup>

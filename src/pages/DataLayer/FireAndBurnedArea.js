@@ -146,7 +146,7 @@ const FireAndBurnedArea = ({
                           <Col className="d-flex justify-content-end align-items-center">
                             <Button color='link'
                               onClick={handleResetAOI} className='p-0'>
-                              {t('default-aoi')}
+                              {t('default-aoi', {ns: 'common'})}
                             </Button>
                           </Col>
                         </Row>

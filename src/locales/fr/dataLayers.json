@@ -32,6 +32,7 @@
   "on-demand-map-layer": "Données cartographiques a la demande",
   "select-data-type": "Rechercher par type de donnée",
   "post-event-monitoring": "Surveillance post événement",
+  "simulation-desc": "Description de la simulation",
   "field-err-vallid-wkt": "Devrait contenir un Well-Known Text valide",
   "field-err-wkt-large-area": "Désolé, cet selection donne un résultat trop grand. Reduisez la résolution ou taille de la selection.",
   "field-err-endDate-duration": "La date de fin ne doit pas être plus de 30 jours après la date de début",

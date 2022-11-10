@@ -154,7 +154,7 @@ const SidebarContent = (props) => {
             <li>
               <Link to='/insitu-alerts'>
                 <i className='bx bx-image'></i>
-                <span className='text-capitalize'>{props.t('in-situ-cameras')}</span>
+                <span className='text-capitalize'>{props.t('In Situ Cameras', { ns: 'inSitu' })}</span>
               </Link>
             </li>
             <li>

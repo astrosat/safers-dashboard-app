@@ -55,7 +55,7 @@ const Mission = ({ card, missionId, setSelectedMission/*, setFavorite*/ }) => {
             <Row className='mt-2'>
               <Col>
                 <p className="text-muted no-wrap mb-0">
-                  {t('Start date', { ns: 'common' })}: {formatDate(card.start, 'YYYY-MM-DD')} | {t('End date', { ns: 'common' })}: {formatDate(card.end, 'YYYY-MM-DD')}
+                  {`${t('Start', {ns: 'common'})} ${t('Date', {ns: 'common'})}`}: {formatDate(card.start, 'YYYY-MM-DD')} | {`${t('End', {ns: 'common'})} ${t('Date', {ns: 'common'})}`}: {formatDate(card.end, 'YYYY-MM-DD')}
                 </p>
                 <p className="text-muted no-wrap">
                   {t('Assigned to', { ns: 'chatBot' })}: {card.organization}
@@ -65,7 +65,7 @@ const Mission = ({ card, missionId, setSelectedMission/*, setFavorite*/ }) => {
             <Row className='mt-0'>
               <Col md={10}>
                 <p className="text-muted no-wrap mb-0">
-                  {t('Associated reports', { ns: 'common' })}: 
+                  {t('associated-reports', { ns: 'chatBot' })}: 
                   {card?.reports.map((report) => <Button key={report.id} color='link' className='align-self-baseline pe-0' onClick={() => { navigate(`/reports-dashboard/${report.id}`)}}>{report.name}</Button>)}
                 </p>
               </Col>
@@ -73,7 +73,7 @@ const Mission = ({ card, missionId, setSelectedMission/*, setFavorite*/ }) => {
             <Row className='mt-0'>
               <Col>
                 <CardText>
-                  {t('Description', { ns: 'common' })}: {card?.description && getMsg(card.description)}
+                  {t('description', { ns: 'common' })}: {card?.description && getMsg(card.description)}
                 </CardText>
               </Col>
               <Col md={2}>
