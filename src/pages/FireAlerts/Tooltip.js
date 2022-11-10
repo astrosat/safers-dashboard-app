@@ -106,7 +106,7 @@ const Tooltip = ({ object, coordinate, isEdit = false, setIsEdit, setFavorite, v
             <Col md={3}>
               <CardText className='mb-2'>
                 <small className="font-italic">
-                  {t('Source')}:
+                  {t('source')}:
                 </small>
               </CardText>
             </Col>
