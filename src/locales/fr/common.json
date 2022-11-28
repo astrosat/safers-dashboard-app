@@ -99,5 +99,8 @@
   "field-err-number": "Ce champ doit etre un numéro",
   "field-err-min": "Devrait être {{min}} au min",
   "field-err-max": "Devrait être {{max}} au max",
-  "field-err-between": "Devrait être entre {{min}} et {{max}}"
+  "field-err-between": "Devrait être entre {{min}} et {{max}}",
+  "wkt-info-topic": "Manuel WKT",
+  "wkt-info-desc1": "Example de format WKT supporté",
+  "wkt-info-desc2": "Pour plus d'information, consulter le lien wiki suivant"
 }
