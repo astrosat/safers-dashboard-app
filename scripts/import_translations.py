@@ -14,6 +14,7 @@ LOCALES = OrderedDict([
     ("fr", "french"),
     ("it", "italian"),
     ("de", "german"),
+    ("el", "greek"),
 ])
 
 
@@ -23,8 +24,8 @@ def import_translations(filename, locale):
     df = pd.read_excel(fp, sheet_name=None)
 
     translations_data = defaultdict(dict)
-    language = LOCALES[locale]
     default_langauge = LOCALES["en"]
+    language = LOCALES[locale]
 
     for sheet_key, sheet_values in df.items():                
         translations_data[sheet_key] = {
@@ -39,9 +40,8 @@ def import_translations(filename, locale):
     
 @click.command()
 @click.option("--input-filename", required=True, type=str)
-@click.option("--output-filename", required=True, type=click.Path())
 @click.option("--locale", required=True, type=click.Choice(LOCALES.keys()))
-def main(input_filename, output_filename, locale):
+def main(input_filename, locale):
     translations_data = import_translations(input_filename, locale)
     for k, v in translations_data.items():
         fp = open(f"{k}.json", "w")

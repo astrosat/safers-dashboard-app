@@ -14,6 +14,7 @@ LOCALES = OrderedDict([
     ("fr", "french"),
     ("it", "italian"),
     ("de", "german"),
+    ("el", "greek"),
 ])
 
 
