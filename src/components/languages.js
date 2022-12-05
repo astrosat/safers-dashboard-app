@@ -1,5 +1,5 @@
 import ukFlag from '../assets/images/flags/uk.png'
-import french from '../assets/images/flags/french.jpg'
+import france from '../assets/images/flags/france.jpg'
 import germany from '../assets/images/flags/germany.jpg'
 import greece from '../assets/images/flags/greece.jpg'
 import italy from '../assets/images/flags/italy.jpg'
@@ -13,7 +13,7 @@ const languages = {
   },
   fr: {
     label: 'French',
-    flag: french,
+    flag: france,
   },
   de: {
     label: 'German',
