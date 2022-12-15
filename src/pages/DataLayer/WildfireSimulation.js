@@ -84,14 +84,14 @@ const WildfireSimulation = ({
       .required(t('field-empty-err', { ns: 'common' })),
     simulationDescription: Yup.string()
       .required(t('field-empty-err', { ns: 'common' })),
-    simulationTimeLimit: Yup.number()
+    hoursOfProjection: Yup.number()
       .typeError(t('field-err-number'))
       .min(1, t('field-err-simulation-between', {ns: 'dataLayers', timelimit: TIME_LIMIT}))
       .max(TIME_LIMIT,  t('field-err-simulation-between', {ns: 'dataLayers', timelimit: TIME_LIMIT}))
       .required(t('field-empty-err', { ns: 'common' })),
     probabilityRange: Yup.string()
       .required(t('field-empty-err', { ns: 'common' })),
-    mapSelection: Yup.string()
+    ignitionArea: Yup.string()
       .typeError(t('field-err-vallid-wkt', {ns: 'dataLayers'}))
       .required(t('field-err-vallid-wkt', {ns: 'dataLayers'})),
     isMapAreaValid: Yup.boolean()
@@ -151,9 +151,9 @@ const WildfireSimulation = ({
         moisture: +obj.fuelMoistureContent
       }), []);
 
-    const transformedGeometry = formData.mapSelection.startsWith('GEOMETRYCOLLECTION') ? formData.mapSelection : `GEOMETRYCOLLECTION(${formData.mapSelection})`
+    const transformedGeometry = formData.ignitionArea.startsWith('GEOMETRYCOLLECTION') ? formData.ignitionArea : `GEOMETRYCOLLECTION(${formData.ignitionArea})`
     const startDateTime = new Date(formData.ignitionDateTime).toISOString()
-    const endDateTime = new Date(getDateOffset(startDateTime, formData.simulationTimeLimit)).toISOString()
+    const endDateTime = new Date(getDateOffset(startDateTime, formData.hoursOfProjection)).toISOString()
     const payload = {
       data_types: layerTypes.map(item => item.id),
       geometry: transformedGeometry,
@@ -163,7 +163,7 @@ const WildfireSimulation = ({
         description: formData.simulationDescription,
         start: startDateTime,
         end: endDateTime,
-        time_limit: +formData.simulationTimeLimit,
+        time_limit: +formData.hoursOfProjection,
         probabilityRange: +formData.probabilityRange,
         do_spotting: formData.simulationFireSpotting,
         boundary_conditions,
@@ -196,10 +196,10 @@ const WildfireSimulation = ({
               simulationTitle: '',
               simulationDescription: '',
               probabilityRange: 0.75,
-              mapSelection: '',
+              ignitionArea: '',
               isMapAreaValid: null,
               isMapAreaValidWKT: null,
-              simulationTimeLimit: 1,
+              hoursOfProjection: 1,
               ignitionDateTime: null,
               simulationFireSpotting: false,
               boundaryConditions: [{
@@ -337,43 +337,43 @@ const WildfireSimulation = ({
 
                     <Row>
                       <FormGroup className="form-group">
-                        <Label for="simulationTimeLimit">
-                          {t('simulationTimeLimit')}
+                        <Label for="hoursOfProjection">
+                          {t('hoursOfProjection')}
                         </Label>
                         <Input
-                          name="simulationTimeLimit"
-                          id="simulationTimeLimit"
+                          name="hoursOfProjection"
+                          id="hoursOfProjection"
                           className={
-                            errors.simulationTimeLimit ? 'is-invalid' : null
+                            errors.hoursOfProjection ? 'is-invalid' : null
                           }
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          value={values.simulationTimeLimit}
+                          value={values.hoursOfProjection}
                           placeholder="Type Limit [hours]"
                         />
-                        {touched.simulationTimeLimit && getError('simulationTimeLimit', errors, touched, false)}
+                        {touched.hoursOfProjection && getError('hoursOfProjection', errors, touched, false)}
                       </FormGroup>
                     </Row>
 
                     <Row>
                       <FormGroup className="form-group">
-                        <Label for="mapSelection">
-                          {t('mapSelection')}
+                        <Label for="ignitionArea">
+                          {t('ignitionArea')}
                         </Label>
                         <MapInput
-                          className={errors.mapSelection ? 'is-invalid' : ''}
-                          id="mapSelection"
-                          name="mapSelection"
+                          className={errors.ignitionArea ? 'is-invalid' : ''}
+                          id="ignitionArea"
+                          name="ignitionArea"
                           type="textarea"
                           rows="5"
                           setCoordinates={(value) => {  mapInputOnChange(value, setFieldValue);  }}
                           onBlur={handleBlur}
-                          coordinates={values.mapSelection}
+                          coordinates={values.ignitionArea}
                           placeholder={t('mapSelectionTxtGuide')}
                         />
-                        {touched.mapSelection && getError('mapSelection', errors, touched, false)}
+                        {touched.ignitionArea && getError('ignitionArea', errors, touched, false)}
                         {values.isMapAreaValid === false ? getError('isMapAreaValid', errors, touched, false, true) : null}
-                        {values.isMapAreaValidWKT === false && values.mapSelection !== '' ? getError('isMapAreaValidWKT', errors, touched, false, true) : null}
+                        {values.isMapAreaValidWKT === false && values.ignitionArea !== '' ? getError('isMapAreaValidWKT', errors, touched, false, true) : null}
                       </FormGroup>
                     </Row>
 
@@ -407,7 +407,7 @@ const WildfireSimulation = ({
                               type="datetime-local"
                               disabled
                               value={
-                                getDateOffset(values.ignitionDateTime, values.simulationTimeLimit)
+                                getDateOffset(values.ignitionDateTime, values.hoursOfProjection)
                               }
                             />
                           </Col>
@@ -444,11 +444,11 @@ const WildfireSimulation = ({
                         setCoordinates={(wktConversion, isAreaValid) => {
                           // called if map is used to draw polygon
                           // we asssume it's valid WKT
-                          setFieldValue('mapSelection', wktConversion);
+                          setFieldValue('ignitionArea', wktConversion);
                           setFieldValue('isMapAreaValid', isAreaValid);
                           setFieldValue('isMapAreaValidWKT', true);
                         }}
-                        coordinates={values.mapSelection}
+                        coordinates={values.ignitionArea}
                         togglePolygonMap={true}
                         handleAreaValidation={feature => {
                           const area = Math.ceil(getFeatureArea(feature));
@@ -549,7 +549,7 @@ const WildfireSimulation = ({
                       </FieldArray>
                       <i
                         onClick={() => {
-                          if (tableEntries.length === +values.simulationTimeLimit) return;
+                          if (tableEntries.length === +values.hoursOfProjection) return;
 
                           setTableEntries(
                             [...tableEntries, tableEntries.length]
