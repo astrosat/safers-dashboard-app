@@ -4,55 +4,35 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Row } from 'reactstrap';
-import { getViewState } from '../../../helpers/mapHelper';
+import { getViewState, getIconLayer } from '../../../helpers/mapHelper';
 import { setCurrentPage, setInSituFavoriteAlert, setPaginatedAlerts, getCamera } from '../../../store/appAction';
 import { PAGE_SIZE, SET_FAV_INSITU_ALERT_SUCCESS } from '../../../store/insitu/types';
 import Alert from './Alert';
 import { MAP_TYPES } from '../../../constants/common';
-import { getAlertIconColorFromContext } from '../../../helpers/mapHelper';
-import { GeoJsonPinLayer } from '../../../components/BaseMap/GeoJsonPinLayer';
 
 const AlertList = ({
   alertId,
   viewState,
   setAlertId,
+  setCameraId,
   currentZoomLevel,
   isViewStateChanged,
   setViewState,
   setIconLayer,
   setHoverInfo,
   setIsViewStateChanged,
-  hideTooltip
+  hideTooltip,
 }) => {
   const { paginatedAlerts, currentPage, filteredAlerts, cameraList, cameraInfo } = useSelector(state => state.inSituAlerts);
   const [selCam, setsSelCam] = useState(undefined);
 
   const dispatch = useDispatch();
 
-  const getIconLayer = (alerts) => {
-    return new GeoJsonPinLayer({
-      data: alerts,
-      dispatch,
-      setViewState,
-      getPosition: (feature) => feature.geometry.coordinates,
-      getPinColor: feature => getAlertIconColorFromContext(MAP_TYPES.IN_SITU,feature),
-      icon: 'camera',
-      iconColor: '#ffffff',
-      clusterIconSize: 35,
-      getPinSize: () => 35,
-      pixelOffset: [-18,-18],
-      pinSize: 25,
-      onGroupClick: true,
-      onPointClick: true,
-    });
-  };
-
   useEffect(() => {
     if (selCam) {
       !_.isEqual(viewState.midPoint, cameraInfo?.geometry?.coordinates) || isViewStateChanged ?
         setViewState(getViewState(cameraInfo?.geometry?.coordinates, currentZoomLevel, cameraInfo, setHoverInfo, setIsViewStateChanged))
         : setHoverInfo({ object: { properties: cameraInfo, geometry: cameraInfo?.geometry}, picked: true });
-      setIconLayer(getIconLayer(cameraList.features, MAP_TYPES.IN_SITU));
     }
   }, [cameraInfo]);
 
@@ -94,14 +74,25 @@ const AlertList = ({
     dispatch(setPaginatedAlerts(_.cloneDeep(filteredAlerts.slice(from, to))));
   };
 
+  const handleSelectAlert = (id, cameraId) => {
+    if (id === alertId) {
+      setSelectedAlert(undefined);
+      setHoverInfo(undefined);
+      setCameraId(undefined);
+    } else {
+      setSelectedAlert(id);
+      setCameraId(cameraId)
+    }
+  }
+
   return (
     <>
       <Row>
         {
-          paginatedAlerts.map((alert, index) => <Alert
-            key={index}
+          paginatedAlerts.map((alert) => <Alert
+            key={alert.id}
             card={alert}
-            setSelectedAlert={setSelectedAlert}
+            setSelectedAlert={handleSelectAlert}
             setFavorite={setFavorite}
             alertId={alertId} />)
         }
@@ -123,6 +114,7 @@ AlertList.propTypes = {
   currentZoomLevel: PropTypes.any,
   isViewStateChanged: PropTypes.any,
   setViewState: PropTypes.func,
+  setCameraId: PropTypes.func,
   setAlertId: PropTypes.func,
   setIconLayer: PropTypes.func,
   setHoverInfo: PropTypes.func,

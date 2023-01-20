@@ -70,7 +70,6 @@ export class PinLayer extends CompositeLayer {
   }
 
   getPickingInfo({ info, mode }) {
-   
     if (info.picked) {
       if (info.object.properties.cluster) {
         info.object.properties.expansion_zoom = this._getExpansionZoom(
@@ -115,9 +114,12 @@ export class PinLayer extends CompositeLayer {
       feature.properties.cluster &&
       this._getExpansionZoom(feature) <= this.props.maxZoom
     )
-      return [246, 190, 0, 255];
-    if (typeof this.props.getPinColor === 'function')
-      return this.props.getPinColor(feature);
+      return COLOR_PRIMARY;
+    if (typeof this.props.getPinColor === 'function') {
+      const { index } = this.state;
+      const leaves = index.getLeaves(feature.properties.cluster_id)
+      return this.props.getPinColor(feature, leaves);
+    }
     if (isArray(this.props.pinColor)) return this.props.pinColor;
     const colorInstance = color(this.props.pinColor);
     const { r, g, b } = colorInstance.rgb();

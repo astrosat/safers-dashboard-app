@@ -65,8 +65,8 @@ const EventList = ({
     <>
       <Row data-testid='event-list'>
         {
-          paginatedAlerts.map((alert, index) => <Alert
-            key={index}
+          paginatedAlerts.map((alert) => <Alert
+            key={alert.id}
             card={alert}
             setSelectedAlert={setSelectedAlert}
             setFavorite={setFavorite}

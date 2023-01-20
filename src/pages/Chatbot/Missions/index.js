@@ -84,7 +84,14 @@ const Missions = ({ pollingFrequency }) => {
 
   useEffect(() => {
     if (allMissions.length > 0) {
-      setIconLayer(getIconLayer(allMissions, MAP_TYPES.MISSIONS, 'target', dispatch, setViewState, {id: missionId}));
+
+      const selectedMission = allMissions.find(mission => mission.id === missionId)
+
+      const pinInfo = selectedMission 
+        ? { center: selectedMission.location, id: missionId }
+        : {}
+
+      setIconLayer(getIconLayer(allMissions, MAP_TYPES.MISSIONS, 'target', dispatch, setViewState, pinInfo));
     }
   }, [allMissions, missionId]);
 

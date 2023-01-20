@@ -71,9 +71,15 @@ const Reports = ({ pollingFrequency }) => {
       const reshapedReports = allReports.map(report => {
         const { report_id: id, ...rest } = report;
         return { id, ...rest };
-      })
+      });
 
-      setIconLayer(getIconLayer(reshapedReports, MAP_TYPES.REPORTS, 'report', dispatch, setViewState, { id: reportId }, 'report_id'));
+      const selectedReport = allReports.find(report => report.report_id === reportId)
+
+      const pinInfo = selectedReport 
+        ? { center: selectedReport.location, id: reportId } 
+        : {};
+
+      setIconLayer(getIconLayer(reshapedReports, MAP_TYPES.REPORTS, 'report', dispatch, setViewState, pinInfo, 'report_id'));
     }
   }, [allReports, reportId]);
 

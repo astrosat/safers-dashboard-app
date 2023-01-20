@@ -21,7 +21,9 @@ const Alert = ({ card, alertId, setSelectedAlert, setFavorite, t }) => {
   return (
     <Card
       data-testid={card.id}
-      onClick={() => setSelectedAlert(card.id)}
+      onClick={() => setSelectedAlert(
+        card.id === alertId ? undefined : card.id
+      )}
       className={'alerts-card mb-2 ' + (card.id == alertId ? 'alert-card-active' : '')}>
       <CardBody className='p-0 m-2'>
         <Row>

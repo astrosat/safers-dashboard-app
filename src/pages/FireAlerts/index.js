@@ -268,9 +268,15 @@ const FireAlerts = ({ t }) => {
       // Prevents clicks on grouped icons
       return;
     } else if (info.picked && info.object) {
-      setSelectedAlert(info.object.id);
-      setHoverInfo(info);
+      if (info.object.properties.id !== alertId) {
+        setSelectedAlert(info.object.properties.id);
+        setHoverInfo(info);
+      } else {
+        setSelectedAlert(undefined);
+        setHoverInfo(undefined);
+      }
     } else {
+      setSelectedAlert(undefined);
       setHoverInfo(undefined);
     }
   };
@@ -297,12 +303,21 @@ const FireAlerts = ({ t }) => {
     }
   };
 
-  const getCard = (card, index) => {
+  const handleSelectAlert = id => {
+    if (id === alertId) {
+      setSelectedAlert(undefined);
+      setHoverInfo(undefined)
+    } else {
+      setSelectedAlert(id);
+    }
+  }
+
+  const getCard = (card) => {
     return (
       <Alert
-        key={index}
+        key={card.id}
         card={card}
-        setSelectedAlert={setSelectedAlert}
+        setSelectedAlert={handleSelectAlert}
         setFavorite={setFavorite}
         alertId={alertId}
       />
@@ -396,7 +411,7 @@ const FireAlerts = ({ t }) => {
             <Row>
               <Col xl={12} className="p-3">
                 <Row>
-                  {paginatedAlerts.map((alert, index) => getCard(alert, index))}
+                  {paginatedAlerts.map(getCard)}
                 </Row>
                 <Row className="text-center">
                   <Pagination

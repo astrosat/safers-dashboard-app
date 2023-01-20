@@ -75,7 +75,14 @@ const Comms = ({ pollingFrequency }) => {
 
   useEffect(() => {
     if (allReports.length > 0) {
-      setIconLayer(getIconLayer(allReports, MAP_TYPES.COMMUNICATIONS, 'communications', dispatch, setViewState, {id: commID}));
+
+      const selectedComm = allReports.find(comm => comm.id === commID)
+
+      const pinInfo = selectedComm 
+        ? { center: selectedComm.location, id: commID } 
+        : {};
+
+      setIconLayer(getIconLayer(allReports, MAP_TYPES.COMMUNICATIONS, 'communications', dispatch, setViewState, pinInfo));
     }
   }, [allReports, commID]);
 

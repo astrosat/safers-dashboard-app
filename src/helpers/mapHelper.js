@@ -119,10 +119,22 @@ export const getPolygonLayer = (aoi) => {
   }))
 }
 
-export const getAlertIconColorFromContext = (mapType, feature, selectedItem = {}) => {
+const selectedItemIsInGroup = (selectedItem, clusterLeaves) => {
+  const clusterLeafIds = clusterLeaves.map(feature => feature.properties.id);
+  return clusterLeafIds.includes(selectedItem.id);
+}
+
+export const getAlertIconColorFromContext = (mapType, feature, selectedItem = {}, clusterLeaves) => {
+
   let color = DARK_GRAY;
   if (!feature.properties.id && !selectedItem.id) {
     return color;
+  }
+
+  if (feature.properties.cluster) {
+    if (selectedItemIsInGroup(selectedItem, clusterLeaves)) {
+      return ORANGE;
+    }
   }
 
   if (feature.properties.id === selectedItem.id) {
@@ -136,19 +148,18 @@ export const getAlertIconColorFromContext = (mapType, feature, selectedItem = {}
 }
 
 
-export const getAsGeoJSON = (data) => {
-  return data.map((datum) => {
-    const {
-      geometry,
-      ...properties
-    } = datum;
-    return {
-      type: 'Feature',
-      properties,
-      geometry,
-    };
-  });
-}
+export const getAsGeoJSON = (data) => data.map((datum) => {
+  if (datum.type === 'Feature') return datum;
+  const {
+    geometry,
+    ...properties
+  } = datum;
+  return {
+    type: 'Feature',
+    properties,
+    geometry,
+  };
+})
 
 export const getIconLayer = (alerts, mapType, markerName='alert', dispatch, setViewState, selectedItem = {}) => {
   const data = getAsGeoJSON(alerts);
@@ -157,7 +168,7 @@ export const getIconLayer = (alerts, mapType, markerName='alert', dispatch, setV
     dispatch,
     setViewState,
     getPosition: (feature) => feature.geometry.coordinates,
-    getPinColor: feature => getAlertIconColorFromContext(mapType, feature, selectedItem),
+    getPinColor: (feature, clusterLeaves) => getAlertIconColorFromContext(mapType, feature, selectedItem, clusterLeaves),
     icon: markerName,
     iconColor: '#ffffff',
     clusterIconSize: 35,

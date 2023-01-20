@@ -166,6 +166,10 @@ const EventAlerts = ({ t }) => {
   };
 
   const showTooltip = info => {
+    if (info.objects) {
+      // Prevents clicks on grouped icons
+      return;
+    }
     if (info.picked && info.object) {
       setSelectedAlert(info.object.properties.id);
       setHoverInfo(info);
@@ -207,6 +211,7 @@ const EventAlerts = ({ t }) => {
       setIconLayer(getIconLayer(clonedAlerts, selectedAlert));
     } else {
       setAlertId(undefined);
+      setHoverInfo({});
       setIconLayer(getIconLayer(filteredAlerts));
     }
   }

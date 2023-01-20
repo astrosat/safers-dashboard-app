@@ -79,7 +79,14 @@ const People = ({ pollingFrequency }) => {
 
   useEffect(() => {
     if (allPeople.length > 0) {
-      setIconLayer(getIconLayer(allPeople, MAP_TYPES.PEOPLE, 'people', dispatch, setViewState, {id: peopleId}));
+
+      const selectedPeople = allPeople.find(people => people.id === peopleId)
+
+      const pinInfo = selectedPeople 
+        ? { center: selectedPeople.location, id: peopleId } 
+        : {};
+
+      setIconLayer(getIconLayer(allPeople, MAP_TYPES.PEOPLE, 'people', dispatch, setViewState, pinInfo));
     }
   }, [allPeople, peopleId]);
 

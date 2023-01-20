@@ -18,14 +18,13 @@ import {
   getCameraList,
   getCameraSources
 } from '../../store/appAction';
-import { getBoundingBox, getViewState } from '../../helpers/mapHelper';
+import { getBoundingBox, getViewState, getIconLayer } from '../../helpers/mapHelper';
 import { PAGE_SIZE } from '../../store/events/types';
-import { GeoJsonPinLayer } from '../../components/BaseMap/GeoJsonPinLayer';
+
 
 //i18n
 import { useTranslation } from 'react-i18next'
 import { MAP_TYPES } from '../../constants/common';
-import { getAlertIconColorFromContext } from '../../helpers/mapHelper';
 
 const InSituAlerts = () => {
   const defaultAoi = useSelector(state => state.user.defaultAoi);
@@ -40,6 +39,7 @@ const InSituAlerts = () => {
   const [boundingBox, setBoundingBox] = useState(undefined);
   const [currentZoomLevel, setCurrentZoomLevel] = useState(undefined);
   const [alertId, setAlertId] = useState(undefined);
+  const [cameraId, setCameraId] = useState(undefined);
   const [hoverInfo, setHoverInfo] = useState(undefined);
   const [checkedStatus, setCheckedStatus] = useState([])
   const [isViewStateChanged, setIsViewStateChanged] = useState(false);
@@ -48,25 +48,6 @@ const InSituAlerts = () => {
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
-  const getIconLayer = (alerts) => {
-    return new GeoJsonPinLayer({
-      data: alerts,
-      dispatch,
-      setViewState,
-      getPosition: (feature) => feature.geometry.coordinates,
-      getPinColor: feature => getAlertIconColorFromContext(MAP_TYPES.IN_SITU,feature),
-      icon: 'camera',
-      iconColor: '#ffffff',
-      clusterIconSize: 35,
-      getPinSize: () => 35,
-      pixelOffset: [-18,-18],
-      pinSize: 25,
-      onGroupClick: true,
-      onPointClick: true,
-    });
-  };
-
 
   useEffect(() => {
     dispatch(getCameraSources());
@@ -108,8 +89,16 @@ const InSituAlerts = () => {
   }, [success, error]);
 
   useEffect(() => {
-    setIconLayer(getIconLayer(cameraList.features, MAP_TYPES.IN_SITU));
-  }, [cameraList]);
+    if (cameraList.features) {
+      const selectedAlert = alerts.find(alert => alert.camera_id === cameraId);
+
+      const pinInfo = selectedAlert
+        ? { center: selectedAlert.geometry.coordinates, id: cameraId }
+        : {};
+    
+      setIconLayer(getIconLayer(cameraList.features, MAP_TYPES.IN_SITU, 'camera', dispatch, setViewState, pinInfo));
+    }
+  }, [cameraList, cameraId]);
 
   useEffect(() => {
     if (!viewState) {
@@ -131,11 +120,24 @@ const InSituAlerts = () => {
     setViewState(getViewState(defaultAoi.features[0].properties.midPoint, defaultAoi.features[0].properties.zoomLevel))
   }, []);
 
+  const setMapData = (info = undefined, id = undefined) => {
+    setHoverInfo(info);
+    setCameraId(id);
+  }
+
   const showTooltip = info => {
-    if (info) {
-      setHoverInfo(info);
+    if (info.object) {
+      if (info.objects) {
+        // if group icon
+        const ids = info.objects.map(f => f.properties.id);
+        ids.includes(cameraId) ? setMapData() : setMapData(info, ids[0])
+      } else {
+        // if single icon
+        const id = info.object.properties.id;
+        cameraId === id ? setMapData() : setMapData(info, id) 
+      }
     } else {
-      setHoverInfo(undefined);
+      setMapData();
     }
   };
 
@@ -181,12 +183,12 @@ const InSituAlerts = () => {
                   isViewStateChanged={isViewStateChanged}
                   alertId={alertId}
                   setAlertId={setAlertId}
+                  setCameraId={setCameraId}
                   setIconLayer={setIconLayer}
                   setHoverInfo={setHoverInfo}
                   hideTooltip={hideTooltip}
                   setViewState={setViewState}
                   setIsViewStateChanged={setIsViewStateChanged}
-
                 />
               </Col>
             </Row>
