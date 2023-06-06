@@ -9,38 +9,31 @@ import SearchButton from 'components/SearchButton';
 
 const MapSection = ({
   iconLayer,
-  getMissionsByArea,
-  setCoordinates,
+  getInfoByArea,
   coordinates,
+  setCoordinates,
   togglePolygonMap = false,
   onClick,
   clearMap,
 }) => {
   const getSearchButton = index => {
-    return <SearchButton index={index} getInfoByArea={getMissionsByArea} />;
+    return <SearchButton index={index} getInfoByArea={getInfoByArea} />;
   };
 
   return (
     <Card className="map-card mb-0" style={{ height: 730 }}>
-      {!togglePolygonMap && (
+      {!togglePolygonMap ? (
         <BaseMap
           layers={[iconLayer]}
           widgets={[getSearchButton]}
-          screenControlPosition="top-right"
-          navControlPosition="bottom-right"
           onClick={onClick}
         />
-      )}
-
-      {togglePolygonMap && (
+      ) : (
         <PolygonMap
           layers={[iconLayer]}
-          widgets={[getSearchButton]}
-          screenControlPosition="top-right"
-          navControlPosition="bottom-right"
-          setCoordinates={setCoordinates}
-          coordinates={coordinates}
           onClick={onClick}
+          coordinates={coordinates}
+          setCoordinates={setCoordinates}
           clearMap={clearMap}
         />
       )}
@@ -50,9 +43,9 @@ const MapSection = ({
 
 MapSection.propTypes = {
   iconLayer: PropTypes.any,
-  getMissionsByArea: PropTypes.func,
-  setCoordinates: PropTypes.func,
+  getInfoByArea: PropTypes.func,
   coordinates: PropTypes.any,
+  setCoordinates: PropTypes.func,
   togglePolygonMap: PropTypes.any,
   onClick: PropTypes.func,
   clearMap: PropTypes.func,

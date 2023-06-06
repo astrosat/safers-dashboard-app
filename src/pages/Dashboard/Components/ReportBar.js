@@ -37,10 +37,8 @@ const ReportBar = ({ t }) => {
                 <Card className="my-3" key={`report_${report.report_id}`}>
                   <Report
                     key={report.report_id}
-                    card={report}
-                    reportId={report.report_id}
-                    setSelectedReport={() => {}}
-                    setFavorite={() => {}}
+                    report={report}
+                    selectReport={() => {}}
                   />
                 </Card>
               ))

@@ -22,8 +22,6 @@ import { formatDate } from 'utility';
 import DataLayerInformation from './DataLayerInformation';
 import TreeView from './TreeView';
 
-import 'react-rangeslider/lib/index.css';
-
 const DataLayer = ({
   t,
   metaData,

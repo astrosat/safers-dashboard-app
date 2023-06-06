@@ -26,8 +26,6 @@ import { getWKTfromFeature } from 'utility';
 
 import MapSection from './Map';
 
-import 'react-rangeslider/lib/index.css';
-
 // Fifty thousand hectares = 500 km2 = 500 million m2
 const MAX_GEOMETRY_AREA = {
   label: '50,000 hectares',

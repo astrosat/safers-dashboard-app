@@ -14,8 +14,6 @@ import {
   getViewState,
   getAlertIconColorFromContext,
 } from 'helpers/mapHelper';
-import 'toastr/build/toastr.min.css';
-import 'rc-pagination/assets/index.css';
 import { dateRangeSelector } from 'store/common.slice';
 import {
   fetchCameras,

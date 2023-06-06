@@ -13,9 +13,6 @@ import {
   configSelector,
 } from 'store/common.slice';
 
-import 'assets/scss/theme.scss';
-import 'mapbox-gl/dist/mapbox-gl.css';
-
 const App = () => {
   const isLoading = useSelector(isLoadingSelector);
   const loadingMsg = useSelector(loadingMessageSelector);

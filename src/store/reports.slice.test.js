@@ -10,7 +10,6 @@ import reducer, {
   initialState,
   fetchReports,
   fetchReportDetail,
-  resetReportResponseState,
   refreshReports,
   setFilteredReports,
   allReportsSelector,
@@ -21,7 +20,6 @@ import reducer, {
   reportsCategorySelector,
   reportsMissionIdSelector,
   reportsBoundingBoxSelector,
-  reportsSuccessSelector,
   reportsMapFilterSelector,
 } from './reports.slice';
 
@@ -158,14 +156,6 @@ describe('Reports Slice', () => {
     it('should return the initial state', () => {
       const actualState = reducer(undefined, {});
       expect(actualState).toEqual(expect.objectContaining(beforeState));
-    });
-
-    describe('resetReportResponseState', () => {
-      it('should reset report state back to the default settings', () => {
-        const actualState = reducer(beforeState, resetReportResponseState());
-
-        expect(actualState).toBe(initialState);
-      });
     });
 
     describe('refreshReports', () => {
@@ -442,26 +432,6 @@ describe('Reports Slice', () => {
 
         const result = reportsBoundingBoxSelector(state);
         expect(result).toBe(boundingBox);
-      });
-    });
-
-    describe('reportsSuccessSelector', () => {
-      it('should return false if state is undefined', () => {
-        const result = reportsSuccessSelector(undefined);
-        expect(result).toEqual(undefined);
-      });
-
-      it('should return a success message report marked as favorite', () => {
-        const success = 'Some test success message';
-        const state = {
-          reports: {
-            ...initialState,
-            success,
-          },
-        };
-
-        const result = reportsSuccessSelector(state);
-        expect(result).toBe(success);
       });
     });
 

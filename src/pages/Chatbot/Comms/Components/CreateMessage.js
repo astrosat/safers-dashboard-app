@@ -14,22 +14,9 @@ import { organisationsSelector } from 'store/common.slice';
 import { createComms, resetCommsResponseState } from 'store/comms.slice';
 import { userInfoSelector } from 'store/user.slice';
 import { getWKTfromFeature, getGeoFeatures } from 'utility';
-import 'toastr/build/toastr.min.css';
 
-const INITIAL_FORM_VALUES = {
-  dateRange: [],
-  coordinates: [],
-  scope: '',
-  restriction: '',
-  description: '',
-};
-
-const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
-  const dispatch = useDispatch();
-
-  const { t } = useTranslation();
-
-  const messageSchema = Yup.object().shape({
+const setupSchema = t => {
+  return Yup.object().shape({
     dateRange: Yup.array()
       .of(Yup.date())
       .min(2, t('field-empty-err', { ns: 'common' })),
@@ -44,14 +31,29 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
     }),
     description: Yup.string().required(t('field-empty-err', { ns: 'common' })),
   });
+};
+
+const INITIAL_FORM_VALUES = {
+  dateRange: [],
+  coordinates: [],
+  scope: '',
+  restriction: '',
+  description: '',
+};
+
+const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const orgList = useSelector(organisationsSelector);
   const user = useSelector(userInfoSelector);
 
   const [orgName, setorgName] = useState('');
 
+  const messageSchema = setupSchema(t);
+
   useEffect(() => {
-    if (orgList.length && user?.organization) {
+    if (orgList && user?.organization) {
       const organization = orgList.find(org => org.name === user.organization);
       setorgName(organization.name.split('-')[0]);
     }
@@ -64,24 +66,27 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
     };
   }, [dispatch]);
 
-  const submitMsg = ({
-    description,
+  const onSubmit = ({
+    coordinates,
     dateRange,
+    description,
     scope,
     restriction,
-    coordinates,
   }) => {
     const payload = {
       message: description,
-      start: dateRange[0] ? dateRange[0] : null,
-      end: dateRange[1] ? dateRange[1] : null,
+      start: dateRange[0] ?? null,
+      end: dateRange[1] ?? null,
       scope,
       geometry: coordinates,
     };
+
     if (scope !== 'Public') {
       payload.restriction = restriction;
     }
+
     dispatch(createComms(payload));
+
     onCancel();
   };
 
@@ -89,7 +94,7 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
     <Formik
       initialValues={INITIAL_FORM_VALUES}
       validationSchema={messageSchema}
-      onSubmit={submitMsg}
+      onSubmit={onSubmit}
     >
       {({
         values,
@@ -104,47 +109,43 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
           <Form onSubmit={handleSubmit} noValidate>
             <FormGroup className="form-group mt-3">
               <DateRangePicker
-                name="dateRange"
-                type="text"
                 placeholder={`${t('Start', { ns: 'common' })} ${t('Date', {
                   ns: 'common',
                 })} | ${t('End', { ns: 'common' })} ${t('Date', {
                   ns: 'common',
                 })}`}
-                className={`${getError('dateRange', errors, errors)}`}
-                isTooltipInput={true}
-                showIcons={true}
-                onBlur={handleBlur}
                 onChange={value => setFieldValue('dateRange', value)}
-                value={values.dateRange}
               />
               {getError('dateRange', errors, touched, false)}
             </FormGroup>
+
             <FormGroup className="form-group mt-3">
               <MapInput
                 id="coordinates"
+                name="coordinates"
                 className={`${getError('coordinates', errors, errors)}`}
                 type="textarea"
-                name="coordinates"
                 placeholder={t('Map Selection', { ns: 'chatBot' })}
                 rows="10"
                 coordinates={getWKTfromFeature(coordinates)}
                 setCoordinates={wkt => setCoordinates(getGeoFeatures(wkt))}
-                onBlur={handleBlur}
                 handleChange={handleChange}
-                value={values.coordinates}
+                onBlur={handleBlur}
               />
               {getError('coordinates', errors, touched, false)}
             </FormGroup>
+
             <Label className="form-label mt-3 mb-0">
               {t('organisation', { ns: 'common' })}: {orgName}
             </Label>
+
             <Row className="my-3">
               <Col xl={1} md={2}>
                 <Label htmlFor="target">
                   {t('target', { ns: 'common' })}:{' '}
                 </Label>
               </Col>
+
               <Col xl={5} className="pe-xl-0 text-center">
                 <Input
                   id="scope"
@@ -169,6 +170,7 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
                 </Input>
                 {getError('scope', errors, touched, false)}
               </Col>
+
               {values.scope === 'Restricted' ? (
                 <Col xl={5}>
                   <Input
@@ -193,26 +195,27 @@ const CreateMessage = ({ coordinates, onCancel, setCoordinates }) => {
                 </Col>
               ) : null}
             </Row>
+
             <FormGroup className="form-group mt-3">
               <Input
                 id="description"
+                name="description"
                 className={`${getError('desc', errors, errors)}`}
                 type="textarea"
-                name="description"
                 placeholder={t('msg-desc', { ns: 'chatBot' })}
-                onChange={e => {
-                  handleChange(e);
-                }}
+                onChange={handleChange}
                 onBlur={handleBlur}
+                value={values.description ?? ''}
                 rows="10"
-                value={values.description}
               />
               {getError('description', errors, touched, false)}
             </FormGroup>
+
             <div className="mt-3">
               <Button type="button" onClick={onCancel}>
                 {t('cancel', { ns: 'common' })}
               </Button>
+
               <Button type="submit" className="mx-3">
                 {t('send', { ns: 'common' })}
               </Button>

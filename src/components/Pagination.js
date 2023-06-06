@@ -11,13 +11,14 @@ const PaginationWrapper = ({ page = 1, list, pageSize, setPageData }) => {
     const from = to - pageSize;
     setCurrentPage(page);
     const pageData = list.slice(from, to);
+
     setPageData(pageData);
   };
 
   useEffect(() => {
     updatePage(page);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [list, page]);
+  }, [page]);
 
   return (
     <Pagination

@@ -19,6 +19,9 @@ import {
 } from 'reactstrap';
 import * as Yup from 'yup';
 
+import MapInput from 'components/BaseMap/MapInput';
+import { MAP } from 'constants/common';
+import { getGeneralErrors, getError } from 'helpers/errorHelper';
 import { errorSelector } from 'store/authentication.slice';
 import {
   setSelectedFireBreak,
@@ -26,9 +29,6 @@ import {
 } from 'store/datalayer.slice';
 import { getWKTfromFeature } from 'utility';
 
-import MapInput from '../../../components/BaseMap/MapInput';
-import { MAP } from '../../../constants/common';
-import { getGeneralErrors, getError } from '../../../helpers/errorHelper';
 import {
   SIMULATION_TIME_LIMIT,
   DEFAULT_FIRE_BREAK_TYPE,
@@ -38,7 +38,6 @@ import {
   FIRE_BREAK_OPTIONS,
 } from '../constants';
 import MapSection from '../Map';
-import 'react-rangeslider/lib/index.css';
 
 Yup.addMethod(Yup.number, 'uniqueTimeOffset', function (message) {
   return this.test('uniqueTimeOffset', message, (timeOffset, { from }) => {

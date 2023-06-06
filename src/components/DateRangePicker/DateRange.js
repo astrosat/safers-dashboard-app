@@ -10,11 +10,6 @@ import Flatpickr from 'react-flatpickr';
 import { withTranslation } from 'react-i18next';
 import { InputGroup } from 'reactstrap';
 
-import 'react-datepicker/dist/react-datepicker.css';
-import 'flatpickr/dist/themes/material_blue.css';
-
-//i18n
-
 const DateComponent = ({
   setDates = () => {},
   clearDates = () => {},

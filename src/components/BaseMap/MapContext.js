@@ -6,6 +6,11 @@ import React, {
   useState,
 } from 'react';
 
+import { FlyToInterpolator } from 'deck.gl';
+
+const easeInOutCubic = x =>
+  x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+
 export const INITIAL_VIEW_STATE = {
   longitude: 9.56005296,
   latitude: 43.02777403,
@@ -38,6 +43,9 @@ export const MapProvider = ({ value, ...rest }) => {
       setViewState(currentViewState => ({
         ...currentViewState,
         ...newViewState,
+        transitionEasing: easeInOutCubic,
+        transitionDuration: 1000,
+        transitionInterpolator: new FlyToInterpolator(),
       })),
     [],
   );

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
-//i18n
 import { withTranslation } from 'react-i18next';
 import Lightbox from 'react-image-lightbox';
 import { Tooltip } from 'react-tooltip';
@@ -17,8 +16,6 @@ import {
 } from 'reactstrap';
 
 import { formatDate } from 'utility';
-
-import 'react-image-lightbox/style.css';
 
 const Alert = ({ card, alertId, setSelectedAlert, setFavorite, t }) => {
   const [isOpen, setIsOpen] = useState(false);

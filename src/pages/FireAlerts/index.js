@@ -8,9 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Button, Input, Card } from 'reactstrap';
 import toastr from 'toastr';
 
-import 'toastr/build/toastr.min.css';
-import 'rc-pagination/assets/index.css';
-
 import BaseMap from 'components/BaseMap/BaseMap';
 import { useMap } from 'components/BaseMap/MapContext';
 import SearchButton from 'components/SearchButton';

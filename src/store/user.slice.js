@@ -114,6 +114,9 @@ const userSlice = createSlice({
     setDefaultAoi: (state, { payload }) => {
       state.defaultAoi = payload;
     },
+    resetSetAoiSuccessMessage: state => {
+      state.setAoiSuccessMessage = null;
+    },
     setUserInfo: (state, { payload }) => {
       state.info = payload;
     },
@@ -160,7 +163,12 @@ const userSlice = createSlice({
   },
 });
 
-export const { resetStatus, setDefaultAoi, setUserInfo } = userSlice.actions;
+export const {
+  resetStatus,
+  setDefaultAoi,
+  resetSetAoiSuccessMessage,
+  setUserInfo,
+} = userSlice.actions;
 
 const baseSelector = state => state?.user;
 

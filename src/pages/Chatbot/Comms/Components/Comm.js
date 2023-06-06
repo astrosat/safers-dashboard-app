@@ -6,73 +6,72 @@ import { Card, CardBody, CardText, Col, Row, Badge } from 'reactstrap';
 
 import { formatDate } from 'utility';
 
-const Comm = ({ card, commID, setSelectedComm }) => {
-  const { t } = useTranslation();
-  const [seeMore, setSeeMore] = useState(true);
-  const TAG_ONGOING = 'ONGOING';
-  const TAG_PUBLIC = 'Public';
+const TAG_ONGOING = 'ONGOING';
+const TAG_PUBLIC = 'Public';
 
-  const isSelected = card.id === commID;
+const getMsg = (msg, seeMore, setSeeMore) =>
+  seeMore ? (
+    <>
+      {msg.substr(0, 100)}...{' '}
+      <span
+        className="user-select-auto text-primary"
+        onClick={() => {
+          setSeeMore(false);
+        }}
+      >
+        See more
+      </span>
+    </>
+  ) : (
+    <>
+      {msg}{' '}
+      <span
+        className="user-select-auto text-primary"
+        onClick={() => {
+          setSeeMore(true);
+        }}
+      >
+        See less
+      </span>
+    </>
+  );
 
-  const getMsg = msg => {
-    if (seeMore) {
-      return (
-        <>
-          {msg.substr(0, 100)}...{' '}
-          <span
-            className="user-select-auto text-primary"
-            onClick={() => {
-              setSeeMore(false);
-            }}
-          >
-            See more
-          </span>
-        </>
-      );
-    }
-    return (
-      <>
-        {msg}{' '}
-        <span
-          className="user-select-auto text-primary"
-          onClick={() => {
-            setSeeMore(true);
-          }}
-        >
-          See less
+const getBadge = comm => {
+  const iconStatus =
+    comm.status === TAG_ONGOING ? 'fa-retweet' : 'fa-hourglass-end';
+  const iconTarget = comm.scope === TAG_PUBLIC ? 'fa-users' : 'fa-user';
+
+  return (
+    <>
+      <Badge className="me-1 rounded-pill alert-badge event-alert-badge py-0 px-2 pb-0 mb-0">
+        <i className={`fa ${iconStatus} text-danger me-1`}></i>
+        <span className="text-capitalize">{comm.status}</span>
+      </Badge>
+
+      <Badge className="me-1 rounded-pill alert-badge event-alert-badge py-0 px-2 pb-0 mb-0">
+        <i className={`fa ${iconTarget}  text-danger me-1`}></i>
+        <span className="text-capitalize">
+          {comm.scope === TAG_PUBLIC ? comm.scope : comm.target}
         </span>
-      </>
-    );
-  };
+      </Badge>
+    </>
+  );
+};
 
-  const getBadge = () => {
-    let iconStatus =
-      card.status === TAG_ONGOING ? 'fa-retweet' : 'fa-hourglass-end';
-    let iconTarget = card.scope === TAG_PUBLIC ? 'fa-users' : 'fa-user';
+const Comm = ({ comm, selectedComm, selectComm }) => {
+  const { t } = useTranslation();
 
-    return (
-      <>
-        <Badge className="me-1 rounded-pill alert-badge event-alert-badge py-0 px-2 pb-0 mb-0">
-          <i className={`fa ${iconStatus} text-danger me-1`}></i>
-          <span className="text-capitalize">{card.status}</span>
-        </Badge>
-        <Badge className="me-1 rounded-pill alert-badge event-alert-badge py-0 px-2 pb-0 mb-0">
-          <i className={`fa ${iconTarget}  text-danger me-1`}></i>
-          <span className="text-capitalize">
-            {card.scope === TAG_PUBLIC ? card.scope : card.target}
-          </span>
-        </Badge>
-      </>
-    );
-  };
+  const [seeMore, setSeeMore] = useState(true);
+
+  const isSelected = comm.id === selectedComm?.id;
 
   return (
     <Card
-      onClick={() => setSelectedComm(!isSelected ? card.id : null)}
+      onClick={() => selectComm(comm)}
       className={'alerts-card mb-2 ' + (isSelected ? 'alert-card-active' : '')}
     >
       <CardBody className="py-2 px-0 m-2">
-        {getBadge()}
+        {getBadge(comm)}
         <Row className="mt-2">
           <Col>
             <Row className="mt-2">
@@ -81,11 +80,11 @@ const Comm = ({ card, commID, setSelectedComm }) => {
                   {`${t('Start', { ns: 'common' })} ${t('Date', {
                     ns: 'common',
                   })}`}
-                  : {formatDate(card.start, 'YYYY-MM-DD')} |{' '}
+                  : {formatDate(comm.start, 'YYYY-MM-DD')} |{' '}
                   {`${t('End', { ns: 'common' })} ${t('Date', {
                     ns: 'common',
                   })}`}
-                  : {formatDate(card.end, 'YYYY-MM-DD')}
+                  : {formatDate(comm.end, 'YYYY-MM-DD')}
                 </p>
               </Col>
             </Row>
@@ -93,7 +92,7 @@ const Comm = ({ card, commID, setSelectedComm }) => {
               <Col>
                 <CardText>
                   {t('Message', { ns: 'common' })}:{' '}
-                  {card?.message && getMsg(card.message)}
+                  {comm?.message && getMsg(comm.message, seeMore, setSeeMore)}
                 </CardText>
               </Col>
               <Col
@@ -102,7 +101,7 @@ const Comm = ({ card, commID, setSelectedComm }) => {
               >
                 <CardText>
                   <span className="float-end alert-source-text no-wrap">
-                    {card.source_organization?.toUpperCase()}
+                    {comm.source_organization?.toUpperCase()}
                   </span>
                 </CardText>
               </Col>
@@ -115,10 +114,9 @@ const Comm = ({ card, commID, setSelectedComm }) => {
 };
 
 Comm.propTypes = {
-  card: PropTypes.any,
-  commID: PropTypes.string,
-  setSelectedComm: PropTypes.func,
-  setFavorite: PropTypes.func,
+  comm: PropTypes.object,
+  selectedComm: PropTypes.object,
+  selectComm: PropTypes.func,
 };
 
 export default Comm;

@@ -7,8 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Button } from 'reactstrap';
 import toastr from 'toastr';
 
-import 'toastr/build/toastr.min.css';
-import 'rc-pagination/assets/index.css';
 import { useMap } from 'components/BaseMap/MapContext';
 import { MAP_TYPES, PAGE_SIZE } from 'constants/common';
 import { getBoundingBox, getViewState, getIconLayer } from 'helpers/mapHelper';
@@ -33,7 +31,7 @@ import MapSection from './Components/Map';
 import SortSection from './Components/SortSection';
 
 const EventAlerts = ({ t }) => {
-  const { viewState, setViewState, updateViewState } = useMap();
+  const { viewState, setViewState } = useMap();
   const defaultAoi = useSelector(defaultAoiSelector);
 
   const alerts = useSelector(allEventsSelector);

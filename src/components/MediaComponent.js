@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import Lightbox from 'react-image-lightbox';
 import { Card, Modal } from 'reactstrap';
 
-import 'react-image-lightbox/style.css';
-
 const MEDIA_TYPE = {
   VIDEO: 'Video',
   IMAGE: 'Image',

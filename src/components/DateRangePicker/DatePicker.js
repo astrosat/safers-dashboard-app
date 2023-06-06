@@ -2,8 +2,6 @@ import React, { useRef } from 'react';
 
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import 'react-datepicker/dist/react-datepicker.css';
-import 'flatpickr/dist/themes/material_blue.css';
 import Flatpickr from 'react-flatpickr';
 import { InputGroup } from 'reactstrap';
 

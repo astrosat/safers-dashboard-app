@@ -32,10 +32,6 @@ import {
   resetPswFailResSelector,
 } from 'store/user.slice';
 
-import 'toastr/build/toastr.min.css';
-
-//i18n
-
 const ResetPsw = ({ t }) => {
   const resetPswSuccessRes = useSelector(resetPasswordSuccessMessageSelector);
   const error = useSelector(resetPswFailResSelector);

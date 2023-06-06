@@ -1,13 +1,8 @@
 import React, { Fragment } from 'react';
 
-import { MapView, FlyToInterpolator } from '@deck.gl/core';
+import { MapView } from '@deck.gl/core';
 import { DeckGL } from 'deck.gl';
-import {
-  FullscreenControl,
-  NavigationControl,
-  MapContext,
-  StaticMap,
-} from 'react-map-gl';
+import { FullscreenControl, NavigationControl, StaticMap } from 'react-map-gl';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { MAPBOX_TOKEN } from 'config';
@@ -23,48 +18,47 @@ import { MapStyleSwitcher } from './MapStyleSwitcher';
 
 const MAX_ZOOM = 20;
 
-const easeInOutCubic = x =>
-  x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
-
 const BaseMap = ({
   layers = null,
   hoverInfo = null,
   renderTooltip = () => {},
-  onClick = () => {},
-  onViewportLoad = () => {},
+  onClick,
   widgets = [],
-  screenControlPosition = 'top-left',
-  navControlPosition = 'bottom-left',
+  screenControlPosition = 'top-right',
+  navControlPosition = 'bottom-right',
 }) => {
-  const { mapRef, deckRef, viewState, setViewState } = useMap();
+  const { mapRef, deckRef, viewState, setViewState, updateViewState } =
+    useMap();
+  const [mapStyle, setMapStyle] = useLocalStorage('safers-map-style');
   const dispatch = useDispatch();
+
   const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
-  const [mapStyle, setMapStyle] = useLocalStorage('safers-map-style');
+
+  const finalLayerSet = [...(layers ? layers : null)];
 
   const handleSelectMapStyle = mapStyle => {
     dispatch(setSelectedMapStyle(mapStyle));
     setMapStyle(mapStyle);
   };
 
-  const finalLayerSet = [...(layers ? layers : null)];
-
   const handleClick = (info, event) => {
     if (info?.object?.properties?.cluster) {
       if (info?.object?.properties?.expansion_zoom <= MAX_ZOOM) {
-        setViewState({
+        updateViewState({
           longitude: info.object.geometry.coordinates[0],
           latitude: info.object.geometry.coordinates[1],
           zoom: info.object.properties.expansion_zoom,
-          transitionDuration: 1000,
-          transitionEasing: easeInOutCubic,
-          transitionInterpolator: new FlyToInterpolator(),
         });
       } else {
-        onClick(info, event);
+        if (onClick) {
+          onClick(info, event);
+        }
       }
     } else {
-      onClick(info, event);
+      if (onClick) {
+        onClick(info, event);
+      }
     }
   };
 
@@ -80,15 +74,13 @@ const BaseMap = ({
   return (
     <>
       <DeckGL
-        ref={deckRef}
         views={new MapView({ repeat: true })}
+        ref={deckRef}
         onClick={handleClick}
+        initialViewState={viewState}
         onViewStateChange={({ viewState }) => setViewState(viewState)}
-        onViewportLoad={onViewportLoad}
-        viewState={viewState}
         controller={true}
         layers={finalLayerSet}
-        ContextProvider={MapContext.Provider}
       >
         <StaticMap
           mapboxApiAccessToken={MAPBOX_TOKEN}
@@ -107,7 +99,6 @@ const BaseMap = ({
         {hoverInfo ? renderTooltip(hoverInfo) : null}
         <MapStyleSwitcher
           mapStyles={mapStyles}
-          selectedMapStyle={selectedMapStyle}
           selectMapStyle={handleSelectMapStyle}
         />
       </DeckGL>

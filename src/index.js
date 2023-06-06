@@ -3,7 +3,6 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import './index.scss';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { setupInterceptors } from 'api/base';
@@ -14,7 +13,17 @@ import { extendGlobalValidators } from 'Utility/extendGlobalValidators';
 
 import App from './App';
 
+import 'flatpickr/dist/themes/material_blue.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import 'react-datepicker/dist/react-datepicker.css';
+import 'react-image-lightbox/style.css';
+import 'react-rangeslider/lib/index.css';
 import 'react-tooltip/dist/react-tooltip.css';
+import 'rc-pagination/assets/index.css';
+import 'toastr/build/toastr.min.css';
+
+import 'assets/scss/theme.scss';
+import './index.scss';
 
 setupInterceptors(store);
 

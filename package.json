@@ -65,7 +65,7 @@
     "test:ci": "CI=true JEST_HTML_REPORTERS_INLINE_SOURCE=true react-scripts test --transformIgnorePatterns 'node_modules/(?!axios)/' --reporters=default --reporters=jest-html-reporters",
     "coverage": "react-scripts test --env=jsdom --watchAll=false --coverage",
     "eject": "react-scripts eject",
-    "cypress:open": "cypress open",
+    "test:e2e": "cypress open",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "browserslist": {
@@ -81,6 +81,7 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/cypress": "^9.0.0",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",

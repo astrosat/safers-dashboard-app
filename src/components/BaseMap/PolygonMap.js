@@ -39,19 +39,88 @@ const TRANSPARENT_COLOR = 'rgba(0, 0, 0, 0)';
 
 const POINT_RADIUS = 8;
 
+const MODES = [
+  { id: 'editing', text: 'Edit Feature', handler: EditingMode },
+  { id: 'drawPolygon', text: 'Draw Polygon', handler: DrawPolygonMode },
+  {
+    id: 'drawLineString',
+    text: 'Draw Line String',
+    handler: DrawLineStringMode,
+  },
+];
+
+const DRAW_TYPES = {
+  LINE_STRING: 'drawLineString',
+  POLYGON: 'drawPolygon',
+};
+
+const getPosition = position => {
+  const props = position.split('-');
+  return {
+    position: 'absolute',
+    [props[0]]: 10,
+    [props[1]]: 10,
+  };
+};
+
+const MapControlButton = ({ top = '90px', style = {}, onClick, children }) => (
+  <div style={{ position: 'absolute', top, right: '10px' }}>
+    <div className="mapboxgl-ctrl mapboxgl-ctrl-group">
+      <button
+        style={{ ...style }}
+        onClick={onClick}
+        className="mapboxgl-ctrl-icon d-flex justify-content-center align-items-center"
+        type="button"
+      >
+        {children}
+      </button>
+    </div>
+  </div>
+);
+
+const Toolbar = ({ selectedFireBreak, modeId, editToggle, handleClearMap }) => (
+  <>
+    {selectedFireBreak ? (
+      <MapControlButton
+        top="50px"
+        style={
+          modeId === DRAW_TYPES.LINE_STRING
+            ? { backgroundColor: 'lightgray' }
+            : {}
+        }
+        onClick={() => editToggle(DRAW_TYPES.LINE_STRING)}
+      >
+        <i className="bx bx-minus" style={{ fontSize: '20px' }}></i>
+      </MapControlButton>
+    ) : (
+      <MapControlButton
+        top="50px"
+        style={
+          modeId === DRAW_TYPES.POLYGON ? { backgroundColor: 'lightgray' } : {}
+        }
+        onClick={() => editToggle(DRAW_TYPES.POLYGON)}
+      >
+        <i className="bx bx-shape-triangle" style={{ fontSize: '20px' }}></i>
+      </MapControlButton>
+    )}
+    <MapControlButton onClick={handleClearMap}>
+      <i className="bx bx-trash" style={{ fontSize: '20px' }}></i>
+    </MapControlButton>
+  </>
+);
+
 const PolygonMap = ({
   layers = null,
   hoverInfo = null,
   renderTooltip = () => {},
   onClick = () => {},
-  clearMap,
-  onViewStateChange = () => {},
-  onViewportLoad = () => {},
-  screenControlPosition = 'top-left',
-  navControlPosition = 'bottom-left',
+  screenControlPosition = 'top-right',
+  navControlPosition = 'bottom-right',
   setCoordinates,
   coordinates,
-  handleAreaValidation,
+  clearMap,
+  onViewportLoad = () => {},
+  handleAreaValidation = null,
   singlePolygonOnly = false,
 }) => {
   const { viewState, setViewState } = useMap();
@@ -64,34 +133,10 @@ const PolygonMap = ({
 
   const finalLayerSet = [...(layers ? layers : null)];
 
-  const MODES = [
-    { id: 'editing', text: 'Edit Feature', handler: EditingMode },
-    { id: 'drawPolygon', text: 'Draw Polygon', handler: DrawPolygonMode },
-    {
-      id: 'drawLineString',
-      text: 'Draw Line String',
-      handler: DrawLineStringMode,
-    },
-  ];
-
-  const DRAW_TYPES = {
-    LINE_STRING: 'drawLineString',
-    POLYGON: 'drawPolygon',
-  };
-
   const [modeId, setModeId] = useState(null);
   const [modeHandler, setModeHandler] = useState(null);
   const [selectedFeatureData, setSelectedFeatureData] = useState(null);
   const [areaIsValid, setAreaIsValid] = useState(true);
-
-  const getPosition = position => {
-    const props = position.split('-');
-    return {
-      position: 'absolute',
-      [props[0]]: 10,
-      [props[1]]: 10,
-    };
-  };
 
   const toggleMode = evt => {
     if (evt !== modeId) {
@@ -125,59 +170,6 @@ const PolygonMap = ({
       clearMap(selectedFeatureData);
     }
   };
-
-  const MapControlButton = ({
-    top = '90px',
-    style = {},
-    onClick,
-    children,
-  }) => (
-    <div style={{ position: 'absolute', top, right: '10px' }}>
-      <div className="mapboxgl-ctrl mapboxgl-ctrl-group">
-        <button
-          style={{ ...style }}
-          onClick={onClick}
-          className="mapboxgl-ctrl-icon d-flex justify-content-center align-items-center"
-          type="button"
-        >
-          {children}
-        </button>
-      </div>
-    </div>
-  );
-
-  const renderToolbar = () => (
-    <>
-      {selectedFireBreak ? (
-        <MapControlButton
-          top="50px"
-          style={
-            modeId === DRAW_TYPES.LINE_STRING
-              ? { backgroundColor: 'lightgray' }
-              : {}
-          }
-          onClick={() => editToggle(DRAW_TYPES.LINE_STRING)}
-        >
-          <i className="bx bx-minus" style={{ fontSize: '20px' }}></i>
-        </MapControlButton>
-      ) : (
-        <MapControlButton
-          top="50px"
-          style={
-            modeId === DRAW_TYPES.POLYGON
-              ? { backgroundColor: 'lightgray' }
-              : {}
-          }
-          onClick={() => editToggle(DRAW_TYPES.POLYGON)}
-        >
-          <i className="bx bx-shape-triangle" style={{ fontSize: '20px' }}></i>
-        </MapControlButton>
-      )}
-      <MapControlButton onClick={handleClearMap}>
-        <i className="bx bx-trash" style={{ fontSize: '20px' }}></i>
-      </MapControlButton>
-    </>
-  );
 
   const handleUpdate = val => {
     let areaValidation = true;
@@ -264,7 +256,6 @@ const PolygonMap = ({
         <FullscreenControl style={getPosition(screenControlPosition)} />
         <MapStyleSwitcher
           mapStyles={mapStyles}
-          selectedMapStyle={selectedMapStyle}
           selectMapStyle={handleSelectMapStyle}
         />
         <NavigationControl
@@ -272,7 +263,13 @@ const PolygonMap = ({
           showCompass={false}
         />
         {renderTooltip(hoverInfo)}
-        {renderToolbar()}
+
+        <Toolbar
+          selectedFireBreak={selectedFireBreak}
+          modeId={modeId}
+          editToggle={editToggle}
+          handleClearMap={handleClearMap}
+        />
       </MapGL>
     </>
   );

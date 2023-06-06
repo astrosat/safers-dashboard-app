@@ -26,8 +26,6 @@ import { getWKTfromFeature } from 'utility';
 
 import MapSection from './Map';
 
-import 'react-rangeslider/lib/index.css';
-
 Yup.addMethod(Yup.date, 'max30Days', function (message) {
   return this.test('max30Days', message, (date, { parent }) => {
     const startDate = parent.startDate;

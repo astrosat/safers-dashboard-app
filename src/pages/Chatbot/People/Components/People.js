@@ -14,29 +14,27 @@ import {
 
 import { formatDate } from 'utility';
 
-const People = ({ card, peopleId, setSelectedPeople /*, setFavorite*/ }) => {
+const getBadge = person => {
+  return (
+    <>
+      <Badge
+        color={person.status === 'Active' ? 'success' : 'info'}
+        className="me-1 rounded-pill alert-badge py-0 px-2 pb-0 mb-0"
+      >
+        <span className="text-capitalize">{person.status}</span>
+      </Badge>
+    </>
+  );
+};
+
+const Person = ({ person, selectedPerson, selectPerson }) => {
   const { t } = useTranslation();
 
-  const isSelected = card.id === peopleId;
-
-  if (!card) return null; // this is not set when data is polled, prevents black screen o'death
-
-  const getBadge = () => {
-    return (
-      <>
-        <Badge
-          color={card.status === 'Active' ? 'success' : 'info'}
-          className="me-1 rounded-pill alert-badge py-0 px-2 pb-0 mb-0"
-        >
-          <span className="text-capitalize">{card.status}</span>
-        </Badge>
-      </>
-    );
-  };
+  const isSelected = person.id === selectedPerson?.id;
 
   return (
     <Card
-      onClick={() => setSelectedPeople(!isSelected ? card.id : null)}
+      onClick={() => selectPerson(person)}
       className={'alerts-card mb-2 ' + (isSelected ? 'alert-card-active' : '')}
     >
       <CardBody className="p-0 m-2">
@@ -45,13 +43,13 @@ const People = ({ card, peopleId, setSelectedPeople /*, setFavorite*/ }) => {
             <Row>
               <Col>
                 <CardTitle>
-                  <span className="card-title">{card.username}</span>
+                  <span className="card-title">{person.username}</span>
                 </CardTitle>
                 <CardText className="card-desc">
-                  {t('status', { ns: 'common' })}: {getBadge()}
+                  {t('status', { ns: 'common' })}: {getBadge(person)}
                 </CardText>
                 <CardText className="card-desc">
-                  {t('activity', { ns: 'common' })}: {card.activity}
+                  {t('activity', { ns: 'common' })}: {person.activity}
                 </CardText>
               </Col>
             </Row>
@@ -59,13 +57,13 @@ const People = ({ card, peopleId, setSelectedPeople /*, setFavorite*/ }) => {
               <Col>
                 <p className="text-muted no-wrap text-capitalize mb-1">
                   {t('Location', { ns: 'common' })}:{' '}
-                  {card.location ? card.location.join(', ') : ''}
+                  {person.location ? person.location.join(', ') : ''}
                 </p>
               </Col>
               <Col>
                 <CardText>
                   <span className="float-end alert-source-text me-2 mb-1">
-                    {t('last-updated')}: {formatDate(card.timestamp)}
+                    {t('last-updated')}: {formatDate(person.timestamp)}
                   </span>
                 </CardText>
               </Col>
@@ -77,11 +75,10 @@ const People = ({ card, peopleId, setSelectedPeople /*, setFavorite*/ }) => {
   );
 };
 
-People.propTypes = {
-  card: PropTypes.any,
-  peopleId: PropTypes.string,
-  setSelectedPeople: PropTypes.func,
-  setFavorite: PropTypes.func,
+Person.propTypes = {
+  person: PropTypes.object,
+  selectedPerson: PropTypes.object,
+  selectPerson: PropTypes.func,
 };
 
-export default People;
+export default Person;

@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col } from 'reactstrap';
 
-import 'toastr/build/toastr.min.css';
-import 'rc-pagination/assets/index.css';
 import { PAGE_SIZE } from 'constants/common';
 import { dateRangeSelector } from 'store/common.slice';
 import {

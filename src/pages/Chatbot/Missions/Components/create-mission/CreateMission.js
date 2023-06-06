@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
 import { Formik } from 'formik';
-import moment from 'moment';
 import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input, Button, Row, Col, Label, FormGroup, Form } from 'reactstrap';
-import toastr from 'toastr';
 import * as Yup from 'yup';
 
 import MapInput from 'components/BaseMap/MapInput';
@@ -17,53 +15,51 @@ import {
   organisationsSelector,
   teamsSelector,
 } from 'store/common.slice';
-import {
-  createMission,
-  resetMissionResponseState,
-  missionCreatedSelector,
-} from 'store/missions.slice';
+import { createMission, resetMissionResponseState } from 'store/missions.slice';
 import { userInfoSelector } from 'store/user.slice';
-import 'toastr/build/toastr.min.css';
 import { getGeoFeatures, getWKTfromFeature } from 'utility';
+
+const setupSchema = t => {
+  return Yup.object().shape({
+    coordinates: Yup.string().required(t('field-empty-err', { ns: 'common' })),
+    dateRange: Yup.array()
+      .of(Yup.date())
+      .min(2, t('field-empty-err', { ns: 'common' })),
+    teamId: Yup.string().optional(),
+    personId: Yup.string().optional(),
+    description: Yup.string().required(t('field-empty-err', { ns: 'common' })),
+    title: Yup.string().required(t('field-empty-err', { ns: 'common' })),
+  });
+};
 
 const FORM_INITIAL_STATE = {
   coordinates: '',
   dateRange: [],
   teamId: '',
   personId: '',
-  desc: '',
+  description: '',
   title: '',
 };
 
-const CreateMission = ({ t, onCancel, coordinates, setCoordinates }) => {
+const CreateMission = ({ onCancel, coordinates, setCoordinates }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const orgList = useSelector(organisationsSelector);
   const user = useSelector(userInfoSelector);
-  const missionCreated = useSelector(missionCreatedSelector);
   const teamList = useSelector(teamsSelector);
 
   const [orgName, setorgName] = useState('--');
   const [selectedTeam, setSelectedTeam] = useState(null);
 
-  useEffect(() => {
-    dispatch(fetchTeams());
-  }, [dispatch]);
+  const messageSchema = setupSchema(t);
 
   useEffect(() => {
-    if (orgList.length && user?.organization) {
+    if (orgList && user?.organization) {
       const organization = orgList.find(org => org.name === user.organization);
       setorgName(organization.name.split('-')[0]);
     }
   }, [orgList, user]);
-
-  useEffect(() => {
-    if (missionCreated) {
-      toastr.success(missionCreated.msg, '');
-      onCancel();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [missionCreated]);
 
   //Clear success states on component unmount
   useEffect(() => {
@@ -72,32 +68,23 @@ const CreateMission = ({ t, onCancel, coordinates, setCoordinates }) => {
     };
   }, [dispatch]);
 
-  const createMissionSchema = Yup.object().shape({
-    coordinates: Yup.string().required(t('field-empty-err', { ns: 'common' })),
-    dateRange: Yup.array()
-      .of(Yup.date())
-      .min(2, t('field-empty-err', { ns: 'common' })),
-    teamId: Yup.string().optional(),
-    personId: Yup.string().optional(),
-    desc: Yup.string().required(t('field-empty-err', { ns: 'common' })),
-    title: Yup.string().required(t('field-empty-err', { ns: 'common' })),
-  });
+  useEffect(() => {
+    dispatch(fetchTeams());
+  }, [dispatch]);
 
   const onSubmit = ({
     coordinates,
     dateRange,
-    desc,
+    description,
     personId,
     teamId,
     title,
   }) => {
-    const dates = dateRange.map(date => moment(date).toISOString());
-
     const payload = {
       title,
-      description: desc,
-      start: dates[0] ?? null,
-      end: dates[1] ?? null,
+      description,
+      start: dateRange[0] ?? null,
+      end: dateRange[1] ?? null,
       source: 'Chatbot',
       geometry: coordinates,
       coordinatorTeamId: teamId ? parseInt(teamId) : null,
@@ -105,12 +92,14 @@ const CreateMission = ({ t, onCancel, coordinates, setCoordinates }) => {
     };
 
     dispatch(createMission(payload));
+
+    onCancel();
   };
 
   return (
     <Formik
       initialValues={FORM_INITIAL_STATE}
-      validationSchema={createMissionSchema}
+      validationSchema={messageSchema}
       onSubmit={onSubmit}
     >
       {({
@@ -121,134 +110,144 @@ const CreateMission = ({ t, onCancel, coordinates, setCoordinates }) => {
         handleBlur,
         handleSubmit,
         setFieldValue,
-      }) => (
-        <Form onSubmit={handleSubmit} noValidate>
-          <FormGroup className="form-group">
-            <Input
-              id="title"
-              name="title"
-              placeholder={t('mission-title', { ns: 'chatBot' })}
-              type="text"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.title ?? ''}
-            />
-            {getError('title', errors, touched, false)}
-          </FormGroup>
+      }) => {
+        return (
+          <Form onSubmit={handleSubmit} noValidate>
+            <FormGroup className="form-group">
+              <Input
+                id="title"
+                name="title"
+                placeholder={t('mission-title', { ns: 'chatBot' })}
+                type="text"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.title ?? ''}
+              />
+              {getError('title', errors, touched, false)}
+            </FormGroup>
 
-          <FormGroup className="form-group mt-3">
-            <DateRangePicker
-              placeholder={`${t('Start', { ns: 'common' })} ${t('Date', {
-                ns: 'common',
-              })} | ${t('End', { ns: 'common' })} ${t('Date', {
-                ns: 'common',
-              })}`}
-              isTimeEnabled={true}
-              onChange={dateRange => setFieldValue('dateRange', dateRange)}
-            />
-            {getError('dateRange', errors, touched, false)}
-          </FormGroup>
+            <FormGroup className="form-group mt-3">
+              <DateRangePicker
+                placeholder={`${t('Start', { ns: 'common' })} ${t('Date', {
+                  ns: 'common',
+                })} | ${t('End', { ns: 'common' })} ${t('Date', {
+                  ns: 'common',
+                })}`}
+                isTimeEnabled={true}
+                onChange={value => setFieldValue('dateRange', value)}
+              />
+              {getError('dateRange', errors, touched, false)}
+            </FormGroup>
 
-          <FormGroup className="form-group mt-3">
-            <MapInput
-              id="coordinates"
-              name="coordinates"
-              className={`${getError('coordinates', errors, errors)}`}
-              type="textarea"
-              placeholder={t('Map Selection', { ns: 'chatBot' })}
-              rows="10"
-              coordinates={getWKTfromFeature(coordinates)}
-              setCoordinates={wkt => setCoordinates(getGeoFeatures(wkt))}
-              handleChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {getError('coordinates', errors, touched, false)}
-          </FormGroup>
+            <FormGroup className="form-group mt-3">
+              <MapInput
+                id="coordinates"
+                name="coordinates"
+                className={`${getError('coordinates', errors, errors)}`}
+                type="textarea"
+                placeholder={t('Map Selection', { ns: 'chatBot' })}
+                rows="10"
+                coordinates={getWKTfromFeature(coordinates)}
+                setCoordinates={wkt => setCoordinates(getGeoFeatures(wkt))}
+                handleChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {getError('coordinates', errors, touched, false)}
+            </FormGroup>
 
-          <div className="mt-3">
-            <Label className="fw-bold" htmlFor="target">
-              {t('assign-to')}:{' '}
-            </Label>
-            <Row>
-              <Col>
-                <Label className="form-label mt-3 mb-0">
-                  {t('organisation')}: {orgName}
-                </Label>
-              </Col>
-              <Col>
-                <Input
-                  id="teamId"
-                  className="btn-sm sort-select-input"
-                  name="teamId"
-                  type="select"
-                  onChange={({ target: { value } }) => {
-                    const selectedTeam = teamList?.find(
-                      team => team.id === Number(value),
-                    );
-                    setFieldValue('teamId', value);
-                    setSelectedTeam(selectedTeam);
-                  }}
-                  value={values.teamId}
-                >
-                  <option value={''}>--{t('team')}--</option>
-                  {teamList?.map(team => {
-                    return (
-                      <option key={team.id} value={team.id}>
-                        {team.name}
-                      </option>
-                    );
-                  })}
-                </Input>
-                {getError('teamId', errors, touched, false)}
-              </Col>
-              <Col>
-                <Input
-                  id="chatbotUser"
-                  className="btn-sm sort-select-input"
-                  name="chatbotUser"
-                  type="select"
-                  disabled={!selectedTeam?.id}
-                  onChange={({ target: { value } }) =>
-                    setFieldValue('personId', value)
-                  }
-                  value={values.personId}
-                >
-                  <option value={''}>--{t('chatbot-user')}--</option>
-                  {selectedTeam?.members.map(member => (
-                    <option key={member.id} value={member.id}>
-                      {member.name}
+            <div className="mt-3">
+              <Label className="fw-bold" htmlFor="target">
+                {t('assign-to', { ns: 'common' })}:{' '}
+              </Label>
+
+              <Row>
+                <Col>
+                  <Label className="form-label mt-3 mb-0">
+                    {t('organisation', { ns: 'common' })}: {orgName}
+                  </Label>
+                </Col>
+
+                <Col>
+                  <Input
+                    id="teamId"
+                    name="teamId"
+                    className="btn-sm sort-select-input"
+                    type="select"
+                    onChange={({ target: { value } }) => {
+                      const selectedTeam = teamList?.find(
+                        team => team.id === Number(value),
+                      );
+                      setFieldValue('teamId', value);
+                      setSelectedTeam(selectedTeam);
+                    }}
+                    value={values.teamId}
+                  >
+                    <option value={''}>
+                      --{t('team', { ns: 'common' })}--
                     </option>
-                  ))}
-                </Input>
-                {getError('personId', errors, touched, false)}
-              </Col>
-            </Row>
-          </div>
+                    {teamList?.map(team => {
+                      return (
+                        <option key={team.id} value={team.id}>
+                          {team.name}
+                        </option>
+                      );
+                    })}
+                  </Input>
+                  {getError('teamId', errors, touched, false)}
+                </Col>
 
-          <FormGroup className="form-group mt-3">
-            <Input
-              id="desc"
-              type="textarea"
-              name="desc"
-              placeholder={t('mission-desc', { ns: 'chatBot' })}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.desc ?? ''}
-              rows="10"
-            />
-            {getError('desc', errors, touched, false)}
-          </FormGroup>
+                <Col>
+                  <Input
+                    id="chatbotUser"
+                    className="btn-sm sort-select-input"
+                    name="chatbotUser"
+                    type="select"
+                    disabled={!selectedTeam?.id}
+                    onChange={({ target: { value } }) =>
+                      setFieldValue('personId', value)
+                    }
+                    value={values.personId}
+                  >
+                    <option value={''}>
+                      --{t('chatbot-user', { ns: 'common' })}--
+                    </option>
+                    {selectedTeam?.members.map(member => (
+                      <option key={member.id} value={member.id}>
+                        {member.name}
+                      </option>
+                    ))}
+                  </Input>
+                  {getError('personId', errors, touched, false)}
+                </Col>
+              </Row>
+            </div>
 
-          <div className="mt-3">
-            <Button type="button" onClick={onCancel}>
-              {t('cancel')}
-            </Button>
-            <Button type="submit" className="mx-3">
-              {t('send')}
-            </Button>
-          </div>
-        </Form>
-      )}
+            <FormGroup className="form-group mt-3">
+              <Input
+                id="description"
+                name="description"
+                type="textarea"
+                placeholder={t('mission-desc', { ns: 'chatBot' })}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.description ?? ''}
+                rows="10"
+              />
+              {getError('description', errors, touched, false)}
+            </FormGroup>
+
+            <div className="mt-3">
+              <Button type="button" onClick={onCancel}>
+                {t('cancel', { ns: 'common' })}
+              </Button>
+
+              <Button type="submit" className="mx-3">
+                {t('send', { ns: 'common' })}
+              </Button>
+            </div>
+          </Form>
+        );
+      }}
     </Formik>
   );
 };
@@ -260,4 +259,4 @@ CreateMission.propTypes = {
   setCoordinates: PropTypes.func,
 };
 
-export default withTranslation(['common'])(CreateMission);
+export default CreateMission;

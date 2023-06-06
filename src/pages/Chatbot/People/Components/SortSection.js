@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col, Input, Button } from 'reactstrap';
-//i18N
 import toastr from 'toastr';
 
 import useSetNewAlerts from 'customHooks/useSetNewAlerts';
@@ -26,12 +25,14 @@ const SortSection = ({
   setStatus,
   setActivity,
   setSortOrder,
-  activitiesOptions,
+  activities,
 }) => {
+  const dispatch = useDispatch();
+
   const allPeople = useSelector(allPeopleSelector);
   const filteredPeople = useSelector(filteredPeopleSelector);
   const pollingData = useSelector(peoplePollingDataSelector);
-  const dispatch = useDispatch();
+
   const [numberOfUpdates, setNumberOfUpdates] = useState(undefined);
 
   useEffect(() => {
@@ -39,6 +40,7 @@ const SortSection = ({
       const filters = { activity, status };
       const sort = { fieldName: 'timestamp', order: sortOrder };
       const filteredRecords = getFilteredRecords(allPeople, filters, sort);
+
       dispatch(setFilteredPeople(filteredRecords));
     }
   }, [activity, allPeople, dispatch, sortOrder, status]);
@@ -58,6 +60,7 @@ const SortSection = ({
     setSortOrder('desc');
     setStatus('');
     setActivity('');
+
     dispatch(refreshPeople(data));
   };
 
@@ -104,6 +107,7 @@ const SortSection = ({
             </option>
           </Input>
         </Col>
+
         <Col xl={4} className="my-1">
           <Input
             id="status"
@@ -113,7 +117,6 @@ const SortSection = ({
             type="select"
             onChange={e => setStatus(e.target.value)}
             value={status}
-            data-testid="status"
           >
             <option value={''}>--{t('status')}--</option>
             <option value="Active">{t('active').toUpperCase()}</option>
@@ -122,6 +125,7 @@ const SortSection = ({
             <option value="Moving">{t('moving').toUpperCase()}</option>
           </Input>
         </Col>
+
         <Col xl={4} className="my-1">
           <Input
             id="activity"
@@ -136,7 +140,7 @@ const SortSection = ({
             <option value={''} className="text-capitalize">
               --{t('activity')}--
             </option>
-            {activitiesOptions.map(option => (
+            {activities.map(option => (
               <option key={option} value={t(`${option}`)}>
                 {option}
               </option>
@@ -155,7 +159,7 @@ SortSection.propTypes = {
   setStatus: PropTypes.func,
   setActivity: PropTypes.func,
   setSortOrder: PropTypes.func,
-  activitiesOptions: PropTypes.array,
+  activities: PropTypes.array,
   t: PropTypes.func,
 };
 

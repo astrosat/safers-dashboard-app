@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col, Input, Button } from 'reactstrap';
 import toastr from 'toastr';
@@ -14,32 +14,33 @@ import {
   filteredMissionsSelector,
   missionsPollingDataSelector,
 } from 'store/missions.slice';
-//i18N
 
 import { getFilteredRecords } from '../../filter';
 
 const SortSection = ({
-  t,
-  missionStatus,
+  status,
+  setStatus,
   sortOrder,
-  setMissionStatus,
   setSortOrder,
   setTogglePolygonMap,
 }) => {
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const allMissions = useSelector(allMissionsSelector);
   const filteredMissions = useSelector(filteredMissionsSelector);
   const pollingData = useSelector(missionsPollingDataSelector);
+
   const [numberOfUpdates, setNumberOfUpdates] = useState(undefined);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (allMissions.length > 0) {
-      const filters = { status: missionStatus };
+      const filters = { status };
       const sort = { fieldName: 'start', order: sortOrder };
       const filteredRecords = getFilteredRecords(allMissions, filters, sort);
       dispatch(setFilteredMissions(filteredRecords));
     }
-  }, [sortOrder, missionStatus, allMissions, dispatch]);
+  }, [sortOrder, allMissions, dispatch, status]);
 
   useSetNewAlerts(
     numberOfUpdates => {
@@ -54,7 +55,8 @@ const SortSection = ({
 
   const refreshPollingData = data => {
     setSortOrder('desc');
-    setMissionStatus('');
+    setStatus('');
+
     dispatch(refreshMissions(data));
   };
 
@@ -66,6 +68,7 @@ const SortSection = ({
             {t('create-new-mission', { ns: 'chatBot' })}
           </Button>
         </Col>
+
         <Col xl={4} className="d-flex justify-content-end">
           {numberOfUpdates > 0 && (
             <Button
@@ -75,17 +78,20 @@ const SortSection = ({
             >
               <i className="mdi mdi-sync"></i>
               <span>
-                {numberOfUpdates} {t('new-updates')}
+                {numberOfUpdates} {t('new-updates', { ns: 'common' })}
               </span>
             </Button>
           )}
+
           <span className="my-auto alert-report-text">
-            {t('Results')}{' '}
+            {t('Results', { ns: 'common' })}{' '}
             {filteredMissions ? filteredMissions.length : allMissions.length}
           </span>
         </Col>
       </Row>
+
       <hr />
+
       <Row className="my-2">
         <Col className="mx-0 my-1">
           <Input
@@ -98,13 +104,16 @@ const SortSection = ({
             value={sortOrder}
           >
             <option value={'desc'}>
-              {t('Sort By')} : {t('Date')} {t('desc')}
+              {t('Sort By', { ns: 'common' })} : {t('Date', { ns: 'common' })}{' '}
+              {t('desc', { ns: 'common' })}
             </option>
             <option value={'asc'}>
-              {t('Sort By')} : {t('Date')} {t('asc')}
+              {t('Sort By', { ns: 'common' })} : {t('Date', { ns: 'common' })}{' '}
+              {t('asc', { ns: 'common' })}
             </option>
           </Input>
         </Col>
+
         <Col xl={6} className="my-1">
           <Input
             id="missionStatus"
@@ -112,16 +121,19 @@ const SortSection = ({
             name="missionStatus"
             placeholder="Source"
             type="select"
-            onChange={e => setMissionStatus(e.target.value)}
-            value={missionStatus}
-            data-testid="missionStatus"
+            onChange={e => setStatus(e.target.value)}
+            value={status}
           >
-            <option value={''}>--{t('status')}--</option>
-            <option value="Created">{t('created').toUpperCase()}</option>
-            <option value="Taken In Charge">
-              {t('take-in-charge').toUpperCase()}
+            <option value={''}>--{t('status', { ns: 'common' })}--</option>
+            <option value="Created">
+              {t('created', { ns: 'common' }).toUpperCase()}
             </option>
-            <option value="Completed">{t('completed').toUpperCase()}</option>
+            <option value="Taken In Charge">
+              {t('take-in-charge', { ns: 'common' }).toUpperCase()}
+            </option>
+            <option value="Completed">
+              {t('completed', { ns: 'common' }).toUpperCase()}
+            </option>
           </Input>
         </Col>
       </Row>
@@ -138,4 +150,4 @@ SortSection.propTypes = {
   setTogglePolygonMap: PropTypes.func,
 };
 
-export default withTranslation(['common'])(SortSection);
+export default SortSection;

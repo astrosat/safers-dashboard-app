@@ -183,3 +183,9 @@ pre {
   font-weight: 900;
   margin: unset;
 }
+
+.aoiGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding-left: '2rem';
+}
