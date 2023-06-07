@@ -19,6 +19,8 @@ import { defaultAoiSelector } from 'store/user.slice';
 import EventsPanel from './EventsPanel';
 import MapComponent from './Map';
 
+const DATE_FORMAT = 'YYYY-MM-DD';
+
 const AOIBar = ({
   orgPplList,
   orgReportList,
@@ -31,7 +33,6 @@ const AOIBar = ({
   const { setViewState } = useMap();
   const dispatch = useDispatch();
 
-  const [eventList, setEventList] = useState([]);
   const [selectedLayer, setSelectedLayer] = useState(null);
 
   const defaultAoi = useSelector(defaultAoiSelector);
@@ -48,8 +49,8 @@ const AOIBar = ({
     const dateRangeParams = dateRange
       ? { start_date: dateRange[0], end_date: dateRange[1] }
       : {
-          start_date: moment().subtract(3, 'days'),
-          end_date: moment(),
+          start_date: moment().subtract(3, 'days').format(DATE_FORMAT),
+          end_date: moment().format(DATE_FORMAT),
         };
 
     const eventParams = {
@@ -68,10 +69,6 @@ const AOIBar = ({
   useEffect(() => {
     updateEventList();
   }, [dateRange, updateEventList]);
-
-  useEffect(() => {
-    setEventList(filteredEvents);
-  }, [filteredEvents]);
 
   const updateRasterLayer = newLayerId => {
     const selectedNode = mapRequests.find(layer => layer.key === newLayerId);
@@ -132,7 +129,7 @@ const AOIBar = ({
             }
             <MapComponent
               selectedLayer={selectedLayer}
-              eventList={eventList}
+              eventList={filteredEvents}
               orgPplList={orgPplList}
               orgReportList={orgReportList}
               commsList={commsList}
