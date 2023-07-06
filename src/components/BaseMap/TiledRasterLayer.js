@@ -5,6 +5,7 @@ export class TiledRasterLayer extends CompositeLayer {
     return [
       new TileLayer({
         data: this.props.data,
+        opacity: this.props.opacity,
         minZoom: 0,
         maxZoom: 20,
         tileSize: 256,
@@ -32,5 +33,6 @@ TiledRasterLayer.layerName = 'TiledRasterLayer';
 TiledRasterLayer.defaultProps = {
   // BitmapLayer properties
   data: null,
+  opacity: 1.0,
   bounds: { type: 'object', value: [], async: true },
 };

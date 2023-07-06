@@ -120,6 +120,7 @@ const DataLayer = ({
     const layers = [
       new TiledRasterLayer({
         data,
+        opacity: 0.5,
       }),
     ];
 
