@@ -107,6 +107,7 @@ const OnDemandDataLayer = ({
     layers.push(
       new TiledRasterLayer({
         data,
+        opacity: currentLayer?.opacity,
       }),
     );
     layers.push(tempLayerData);
